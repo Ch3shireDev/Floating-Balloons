@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Floating diagrams</title>
+
+    <style type="text/css">
+
+        @keyframes float {
+            0% {
+                /*box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);*/
+                transform: translateY(0px);
+            }
+
+
+            40% {
+                /*box-shadow: 0 25px 15px 0px rgba(0,0,0,0.2);*/
+                /*transform: translateY(-20px);*/
+                transform: translate3d(10px, 10px, 0);
+            }
+
+
+            100% {
+                /*box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);*/
+                transform: translateY(0px);
+            }
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .avatar {
+
+            text-align: center;
+
+            margin: 20px 20px;
+            width: 150px;
+            height: 150px;
+            box-sizing: border-box;
+            border: 5px white solid;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 0 5px 5px 0px rgba(0,0,0,0.6);
+            transform: translateY(0px);
+            animation: float 2s ease-in-out infinite;
+
+
+        }
+
+        .content {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px 40px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+
+
+        <div class="avatar">
+            <p>abc</p>
+        </div>
+
+
+</body>
+</html>

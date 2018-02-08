@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2020
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{A0786B88-2ADB-4C21-ABE8-AA2D79766269}") = "FloatingDiagrams", "FloatingDiagrams.phpproj", "{0F3B3487-51AE-460A-9E4E-695A5EE59C06}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0F3B3487-51AE-460A-9E4E-695A5EE59C06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F3B3487-51AE-460A-9E4E-695A5EE59C06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1DDB7B10-DF96-4B66-B55E-0F47850B4AB9}
+	EndGlobalSection
+EndGlobal
