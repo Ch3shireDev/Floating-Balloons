@@ -41,51 +41,7 @@
     </div>
 
 
-    <script type="text/javascript">
-        direction = 1;
-        ticker = createjs.Ticker;
-        boxElement = document.getElementById('circle');
-        ticker.addEventListener("tick", handleTick);
-        var vx = 0, vy = 0;
-        var i = 0;
-        ticker.interval = 1;
-
-        Vmax = 1;
-        K = 0.01;
-
-        function handleTick(event) {
-            if (boxElement) {
-                dt = ticker.interval;
-                var x = boxElement.offsetLeft;
-                var y = boxElement.offsetTop;
-                if (i > 10) {
-                    vx += (Math.random() - 0.5) * 2 * Vmax * dt;
-                    vy += (Math.random() - 0.5) * 2 * Vmax * dt;
-                    i = 0;
-                }
-                i++;
-                vx -= vx * dt * K;
-                vy -= vy * dt * K;
-                if (x > document.body.offsetWidth) {
-                    x = 0;
-                }
-                if (y < 0 || y > document.body.offsetHeight) {
-                    vy = -vy;
-                }
-                
-                x += vx * dt;
-                y += vy * dt;
-                x += 'px';
-                y += 'px';
-                boxElement.style.left = x;
-                boxElement.style.top = y;
-                //boxElement.style.translate3d(x, y, 0);
-
-            }
-        }
-        
-        
-    </script>
+    <script type="text/javascript" src="floating.js"></script>
 </body>
 
 </html>

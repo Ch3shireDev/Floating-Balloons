@@ -1,0 +1,8 @@
+{
+  "name": "myproject",
+  "version": "1.0.0",
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "should": "^13.2.1"
+  }
+}

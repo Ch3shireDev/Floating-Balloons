@@ -14,6 +14,7 @@ tmp/
 local.properties
 .classpath
 .settings/
+node_modules/
 .loadpath
 
 # External tool builders
