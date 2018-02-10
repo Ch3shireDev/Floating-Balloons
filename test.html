@@ -3,6 +3,9 @@
 <head>
     <title>Mocha Tests</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/5.0.0/mocha.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
     <div id="mocha"></div>
@@ -11,12 +14,12 @@
     <script src="node_modules/should/should.js"></script>
     <script>mocha.setup('bdd')</script>
 
-    <script src="example.js"></script>
+    <script src="floating.js"></script>
+    <script src="test.js"></script>
 
     <script>
         mocha.run();
     </script>
-
 
 </body>
 </html>

@@ -5,7 +5,8 @@ Webpage for floating diagram design system. Written completely in JS on client s
 
 User can...
 
-- [ ] create a new bubble
+- [x] create a new bubble
+- [ ] set text into a new bubble
 - [ ] move a bubble
 - [ ] write text into a bubble
 - [ ] select many bubbles
@@ -16,6 +17,8 @@ User can...
 
 ## Unit tests
 
-Here I should write tests for Test Driven Development.
+I use Mocha to create behavior driven tests. We have tests for...
 
-- [ ] Test for creating a new bubble
+- [x] creating a new bubble
+- [ ] adding text into a bubble
+- [ ] moving a bubble

@@ -17,7 +17,6 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="example.html" />
     <Content Include="example.js" />
     <Content Include="floating.js" />
     <Content Include="index.html" />
@@ -25,6 +24,7 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="style.css" />
-    <Content Include="tests.html" />
+    <Content Include="test.html" />
+    <Content Include="test.js" />
   </ItemGroup>
 </Project>
