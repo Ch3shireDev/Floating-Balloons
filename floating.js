@@ -1,6 +1,9 @@
-﻿function CreateBaloon(event) {
-    var div = $("<div></div>")
-    div.addClass("bubble");
+﻿var baloonTag = "div";
+var baloonClass = "bubble";
+
+function CreateBaloon(event) {
+    var div = $("<"+baloonTag+"></"+baloonTag+">")
+    div.addClass(baloonClass);
     var x = event.clientX;
     var y = event.clientY;
     var w = div.width();
@@ -9,8 +12,20 @@
     $("body").append(div);
 }
 
+function ChangeBaloonContent(baloon) {
+    var str = baloon.innerHTML;
+    //baloon.innerHTML = '<input type="text" placeholder="Type your text...">'+str+'</input>';
+}
+
 $("body").dblclick(function (event) {
-    CreateBaloon(event);
+    var x = event.clientX, y = event.clientY;
+    var element = document.elementFromPoint(x, y);
+    var tag = element.tagName.toLowerCase();
+    var c = element.className;
+    if (tag == "body") CreateBaloon(event);
+    else if (tag == baloonTag && c == baloonClass) {
+        ChangeBaloonContent(element);
+    }
 });
 
 $("body").on("contextmenu", function () {

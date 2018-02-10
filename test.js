@@ -1,12 +1,4 @@
-﻿//describe('Bubble', function () {
-//    describe('Creation', function () {
-//        it('bubble should appear when called', function () {
-
-//        });
-//    });
-//});
-
-
+﻿
 let expect = chai.expect
 describe('Creating new bubble', () => {
     it('Double click to make new element', () => {
@@ -20,7 +12,7 @@ describe('Creating new bubble', () => {
         });
         $('body')[0].dispatchEvent(event);
 
-        var b = $('.bubble')
+        var b = $('.'+baloonClass)
 
         var w = b.width();
         var h = b.height();
