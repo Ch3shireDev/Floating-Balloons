@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2020
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{A0786B88-2ADB-4C21-ABE8-AA2D79766269}") = "FloatingDiagrams", "FloatingDiagrams.phpproj", "{0F3B3487-51AE-460A-9E4E-695A5EE59C06}"
+Project("{A0786B88-2ADB-4C21-ABE8-AA2D79766269}") = "FloatingBalloons", "FloatingBalloons.phpproj", "{0F3B3487-51AE-460A-9E4E-695A5EE59C06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

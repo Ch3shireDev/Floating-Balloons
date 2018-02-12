@@ -16,7 +16,7 @@ describe('Creating new bubble',
                     });
                 $("body")[0].dispatchEvent(event);
 
-                var b = $('.' + baloonClass);
+                var b = $('.' + balloonClass);
 
                 var w = b.width();
                 var h = b.height();
@@ -49,7 +49,7 @@ describe('Changing a text',
 
         it('should contain current text in a text box');
 
-        it('should resize a baloon when resizing a textbox');
+        it('should resize a balloon when resizing a textbox');
 
         it('should automatically close a textbox when clicked on an empty space');
     });
@@ -109,8 +109,8 @@ describe('Save/Load behavior',
 
 describe('Export to file behavior',
     () => {
-        it('should allow for export baloon diagram to .svg file');
+        it('should allow for export balloon diagram to .svg file');
 
-        it('should allow for export baloon diagram to .png file');
+        it('should allow for export balloon diagram to .png file');
     });
 

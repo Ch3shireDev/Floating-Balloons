@@ -1,9 +1,9 @@
-﻿var baloonTag = "div";
-var baloonClass = "bubble";
+﻿var balloonTag = "div";
+var balloonClass = "bubble";
 
-function CreateBaloon(event) {
-    var div = $("<"+baloonTag+"></"+baloonTag+">")
-    div.addClass(baloonClass);
+function CreateBalloon(event) {
+    var div = $("<"+balloonTag+"></"+balloonTag+">")
+    div.addClass(balloonClass);
     var x = event.clientX;
     var y = event.clientY;
     var w = div.width();
@@ -12,11 +12,11 @@ function CreateBaloon(event) {
     $("body").append(div);
 }
 
-function OpenBaloonContent(baloon) {
-    var str = baloon.innerHTML;
-    baloon.innerHTML = '<textarea id="textArea1" cols="10" rows="2">'+str+'</textarea>';
+function OpenBalloonContent(balloon) {
+    var str = balloon.innerHTML;
+    balloon.innerHTML = '<textarea id="textArea1" cols="10" rows="2">'+str+'</textarea>';
     $("body").click(function (event) {
-        baloon.innerHTML = $("#textArea1").val();
+        balloon.innerHTML = $("#textArea1").val();
         $("body").off("click");
     });
 }
@@ -28,9 +28,9 @@ $("body").dblclick(function (event) {
     var element = document.elementFromPoint(x, y);
     var tag = element.tagName.toLowerCase();
     var c = element.className;
-    if (tag == "body") CreateBaloon(event);
-    else if (tag == baloonTag && c == baloonClass) {
-        OpenBaloonContent(element);
+    if (tag == "body") CreateBalloon(event);
+    else if (tag == balloonTag && c == balloonClass) {
+        OpenBalloonContent(element);
     }
 });
 

@@ -1,4 +1,4 @@
-# Floating Diagrams
+# Floating Balloons
 Webpage for floating diagram design system. Written completely in JS on client side, saved locally.
 
 ## User stories

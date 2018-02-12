@@ -1,7 +1,7 @@
 ﻿<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Name>FloatingDiagrams</Name>
+    <Name>FloatingBalloons</Name>
     <ProjectGuid>0f3b3487-51ae-460a-9e4e-695a5ee59c06</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>
