@@ -2,8 +2,23 @@
   "name": "myproject",
   "version": "1.0.0",
   "devDependencies": {
+    "angular": "^1.6.9",
+    "angular2": "^2.0.0-beta.21",
+    "angular2-dashboard": "^1.0.0",
     "chai": "^4.1.2",
+    "chai-jasmine": "^1.0.7",
     "jquery": "^3.3.1",
-    "should": "^13.2.1"
+    "should": "^13.2.1",
+    "typescript.api": "^0.7.7"
+  },
+  "dependencies": {
+    "@angular/common": "~4.0.0",
+    "@angular/compiler": "~4.0.0",
+    "@angular/core": "~4.0.0",
+    "@angular/forms": "~4.0.0",
+    "@angular/http": "~4.0.0",
+    "@angular/platform-browser": "~4.0.0",
+    "@angular/platform-browser-dynamic": "~4.0.0",
+    "@angular/router": "~4.0.0"
   }
 }

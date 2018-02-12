@@ -18,3 +18,5 @@ User can...
 ## Unit tests
 
 I use Mocha to create behavior driven tests.
+
+![](./mocha.png)

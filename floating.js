@@ -1,90 +1,70 @@
-﻿var balloonTag = "div";
-var balloonClass = "bubble";
+﻿var balloonTag = 'div';
+var balloonClass = 'bubble';
 
 function CreateBalloon(event) {
-    var div = $("<"+balloonTag+"></"+balloonTag+">")
+    const div = $(`<${balloonTag}></${balloonTag}>`);
     div.addClass(balloonClass);
-    var x = event.clientX;
-    var y = event.clientY;
-    var w = div.width();
+    const x = event.clientX;
+    const y = event.clientY;
+    const w = div.width();
     var h = div.height();
     div.css({ left: x - w / 2, top: y - h / 2 });
-    $("body").append(div);
+    $('body').append(div);
+    return div;
+}
+
+function CreateBalloonOnCoords(x, y) {
+    var event = new MouseEvent({ clientX: x, clientY: y });
+    return CreateBalloon(event);
 }
 
 function OpenBalloonContent(balloon) {
-    var str = balloon.innerHTML;
-    balloon.innerHTML = '<textarea id="textArea1" cols="10" rows="2">'+str+'</textarea>';
-    $("body").click(function (event) {
-        balloon.innerHTML = $("#textArea1").val();
-        $("body").off("click");
+    const str = balloon.innerHTML;
+    balloon.innerHTML = `<textarea id="textArea1" cols="10" rows="2">${str}</textarea>`;
+    $('body').click(function (event) {
+        balloon.innerHTML = $('#textArea1').val();
+        $('body').off('click');
     });
 }
-
-
 
 $("body").dblclick(function (event) {
     var x = event.clientX, y = event.clientY;
     var element = document.elementFromPoint(x, y);
     var tag = element.tagName.toLowerCase();
     var c = element.className;
-    if (tag == "body") CreateBalloon(event);
+    if (tag == 'body') CreateBalloon(event);
     else if (tag == balloonTag && c == balloonClass) {
         OpenBalloonContent(element);
     }
 });
 
-$("body").on("contextmenu", function () {
+$('body').contextmenu(() =>{
     return false;
-}); 
-
-$("body").on("click", function () {
-
 });
 
-//direction = 1;
-//ticker = createjs.Ticker;
-//boxElement = document.getElementById('circle');
-//ticker.addEventListener("tick", handleTick);
-//var vx = 0, vy = 0;
-//var i = 0;
-//ticker.interval = 1;
+$('div').click(function () {
+});
 
-//Vmax = 0.5;
-//K = 0.01;
+var mouseDown = false;
+var xy = {};
+document.body.onmousedown = (evt) => {
+    mouseDown = true;
+    xy = { x: evt.clientX, y: evt.clientY };
+}
+document.body.onmouseup = ()=> {
+    mouseDown = false;
+}
 
-//function handleTick(event) {
-//    if (boxElement) {
-//        dt = ticker.interval;
-//        var x = boxElement.offsetLeft;
-//        var y = boxElement.offsetTop;
-//        if (i > 10) {
-//            v = (Math.random() - 0.5) * 2 * Vmax * dt;
-//            theta = Math.random() * 360;
-//            vx += v * Math.cos(theta);
-//            vy += v * Math.sin(theta);
-//            i = 0;
-//        }
-//        i++;
-//        v = Math.sqrt(vx * vx + vy * vy);
-//        tt = Math.atan2(vy, vx);
-//        v -= v * dt * K;
-//        vx = Math.cos(tt) * v;
-//        vy = Math.sin(tt) * v;
-//        if (x > document.body.offsetWidth || x < 0) {
-//            vx = -vx;
-//        }
-//        if (y < 0 || y > document.body.offsetHeight) {
-//            vy = -vy;
-//        }
 
-//        x += vx * dt;
-//        y += vy * dt;
-//        x += 'px';
-//        y += 'px';
-//        boxElement.style.left = x;
-//        boxElement.style.top = y;
-//        //boxElement.style.translate3d(x, y, 0);
 
-//    }
-//}
+var isDragging = false;
+document.body.onmousemove = (evt) => {
+
+    if (mouseDown) {
+        var dx = xy.x - evt.clientX,
+            dy = xy.y - evt.clientY;
+        if (dx * dx + dy * dy > 1000) {
+            isDragging = true;
+        }
+    }
+}

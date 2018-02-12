@@ -1,11 +1,9 @@
-﻿
-let expect = chai.expect;
+﻿let expect = chai.expect;
 
 describe('Creating new bubble',
     () => {
         it('should understand double click as a command to create a new bubble',
             () => {
-
                 var x0 = 450, y0 = 350;
 
                 var event = new MouseEvent('dblclick',
@@ -14,9 +12,9 @@ describe('Creating new bubble',
                         clientX: x0,
                         clientY: y0
                     });
-                $("body")[0].dispatchEvent(event);
+                $('body')[0].dispatchEvent(event);
 
-                var b = $('.' + balloonClass);
+                var b = $(`.${balloonClass}`);
 
                 var w = b.width();
                 var h = b.height();
@@ -28,13 +26,24 @@ describe('Creating new bubble',
                 y.should.equal(y0);
 
                 b.remove();
-
             });
     });
 
 describe('Moving a bubble',
     () => {
-        it('should be grabbed when clicked once');
+        it('should be grabbed on click-and-hold', () => {
+            var x0 = 500, y0 = 200;
+            CreateBalloonOnCoords(x0,y0);
+            var event = new MouseEvent('dblclick',
+                {
+                    view: window,
+                    clientX: x0,
+                    clientY: y0
+                });
+            $('body')[0].dispatchEvent(event);
+        });
+
+        it('should be highlighted when grabbed');
 
         it('should move with cursor when grabbed');
 
@@ -113,4 +122,3 @@ describe('Export to file behavior',
 
         it('should allow for export balloon diagram to .png file');
     });
-
