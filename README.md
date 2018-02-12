@@ -17,8 +17,4 @@ User can...
 
 ## Unit tests
 
-I use Mocha to create behavior driven tests. We have tests for...
-
-- [x] creating a new bubble
-- [ ] adding text into a bubble
-- [ ] moving a bubble
+I use Mocha to create behavior driven tests.

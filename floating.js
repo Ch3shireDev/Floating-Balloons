@@ -12,10 +12,16 @@ function CreateBaloon(event) {
     $("body").append(div);
 }
 
-function ChangeBaloonContent(baloon) {
+function OpenBaloonContent(baloon) {
     var str = baloon.innerHTML;
-    //baloon.innerHTML = '<input type="text" placeholder="Type your text...">'+str+'</input>';
+    baloon.innerHTML = '<textarea id="textArea1" cols="10" rows="2">'+str+'</textarea>';
+    $("body").click(function (event) {
+        baloon.innerHTML = $("#textArea1").val();
+        $("body").off("click");
+    });
 }
+
+
 
 $("body").dblclick(function (event) {
     var x = event.clientX, y = event.clientY;
@@ -24,13 +30,17 @@ $("body").dblclick(function (event) {
     var c = element.className;
     if (tag == "body") CreateBaloon(event);
     else if (tag == baloonTag && c == baloonClass) {
-        ChangeBaloonContent(element);
+        OpenBaloonContent(element);
     }
 });
 
 $("body").on("contextmenu", function () {
     return false;
 }); 
+
+$("body").on("click", function () {
+
+});
 
 //direction = 1;
 //ticker = createjs.Ticker;
