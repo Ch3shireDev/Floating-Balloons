@@ -33,14 +33,14 @@ describe('Moving a bubble',
     () => {
         it('should be grabbed on click-and-hold', () => {
             var x0 = 500, y0 = 200;
-            CreateBalloonOnCoords(x0,y0);
+            var balloon = new Balloon(x0, y0);
             var event = new MouseEvent('dblclick',
                 {
                     view: window,
                     clientX: x0,
                     clientY: y0
                 });
-            $('body')[0].dispatchEvent(event);
+            //$('body')[0].dispatchEvent(event);
         });
 
         it('should be highlighted when grabbed');

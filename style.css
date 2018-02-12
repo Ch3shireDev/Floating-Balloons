@@ -18,6 +18,8 @@ body {
     width: 100px;
     height: 100px;
     background: red;
+    /*background: transparent url(lumpy.png);*/
+    /*background-repeat: no-repeat;*/
     border-radius: 200px;
     text-align: center;
     color: hsl(0, 0%, 10%);
