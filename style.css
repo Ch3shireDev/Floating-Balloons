@@ -6,26 +6,10 @@ body {
     -moz-user-select: none; /* mozilla browsers */
     -khtml-user-select: none; /* webkit (konqueror) browsers */
     -ms-user-select: none; /* IE10+ */
+    padding: 0;
+    margin: 0;
 }
 
-.bubble {
-    position: absolute;
-    left: 200px;
-    top: 200px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    width: 100px;
-    height: 100px;
-    background: red;
-    /*background: transparent url(lumpy.png);*/
-    /*background-repeat: no-repeat;*/
-    border-radius: 200px;
-    text-align: center;
-    color: hsl(0, 0%, 10%);
-    box-shadow: 2px 2px 2px;
-}
-
-.bubble p {
-    margin-top: 10px;
+#body {
+    margin: 0;
 }

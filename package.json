@@ -6,7 +6,12 @@
     "chai": "^4.1.2",
     "chai-jasmine": "^1.0.7",
     "jquery": "^3.3.1",
+    "require": "^2.4.20",
+    "require.js": "^1.0.0",
+    "requirejs-handlebars": "^0.1.1",
     "should": "^13.2.1",
-    "typescript.api": "^0.7.7"
+    "snap": "^0.2.2",
+    "typescript.api": "^0.7.7",
+    "vivus": "^0.4.3"
   }
 }
