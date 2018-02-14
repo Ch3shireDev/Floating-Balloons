@@ -1,4 +1,39 @@
-﻿let expect = chai.expect;
+﻿Mouse = {
+    RunEvent: function (name, x, y) {
+        $('body')[0].dispatchEvent(
+            new MouseEvent(name,
+                {
+                    view: window,
+                    clientX: x,
+                    clientY: y
+                })
+        );
+    },
+
+    DoubleClick: function (x, y) {
+        this.RunEvent('dblclick', x, y);
+    },
+
+    Click: function (x, y) {
+        this.RunEvent('mousedown', x, y);
+    },
+
+    Move: function (x, y) {
+        this.RunEvent('mousemove', x, y);
+    }
+}
+
+function GetXYWH(div) {
+    var w = parseFloat(div.attr('width')),
+        h = parseFloat(div.attr('height'));
+
+    var x = parseFloat(div.attr('x')),
+        y = parseFloat(div.attr('y'));
+
+    return [x, y, w, h];
+}
+
+let expect = chai.expect;
 
 describe('Creating new bubble',
     () => {
@@ -6,25 +41,9 @@ describe('Creating new bubble',
             () => {
                 var x0 = 200, y0 = 200;
 
-                var event = new MouseEvent('dblclick',
-                    {
-                        view: window,
-                        clientX: x0,
-                        clientY: y0
-                    });
-                $('#body')[0].dispatchEvent(event);
+                Mouse.DoubleClick(x0, y0);
 
-                var b = $('rect')[0];
-
-                var attr = b.attributes;
-
-                console.log(attr);
-
-                var w = parseFloat(attr.width.value),
-                    h = parseFloat(attr.height.value);
-
-                var x = parseFloat(attr.x.value),
-                    y = parseFloat(attr.y.value);
+                var [x, y, w, h] = Balloons.getLastBalloon().rect();
 
                 x = x + w / 2;
                 y = y + h / 2;
@@ -36,54 +55,34 @@ describe('Creating new bubble',
                 x.should.equal(x0);
                 y.should.equal(y0);
 
-                b.remove();
+                Balloons.removeLast();
             });
     });
 
 describe('Moving a bubble',
     () => {
-        it('should be grabbed on click-and-hold');
+        it('should be grabbed on click-and-hold', () => {
+            var x0 = 500, y0 = 200;
+
+            Mouse.DoubleClick(x0, y0);
+            Mouse.Click(x0, y0);
+
+            var b = Balloons.getLastBalloon();
+
+            b.isGrabbed().should.equal(true);
+        });
 
         it('should be highlighted when grabbed');
 
         it('should move with cursor when grabbed', () => {
-            var x0 = 500, y0 = 200;
-            //var balloon = new Balloon(x0, y0);
-            $('#body')[0].dispatchEvent(
-                new MouseEvent('dblclick',
-                    {
-                        view: window,
-                        clientX: x0,
-                        clientY: y0
-                    })
-            );
+            var [x0, y0] = [500, 200],
+                [dx, dy] = [200, 300];
 
-            $('body')[0].dispatchEvent(
-                new MouseEvent('mousedown',
-                    {
-                        view: window,
-                        clientX: x0,
-                        clientY: y0
-                    })
-            );
+            Mouse.DoubleClick(x0, y0);
+            Mouse.Click(x0, y0);
+            Mouse.Move(dx, dy);
 
-            var dx = 200, dy = 300;
-
-            $('body')[0].dispatchEvent(
-                new MouseEvent('mousemove',
-                    {
-                        view: window,
-                        clientX: dx,
-                        clientY: dy
-                    })
-            );
-
-            var attr = $("rect")[0].attributes;
-
-            var x = attr.x.value,
-                y = attr.y.value,
-                w = attr.width.value,
-                h = attr.height.value;
+            var [x, y, w, h] = Balloons.getLastBalloon().rect();
 
             var cPoint = cursorPoint(dx - w / 4, dy - h / 4); //why by 4? wtf
             var x1 = cPoint.x,
@@ -97,6 +96,7 @@ describe('Moving a bubble',
             x1.should.equal(x);
             y1.should.equal(y);
 
+            Balloons.removeLast();
         });
 
         it('should get on top when grabbed');
@@ -175,7 +175,8 @@ describe('Export to file behavior',
         it('should allow for export balloon diagram to .png file');
     });
 
-
 after(() => {
     $('svg')[0].remove();
 })
+
+mocha.run();

@@ -1,7 +1,7 @@
 ﻿var balloonTag = 'div';
 var balloonClass = 'bubble';
 
-function CreateBalloon(event) {
+function createBalloon(event) {
     const div = $(`<${balloonTag}></${balloonTag}>`);
     div.addClass(balloonClass);
     const x = event.clientX;
@@ -13,9 +13,9 @@ function CreateBalloon(event) {
     return div;
 }
 
-function CreateBalloonOnCoords(x, y) {
+function createBalloonOnCoords(x, y) {
     var event = new MouseEvent({ clientX: x, clientY: y });
-    return CreateBalloon(event);
+    return createBalloon(event);
 }
 
 function OpenBalloonContent(balloon) {
@@ -32,7 +32,7 @@ $('body').dblclick(function (event) {
     var element = document.elementFromPoint(x, y);
     var tag = element.tagName.toLowerCase();
     var c = element.className;
-    if (tag == 'body') CreateBalloon(event);
+    if (tag == 'body') createBalloon(event);
     else if (tag == balloonTag && c == balloonClass) {
         OpenBalloonContent(element);
     }
@@ -64,11 +64,11 @@ document.body.onmousemove = (evt) => {
             dy = xy.y - evt.clientY;
         if (dx * dx + dy * dy > 1000) {
             isDragging = true;
-            DragSelectedObject();
+            dragSelectedObject();
         }
     }
 }
 
-function DragSelectedObject() {
+function dragSelectedObject() {
     alert('drag');
 }
