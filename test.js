@@ -4,7 +4,7 @@ describe('Creating new bubble',
     () => {
         it('should understand double click as a command to create a new bubble',
             () => {
-                var x0 = 450, y0 = 350;
+                var x0 = 200, y0 = 200;
 
                 var event = new MouseEvent('dblclick',
                     {
@@ -12,15 +12,26 @@ describe('Creating new bubble',
                         clientX: x0,
                         clientY: y0
                     });
-                $('body')[0].dispatchEvent(event);
+                $('#body')[0].dispatchEvent(event);
 
-                var b = $(`.${balloonClass}`);
+                var b = $('rect')[0];
 
-                var w = b.width();
-                var h = b.height();
+                var attr = b.attributes;
 
-                var x = b.position().left + w / 2;
-                var y = b.position().top + h / 2;
+                console.log(attr);
+
+                var w = parseFloat(attr.width.value),
+                    h = parseFloat(attr.height.value);
+
+                var x = parseFloat(attr.x.value),
+                    y = parseFloat(attr.y.value);
+
+                x = x + w / 2;
+                y = y + h / 2;
+
+                var p = cursorPoint(x0, y0);
+                x0 = p.x;
+                y0 = p.y;
 
                 x.should.equal(x0);
                 y.should.equal(y0);
@@ -31,21 +42,62 @@ describe('Creating new bubble',
 
 describe('Moving a bubble',
     () => {
-        it('should be grabbed on click-and-hold', () => {
-            var x0 = 500, y0 = 200;
-            var balloon = new Balloon(x0, y0);
-            var event = new MouseEvent('dblclick',
-                {
-                    view: window,
-                    clientX: x0,
-                    clientY: y0
-                });
-            //$('body')[0].dispatchEvent(event);
-        });
+        it('should be grabbed on click-and-hold');
 
         it('should be highlighted when grabbed');
 
-        it('should move with cursor when grabbed');
+        it('should move with cursor when grabbed', () => {
+            var x0 = 500, y0 = 200;
+            //var balloon = new Balloon(x0, y0);
+            $('#body')[0].dispatchEvent(
+                new MouseEvent('dblclick',
+                    {
+                        view: window,
+                        clientX: x0,
+                        clientY: y0
+                    })
+            );
+
+            $('body')[0].dispatchEvent(
+                new MouseEvent('mousedown',
+                    {
+                        view: window,
+                        clientX: x0,
+                        clientY: y0
+                    })
+            );
+
+            var dx = 200, dy = 300;
+
+            $('body')[0].dispatchEvent(
+                new MouseEvent('mousemove',
+                    {
+                        view: window,
+                        clientX: dx,
+                        clientY: dy
+                    })
+            );
+
+            var attr = $("rect")[0].attributes;
+
+            var x = attr.x.value,
+                y = attr.y.value,
+                w = attr.width.value,
+                h = attr.height.value;
+
+            var cPoint = cursorPoint(dx - w / 4, dy - h / 4); //why by 4? wtf
+            var x1 = cPoint.x,
+                y1 = cPoint.y;
+
+            x1 = Math.floor(x1);
+            y1 = Math.floor(y1);
+            x = Math.floor(x);
+            y = Math.floor(y);
+
+            x1.should.equal(x);
+            y1.should.equal(y);
+
+        });
 
         it('should get on top when grabbed');
 
@@ -122,3 +174,8 @@ describe('Export to file behavior',
 
         it('should allow for export balloon diagram to .png file');
     });
+
+
+after(() => {
+    $('svg')[0].remove();
+})

@@ -67,10 +67,23 @@ var BalloonsList = {
 
     insert: function(balloon) {
         AllBalloons.push(balloon);
+    },
+
+    addBalloon: function(x, y) {
+        this.insert(new Balloon(x, y));
+    },
+
+    getLastBalloon: function () {
+        var n = AllBalloons.length;
+        if (n > 0) {
+            return AllBalloons[n - 1];
+        }
+        else {
+            return null;
+        }
     }
 };
 
-BalloonsList.insert(new Balloon(300, 400));
 
 
 function CreateBalloon(x, y) {
@@ -115,10 +128,8 @@ $('#body').dblclick(function (event) {
     var element = document.elementFromPoint(x, y);
     var tag = element.tagName.toLowerCase();
 
-    console.log(tag);
-
     if (tag == 'svg') {
-        AllBalloons.push(new Balloon(x, y));
+        BalloonsList.addBalloon(x, y);
     }
     else if (tag == 'rect') {
         OpenBalloonContent(element);
