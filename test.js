@@ -1,5 +1,5 @@
 ﻿Mouse = {
-    RunEvent: function (name, x, y) {
+    runEvent: function (name, x, y) {
         $('body')[0].dispatchEvent(
             new MouseEvent(name,
                 {
@@ -10,27 +10,21 @@
         );
     },
 
-    DoubleClick: function (x, y) {
-        this.RunEvent('dblclick', x, y);
+    doubleclick: function (x, y) {
+        this.runEvent('dblclick', x, y);
     },
 
-    Click: function (x, y) {
-        this.RunEvent('mousedown', x, y);
+    click: function (x, y) {
+        this.runEvent('mousedown', x, y);
     },
 
-    Move: function (x, y) {
-        this.RunEvent('mousemove', x, y);
+    move: function (x, y) {
+        this.runEvent('mousemove', x, y);
+    },
+
+    release: function (x, y) {
+        this.runEvent('mouseup', x, y);
     }
-}
-
-function GetXYWH(div) {
-    var w = parseFloat(div.attr('width')),
-        h = parseFloat(div.attr('height'));
-
-    var x = parseFloat(div.attr('x')),
-        y = parseFloat(div.attr('y'));
-
-    return [x, y, w, h];
 }
 
 let expect = chai.expect;
@@ -41,7 +35,7 @@ describe('Creating new bubble',
             () => {
                 var x0 = 200, y0 = 200;
 
-                Mouse.DoubleClick(x0, y0);
+                Mouse.doubleclick(x0, y0);
 
                 var [x, y, w, h] = Balloons.getLastBalloon().rect();
 
@@ -64,23 +58,20 @@ describe('Moving a bubble',
         it('should be grabbed on click-and-hold', () => {
             var x0 = 500, y0 = 200;
 
-            Mouse.DoubleClick(x0, y0);
-            Mouse.Click(x0, y0);
+            Mouse.doubleclick(x0, y0);
+            Mouse.click(x0, y0);
 
-            var b = Balloons.getLastBalloon();
-
-            b.isGrabbed().should.equal(true);
+            Balloons.getLastBalloon().isGrabbed().should.equal(true);
+            Balloons.removeLast();
         });
-
-        it('should be highlighted when grabbed');
 
         it('should move with cursor when grabbed', () => {
             var [x0, y0] = [500, 200],
                 [dx, dy] = [200, 300];
 
-            Mouse.DoubleClick(x0, y0);
-            Mouse.Click(x0, y0);
-            Mouse.Move(dx, dy);
+            Mouse.doubleclick(x0, y0);
+            Mouse.click(x0, y0);
+            Mouse.move(dx, dy);
 
             var [x, y, w, h] = Balloons.getLastBalloon().rect();
 
@@ -99,9 +90,38 @@ describe('Moving a bubble',
             Balloons.removeLast();
         });
 
-        it('should get on top when grabbed');
+        it('should get on top when grabbed', () => {
+            var b1 = Balloons.addBalloon(100, 200);
+            var b2 = Balloons.addBalloon(300, 200);
 
-        it('should set a new place when released');
+            var x0 = b2.div.attr('x');
+
+            Mouse.click(100, 200);
+            Mouse.move(300, 200);
+            Mouse.release(300, 200);
+            Mouse.click(300, 200);
+            Mouse.move(500, 200);
+            Mouse.release(500, 200);
+
+            var x1 = b2.div.attr('x');
+
+            x0.should.equal(x1);
+
+            Balloons.removeLast();
+            Balloons.removeLast();
+        });
+
+        it('should no longer be grabbed when released', ()=>{
+            var b1 = Balloons.addBalloon(100, 200);
+            Mouse.click(100, 200);
+            Mouse.move(200, 200);
+            var x0 = b1.div.attr('x');
+            Mouse.release(200, 200);
+            Mouse.move(400, 200);
+            var x1 = b1.div.attr('x');
+            x0.should.equal(x1);
+            b1.isGrabbed().should.equal(false);
+        });
     });
 
 describe('Changing a text',
@@ -139,9 +159,9 @@ describe('Selecting bubbles',
 
 describe('Undo/Redo behavior',
     () => {
-        it('should undo last operation on Ctrl+Z or rClick->Undo');
+        it('should undo last operation on Ctrl+Z or rclick->Undo');
 
-        it('should redo last undone operation on Ctrl+Shift+Z or Ctrl+Y or rClick->Redo');
+        it('should redo last undone operation on Ctrl+Shift+Z or Ctrl+Y or rclick->Redo');
 
         it('should not affect normal Undo/Redo during TextBox edits');
     });

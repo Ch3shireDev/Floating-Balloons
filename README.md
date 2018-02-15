@@ -6,8 +6,8 @@ Webpage for floating diagram design system. Written completely in JS on client s
 User can...
 
 - [x] create a new bubble
+- [x] move a bubble
 - [ ] set text into a new bubble
-- [ ] move a bubble
 - [ ] write text into a bubble
 - [ ] select many bubbles
 - [ ] remove a bubble

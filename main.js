@@ -20,7 +20,7 @@ function Balloon(x, y) {
     this.div = createBalloon(x, y);
     this.id = this.div.attr('id');
 
-    this.Move = function (x, y) {
+    this.move = function (x, y) {
         const w = this.W;
         const h = this.H;
 
@@ -42,6 +42,13 @@ function Balloon(x, y) {
 
     this.grab = function () {
         this.grabbed = true;
+        this.bringToFront();
+    }
+
+    this.bringToFront = function () {
+        //probably not the best way to accomplish that
+        this.div.remove(); 
+        s.append(this.div);
     }
 
     this.drop = function () {
@@ -49,7 +56,7 @@ function Balloon(x, y) {
     }
 
     this.rect = function () {
-        var div = this.div;
+        const div = this.div;
         var w = parseFloat(div.attr('width')),
             h = parseFloat(div.attr('height')),
             x = parseFloat(div.attr('x')),
@@ -81,7 +88,9 @@ var Balloons = {
     },
 
     addBalloon: function (x, y) {
-        this.insert(new Balloon(x, y));
+        var b = new Balloon(x, y);
+        this.insert(b);
+        return b;
     },
 
     getLastBalloon: function () {
@@ -179,6 +188,6 @@ document.body.onmousemove = (evt) => {
 
 function dragSelectedObject(x, y) {
     if (currElement != null) {
-        currElement.Move(x, y);
+        currElement.move(x, y);
     }
 }
