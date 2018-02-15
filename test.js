@@ -27,13 +27,13 @@
     }
 }
 
+var x0 = 200, y0 = 200;
 let expect = chai.expect;
 
 describe('Creating new bubble',
     () => {
         it('should understand double click as a command to create a new bubble',
             () => {
-                var x0 = 200, y0 = 200;
 
                 Mouse.doubleclick(x0, y0);
 
@@ -51,6 +51,44 @@ describe('Creating new bubble',
 
                 Balloons.removeLast();
             });
+
+        it('should create and remove the text together with bubble',
+            () => {
+                Mouse.doubleclick(x0, y0);
+                var b = Balloons.getLastBalloon();
+                var f = b.fO;
+                b.fO.should.not.equal(null);
+                Balloons.removeLast();
+                (b.fO == null).should.equal(true);
+            });
+
+
+        it('should move the text together with bubble',
+            () => {
+
+                var dx = 500, dy = 0;
+
+                Mouse.doubleclick(x0, y0);
+
+                var b = Balloons.getLastBalloon();
+                var x1 = b.fO.getAttribute('x'),
+                    y1 = b.fO.getAttribute('y');
+
+                Mouse.click(x0, y0);
+                Mouse.move(x0 + dx, y0 + dy);
+
+                var x2 = b.fO.getAttribute('x'),
+                    y2 = b.fO.getAttribute('y');
+
+                x1 = parseFloat(x1);
+                y1 = parseFloat(y1);
+                x2 = parseFloat(x2);
+                y2 = parseFloat(y2);
+
+                (x2 - x1).should.equal(dx);
+                (y2 - y1).should.equal(dy);
+            });
+
     });
 
 describe('Moving a bubble',
@@ -122,6 +160,7 @@ describe('Moving a bubble',
             x0.should.equal(x1);
             b1.isGrabbed().should.equal(false);
         });
+        
     });
 
 describe('Changing a text',
