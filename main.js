@@ -220,7 +220,7 @@ document.body.onmousemove = (evt) => {
         const y = evt.clientY;
         const dx = x - xy.x;
         const dy = y - xy.y;
-        if (dx * dx + dy * dy > 1000) {
+        if (dx * dx + dy * dy > 100) {
             isDragging = true;
             dragSelectedObject(x, y);
         }

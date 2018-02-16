@@ -27,7 +27,7 @@
     }
 }
 
-var x0 = 200, y0 = 200;
+var x0 = 100, y0 = 50;
 let expect = chai.expect;
 
 describe('Creating new bubble',
@@ -56,7 +56,6 @@ describe('Creating new bubble',
             () => {
                 Mouse.doubleclick(x0, y0);
                 var b = Balloons.getLastBalloon();
-                var f = b.fO;
                 b.fO.should.not.equal(null);
                 Balloons.removeLast();
                 (b.fO == null).should.equal(true);
@@ -66,7 +65,7 @@ describe('Creating new bubble',
         it('should move the text together with bubble',
             () => {
 
-                var dx = 500, dy = 0;
+                var dx = 100, dy = 0;
 
                 Mouse.doubleclick(x0, y0);
 
@@ -74,19 +73,23 @@ describe('Creating new bubble',
                 var x1 = b.fO.getAttribute('x'),
                     y1 = b.fO.getAttribute('y');
 
+                var [x3, y3, z3, t3] = b.rect();
+
                 Mouse.click(x0, y0);
                 Mouse.move(x0 + dx, y0 + dy);
 
                 var x2 = b.fO.getAttribute('x'),
                     y2 = b.fO.getAttribute('y');
 
+                var [x4, y4, z4, t4] = b.rect();
+
                 x1 = parseFloat(x1);
                 y1 = parseFloat(y1);
                 x2 = parseFloat(x2);
                 y2 = parseFloat(y2);
 
-                (x2 - x1).should.equal(dx);
-                (y2 - y1).should.equal(dy);
+                (x2 - x1).should.equal(x4-x3);
+                (y2 - y1).should.equal(y4-y3);
             });
 
     });
