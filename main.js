@@ -27,7 +27,7 @@ function createBalloon(x, y) {
     fO.setAttribute('y', y);
     fO.setAttribute('width', 2 * w);
     fO.setAttribute('height', h);
-    fO.innerHTML = 'text';
+    fO.innerHTML = '<div>text</div>';
     div.after(fO);
 
     numBalloons++;
@@ -56,7 +56,7 @@ function Balloon(x, y) {
 
     this.id = this.div.attr('id');
 
-    this.move = function(x, y) {
+    this.move = function (x, y) {
         const w = this.W;
         const h = this.H;
 
@@ -75,16 +75,16 @@ function Balloon(x, y) {
         this.fO.setAttribute('y', y);
     };
 
-    this.isGrabbed = function() {
+    this.isGrabbed = function () {
         return this.grabbed;
     };
 
-    this.grab = function() {
+    this.grab = function () {
         this.grabbed = true;
         this.bringToFront();
     };
 
-    this.bringToFront = function() {
+    this.bringToFront = function () {
         //probably not the best way to accomplish that
         this.div.remove();
         this.fO.remove();
@@ -92,11 +92,11 @@ function Balloon(x, y) {
         svg.appendChild(this.fO);
     };
 
-    this.drop = function() {
+    this.drop = function () {
         this.grabbed = false;
     };
 
-    this.rect = function() {
+    this.rect = function () {
         const div = this.div;
         const w = parseFloat(div.attr('width'));
         const h = parseFloat(div.attr('height'));
@@ -104,12 +104,48 @@ function Balloon(x, y) {
         const y = parseFloat(div.attr('y'));
         return [x, y, w, h];
     };
+
+    this.openContent = function () {
+        var x = this.fO.innerHTML;
+        this.fO.innerHTML = '<textarea>Abc</textarea>';
+    };
 }
 
 var Balloons = {
     balloonsList: [],
 
-    findFromId: function(id) {
+    findFromElement: function (element) {
+        
+        while (element != null) {
+            if (element.parentElement === null) return null;
+            if (element.parentElement.tagName === 'svg') {
+                break;
+            }
+            element = element.parentElement;
+        }
+        if (element == null) return null;
+
+        var id = element.id;
+        var name = id;
+        console.log(element);
+
+        if (name == null) return null;
+        
+        if (element.tagName === 'foreignObject') {
+            return Balloons.findFromForeignId(element.id);
+        }
+
+        name = name.replace(/[0-9]*/g, '');
+        if (name === 'balloon') {
+            return this.findFromId(id);
+        } else if (name === 'fo') {
+            return this.findFromForeignId(id);
+        } else {
+            return null;
+        }
+    },
+
+    findFromId: function (id) {
         const n = this.balloonsList.length;
         const b = this.balloonsList;
         for (let i = 0; i < n; i++) {
@@ -120,7 +156,7 @@ var Balloons = {
         return null;
     },
 
-    findFromForeignId: function(id) {
+    findFromForeignId: function (id) {
         const n = this.balloonsList.length;
         const b = this.balloonsList;
         for (let i = 0; i < n; i++) {
@@ -131,21 +167,21 @@ var Balloons = {
         return null;
     },
 
-    findFromDiv: function(div) {
+    findFromDiv: function (div) {
         return this.findFromId(div.attr('id'));
     },
 
-    insert: function(balloon) {
+    insert: function (balloon) {
         this.balloonsList.push(balloon);
     },
 
-    addBalloon: function(x, y) {
+    addBalloon: function (x, y) {
         const b = new Balloon(x, y);
         this.insert(b);
         return b;
     },
 
-    getLastBalloon: function() {
+    getLast: function () {
         const n = this.balloonsList.length;
         if (n > 0) {
             return this.balloonsList[n - 1];
@@ -154,8 +190,8 @@ var Balloons = {
         }
     },
 
-    removeLast: function() {
-        const b = this.getLastBalloon();
+    removeLast: function () {
+        const b = this.getLast();
         b.div.remove();
         b.div = null;
         b.fO.remove();
@@ -163,23 +199,6 @@ var Balloons = {
         this.balloonsList.pop();
     }
 };
-
-$('body').dblclick(function(event) {
-    const x = event.clientX;
-    const y = event.clientY;
-    const element = document.elementFromPoint(x, y);
-    const tag = element.tagName.toLowerCase();
-
-    if (tag === 'svg') {
-        Balloons.addBalloon(x, y);
-    } else if (tag === 'rect') {
-        //OpenBalloonContent(element);
-    }
-});
-
-$('body').contextmenu(() => {
-    return false;
-});
 
 var mouseDown = false;
 var xy = {};
@@ -194,17 +213,38 @@ document.body.onmousedown = (evt) => {
     var element = document.elementFromPoint(x, y);
 
     if (element == null) return;
+    console.log(element.tagName);
+    if (element.tagName.toLowerCase() === "textarea") return;
 
-    if (element.tagName === 'foreignObject') {
-        currElement = Balloons.findFromForeignId(element.id);
-    } else {
-        currElement = Balloons.findFromId(element.id);
-    }
+    currElement = Balloons.findFromElement(element);
 
     if (currElement != null) {
         currElement.grab();
     }
 };
+
+$('body').dblclick(function (event) {
+    const x = event.clientX;
+    const y = event.clientY;
+    const element = document.elementFromPoint(x, y);
+    const tag = element.tagName.toLowerCase();
+
+    if (tag === 'svg') {
+        Balloons.addBalloon(x, y);
+    }
+    else {
+        console.log("double click");
+        const b = Balloons.findFromElement(element);
+        console.log(b);
+        if (b != null) {
+            b.openContent();
+        }
+    }
+});
+
+$('body').contextmenu(() => {
+    return false;
+});
 
 document.body.onmouseup = () => {
     mouseDown = false;
@@ -220,7 +260,7 @@ document.body.onmousemove = (evt) => {
         const y = evt.clientY;
         const dx = x - xy.x;
         const dy = y - xy.y;
-        if (dx * dx + dy * dy > 100) {
+        if (dx * dx + dy * dy > 10) {
             isDragging = true;
             dragSelectedObject(x, y);
         }

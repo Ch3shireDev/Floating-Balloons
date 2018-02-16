@@ -1,5 +1,5 @@
 ﻿Mouse = {
-    runEvent: function (name, x, y) {
+    runEvent: function(name, x, y) {
         $('body')[0].dispatchEvent(
             new MouseEvent(name,
                 {
@@ -10,22 +10,22 @@
         );
     },
 
-    doubleclick: function (x, y) {
+    doubleclick: function(x, y) {
         this.runEvent('dblclick', x, y);
     },
 
-    click: function (x, y) {
+    click: function(x, y) {
         this.runEvent('mousedown', x, y);
     },
 
-    move: function (x, y) {
+    move: function(x, y) {
         this.runEvent('mousemove', x, y);
     },
 
-    release: function (x, y) {
+    release: function(x, y) {
         this.runEvent('mouseup', x, y);
     }
-}
+};
 
 var x0 = 100, y0 = 50;
 let expect = chai.expect;
@@ -37,7 +37,7 @@ describe('Creating new bubble',
 
                 Mouse.doubleclick(x0, y0);
 
-                var [x, y, w, h] = Balloons.getLastBalloon().rect();
+                var [x, y, w, h] = Balloons.getLast().rect();
 
                 x = x + w / 2;
                 y = y + h / 2;
@@ -55,7 +55,7 @@ describe('Creating new bubble',
         it('should create and remove the text together with bubble',
             () => {
                 Mouse.doubleclick(x0, y0);
-                var b = Balloons.getLastBalloon();
+                var b = Balloons.getLast();
                 b.fO.should.not.equal(null);
                 Balloons.removeLast();
                 (b.fO == null).should.equal(true);
@@ -69,7 +69,7 @@ describe('Creating new bubble',
 
                 Mouse.doubleclick(x0, y0);
 
-                var b = Balloons.getLastBalloon();
+                var b = Balloons.getLast();
                 var x1 = b.fO.getAttribute('x'),
                     y1 = b.fO.getAttribute('y');
 
@@ -88,87 +88,99 @@ describe('Creating new bubble',
                 x2 = parseFloat(x2);
                 y2 = parseFloat(y2);
 
-                (x2 - x1).should.equal(x4-x3);
-                (y2 - y1).should.equal(y4-y3);
+                (x2 - x1).should.equal(x4 - x3);
+                (y2 - y1).should.equal(y4 - y3);
             });
 
     });
 
 describe('Moving a bubble',
     () => {
-        it('should be grabbed on click-and-hold', () => {
-            var x0 = 500, y0 = 200;
+        it('should be grabbed on click-and-hold',
+            () => {
+                var x0 = 500, y0 = 200;
 
-            Mouse.doubleclick(x0, y0);
-            Mouse.click(x0, y0);
+                Mouse.doubleclick(x0, y0);
+                Mouse.click(x0, y0);
 
-            Balloons.getLastBalloon().isGrabbed().should.equal(true);
-            Balloons.removeLast();
-        });
+                Balloons.getLast().isGrabbed().should.equal(true);
+                Balloons.removeLast();
+            });
 
-        it('should move with cursor when grabbed', () => {
-            var [x0, y0] = [500, 200],
-                [dx, dy] = [200, 300];
+        it('should move with cursor when grabbed',
+            () => {
+                var [x0, y0] = [500, 200],
+                    [dx, dy] = [200, 300];
 
-            Mouse.doubleclick(x0, y0);
-            Mouse.click(x0, y0);
-            Mouse.move(dx, dy);
+                Mouse.doubleclick(x0, y0);
+                Mouse.click(x0, y0);
+                Mouse.move(dx, dy);
 
-            var [x, y, w, h] = Balloons.getLastBalloon().rect();
+                var [x, y, w, h] = Balloons.getLast().rect();
 
-            var cPoint = cursorPoint(dx - w / 4, dy - h / 4); //why by 4? wtf
-            var x1 = cPoint.x,
-                y1 = cPoint.y;
+                var cPoint = cursorPoint(dx - w / 4, dy - h / 4); //why by 4? wtf
+                var x1 = cPoint.x,
+                    y1 = cPoint.y;
 
-            x1 = Math.floor(x1);
-            y1 = Math.floor(y1);
-            x = Math.floor(x);
-            y = Math.floor(y);
+                x1 = Math.floor(x1);
+                y1 = Math.floor(y1);
+                x = Math.floor(x);
+                y = Math.floor(y);
 
-            x1.should.equal(x);
-            y1.should.equal(y);
+                x1.should.equal(x);
+                y1.should.equal(y);
 
-            Balloons.removeLast();
-        });
+                Balloons.removeLast();
+            });
 
-        it('should get on top when grabbed', () => {
-            var b1 = Balloons.addBalloon(100, 200);
-            var b2 = Balloons.addBalloon(300, 200);
+        it('should get on top when grabbed',
+            () => {
+                var b1 = Balloons.addBalloon(100, 200);
+                var b2 = Balloons.addBalloon(300, 200);
 
-            var x0 = b2.div.attr('x');
+                var x0 = b2.div.attr('x');
 
-            Mouse.click(100, 200);
-            Mouse.move(300, 200);
-            Mouse.release(300, 200);
-            Mouse.click(300, 200);
-            Mouse.move(500, 200);
-            Mouse.release(500, 200);
+                Mouse.click(100, 200);
+                Mouse.move(300, 200);
+                Mouse.release(300, 200);
+                Mouse.click(300, 200);
+                Mouse.move(500, 200);
+                Mouse.release(500, 200);
 
-            var x1 = b2.div.attr('x');
+                var x1 = b2.div.attr('x');
 
-            x0.should.equal(x1);
+                x0.should.equal(x1);
 
-            Balloons.removeLast();
-            Balloons.removeLast();
-        });
+                Balloons.removeLast();
+                Balloons.removeLast();
+            });
 
-        it('should no longer be grabbed when released', ()=>{
-            var b1 = Balloons.addBalloon(100, 200);
-            Mouse.click(100, 200);
-            Mouse.move(200, 200);
-            var x0 = b1.div.attr('x');
-            Mouse.release(200, 200);
-            Mouse.move(400, 200);
-            var x1 = b1.div.attr('x');
-            x0.should.equal(x1);
-            b1.isGrabbed().should.equal(false);
-        });
-        
+        it('should no longer be grabbed when released',
+            () => {
+                var b1 = Balloons.addBalloon(100, 200);
+                Mouse.click(100, 200);
+                Mouse.move(200, 200);
+                var x0 = b1.div.attr('x');
+                Mouse.release(200, 200);
+                Mouse.move(400, 200);
+                var x1 = b1.div.attr('x');
+                x0.should.equal(x1);
+                b1.isGrabbed().should.equal(false);
+            });
+
     });
 
 describe('Changing a text',
     () => {
-        it('should open a text box on double click');
+        it('should open a text box on double click',
+            () => {
+                Balloons.addBalloon(x0, y0);
+                Mouse.doubleclick(x0, y0);
+                var element = document.elementFromPoint(x0, y0);
+                element.should.not.equal(null);
+                element.tagName.toLowerCase().should.equal("textarea");
+                Balloons.removeLast();
+            });
 
         it('should contain current text in a text box');
 
@@ -239,6 +251,6 @@ describe('Export to file behavior',
 
 after(() => {
     $('svg')[0].remove();
-})
+});
 
 mocha.run();
