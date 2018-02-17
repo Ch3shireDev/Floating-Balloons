@@ -172,7 +172,7 @@ describe('Moving a bubble',
 
 describe('Changing a text',
     () => {
-        it('should open a text box on double click',
+        it('should open a textbox on double click',
             () => {
                 Balloons.addBalloon(x0, y0);
                 Mouse.doubleclick(x0, y0);
@@ -182,11 +182,22 @@ describe('Changing a text',
                 Balloons.removeLast();
             });
 
+        it('should close a textbox on click outside the bubble',
+            () => {
+                Balloons.addBalloon(x0, y0);
+                Mouse.doubleclick(x0, y0);
+                Mouse.click(x0 + 200, y0);
+                var element = document.elementFromPoint(x0, y0);
+                element.should.not.equal(null);
+                element.tagName.toLowerCase().should.not.equal("textarea");
+                Balloons.removeLast();
+            });
+
         it('should contain current text in a text box');
 
         it('should resize a balloon when resizing a textbox');
 
-        it('should automatically close a textbox when clicked on an empty space');
+        
     });
 
 describe('Connecting bubbles',
