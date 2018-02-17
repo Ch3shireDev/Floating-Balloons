@@ -108,7 +108,7 @@ function Balloon(x, y) {
     this.openContent = function() {
         closeCurrentTextarea();
         const x = this.fO.innerHTML;
-        this.fO.innerHTML = '<textarea>Abc</textarea>';
+        this.fO.innerHTML = `<textarea>${x}</textarea>`;
         currentTextareaBalloon = this;
     };
 }
@@ -118,8 +118,7 @@ var currentTextareaBalloon = null;
 function closeCurrentTextarea() {
     if (currentTextareaBalloon === null) return;
     if (currentTextareaBalloon.fO === null) return;
-    var str = $(currentTextareaBalloon.fO.innerHTML);
-    str = str.text();
+    var str = $('textarea').val();
     currentTextareaBalloon.fO.innerHTML = str;
     currentTextareaBalloon = null;
 }

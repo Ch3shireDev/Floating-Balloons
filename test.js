@@ -172,28 +172,45 @@ describe('Moving a bubble',
 
 describe('Changing a text',
     () => {
-        it('should open a textbox on double click',
+        it('should open a textarea on double click',
             () => {
                 Balloons.addBalloon(x0, y0);
                 Mouse.doubleclick(x0, y0);
                 var element = document.elementFromPoint(x0, y0);
                 element.should.not.equal(null);
-                element.tagName.toLowerCase().should.equal("textarea");
+                element.tagName.toLowerCase().should.equal('textarea');
                 Balloons.removeLast();
             });
 
-        it('should close a textbox on click outside the bubble',
+        it('should close a textarea on click outside the bubble',
             () => {
                 Balloons.addBalloon(x0, y0);
                 Mouse.doubleclick(x0, y0);
                 Mouse.click(x0 + 200, y0);
                 var element = document.elementFromPoint(x0, y0);
                 element.should.not.equal(null);
-                element.tagName.toLowerCase().should.not.equal("textarea");
+                element.tagName.toLowerCase().should.not.equal('textarea');
                 Balloons.removeLast();
             });
 
-        it('should contain current text in a text box');
+        it('should contain current text in a textarea',
+            () => {
+                var b = Balloons.addBalloon(x0, y0);
+                b.fO.innerHTML = 'abc';
+                Mouse.doubleclick(x0, y0);
+                $('textarea').val().should.equal('abc');
+                Balloons.removeLast();
+            });
+
+        it('should contain text from textarea in a textbox',
+            () => {
+                var b = Balloons.addBalloon(x0, y0);
+                Mouse.doubleclick(x0, y0);
+                $('textarea').val('abc');
+                Mouse.click(x0 + 200, y0);
+                b.fO.innerHTML.should.equal('abc');
+                Balloons.removeLast();
+            });
 
         it('should resize a balloon when resizing a textbox');
 
@@ -224,9 +241,9 @@ describe('Selecting bubbles',
 
 describe('Undo/Redo behavior',
     () => {
-        it('should undo last operation on Ctrl+Z or rclick->Undo');
+        it('should undo last operation on Ctrl+Z or Right Click->Undo');
 
-        it('should redo last undone operation on Ctrl+Shift+Z or Ctrl+Y or rclick->Redo');
+        it('should redo last undone operation on Ctrl+Shift+Z or Ctrl+Y or Right Click->Redo');
 
         it('should not affect normal Undo/Redo during TextBox edits');
     });
