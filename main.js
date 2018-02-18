@@ -35,6 +35,8 @@ function createBalloon(x, y) {
     return [fO, div];
 }
 
+
+
 function cursorPoint(x, y) {
     pt.x = x;
     pt.y = y;
@@ -110,8 +112,26 @@ function Balloon(x, y) {
         const x = this.fO.innerHTML;
         this.fO.innerHTML = `<textarea>${x}</textarea>`;
         currentTextareaBalloon = this;
+
+        var text = $('textarea')[0];
+        text.focus();
+        text.select();
+
+        text.cols = 3;
+        text.rows = 1;
+
+        console.log(text.parentElement);
+        console.log("attr: "+text.parentElement.getAttribute('width'));
+
+        text.oninput = function() {
+            text.cols += 2;
+            var w = text.parentElement.getAttribute('width');
+            w = parseFloat(w);
+            text.parentElement.setAttribute('width', w + 15);
+        };
     };
 }
+
 
 var currentTextareaBalloon = null;
 
@@ -246,11 +266,10 @@ $('body').dblclick(function(event) {
     if (tag === 'svg') {
         Balloons.addBalloon(x, y);
     } else {
-        console.log('double click');
         const b = Balloons.findFromElement(element);
-        console.log(b);
         if (b != null) {
             b.openContent();
+            $('textarea').onclick = function () { alert('xxx'); };
         }
     }
 });

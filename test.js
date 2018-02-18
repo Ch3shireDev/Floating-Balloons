@@ -178,7 +178,7 @@ describe('Changing a text',
                 Mouse.doubleclick(x0, y0);
                 var element = document.elementFromPoint(x0, y0);
                 element.should.not.equal(null);
-                element.tagName.toLowerCase().should.equal('textarea');
+                ($('textarea')[0]).should.not.equal(null);
                 Balloons.removeLast();
             });
 
@@ -213,7 +213,7 @@ describe('Changing a text',
             });
 
         it('should resize a balloon when resizing a textbox');
-
+        
         
     });
 
