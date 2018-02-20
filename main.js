@@ -25,7 +25,7 @@ function createBalloon(x, y) {
     fO.setAttribute('id', `fo${numBalloons}`);
     fO.setAttribute('x', x);
     fO.setAttribute('y', y);
-    fO.setAttribute('width', w);
+    fO.setAttribute('width', 2000);
     fO.setAttribute('height', h);
     fO.innerHTML = 'text';
     div.after(fO);
@@ -75,6 +75,7 @@ function Balloon(x, y) {
 
         this.fO.setAttribute('x', x);
         this.fO.setAttribute('y', y);
+        this.fO.setAttribute('width', 2000);
     };
 
     this.isGrabbed = function() {
@@ -109,25 +110,26 @@ function Balloon(x, y) {
 
     this.openContent = function() {
         closeCurrentTextarea();
-        const x = this.fO.innerHTML;
-        this.fO.innerHTML = `<textarea>${x}</textarea>`;
+        this.fO.innerHTML = `<textarea>${this.fO.innerHTML}</textarea>`;
         currentTextareaBalloon = this;
+
+        var div = this.div;
 
         var text = $('textarea')[0];
         text.focus();
         text.select();
+        text.autoResize();
 
-        text.cols = 3;
-        text.rows = 1;
+        text.cols = text.value.length;
+        text.rows = 10;
 
-        console.log(text.parentElement);
-        console.log("attr: "+text.parentElement.getAttribute('width'));
-
-        text.oninput = function() {
-            text.cols += 2;
-            var w = text.parentElement.getAttribute('width');
-            w = parseFloat(w);
-            text.parentElement.setAttribute('width', w + 15);
+        text.oninput = function () {
+            text.cols = text.value.length;
+            
+            div.attr('width', text.clientWidth);
+            //var w = text.parentElement.getAttribute('width');
+            //w = parseFloat(w);
+            //text.parentElement.setAttribute('width', w + 15);
         };
     };
 }
@@ -247,7 +249,10 @@ document.body.onmousedown = (evt) => {
 
     if (element == null) return;
     console.log(element.tagName);
-    if (element.tagName.toLowerCase() === 'textarea') return;
+    if (element.tagName.toLowerCase() === 'textarea') {
+        mouseDown = false;
+        return;
+    }
     closeCurrentTextarea();
 
     currElement = Balloons.findFromElement(element);
@@ -269,7 +274,9 @@ $('body').dblclick(function(event) {
         const b = Balloons.findFromElement(element);
         if (b != null) {
             b.openContent();
-            $('textarea').onclick = function () { alert('xxx'); };
+            $('textarea').onclick = function() {
+                 
+            };
         }
     }
 });

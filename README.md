@@ -7,8 +7,8 @@ User can...
 
 - [x] create a new bubble
 - [x] move a bubble
+- [x] write text into a bubble
 - [ ] set text into a new bubble
-- [ ] write text into a bubble
 - [ ] select many bubbles
 - [ ] remove a bubble
 - [ ] remove many bubbles
