@@ -118,7 +118,7 @@ describe('Moving a bubble',
 
                 var [x, y, w, h] = Balloons.getLast().rect();
 
-                var cPoint = cursorPoint(dx - w / 4, dy - h / 4); //why by 4? wtf
+                var cPoint = cursorPoint(dx - w / 2, dy - h / 2);
                 var x1 = cPoint.x,
                     y1 = cPoint.y;
 
@@ -135,17 +135,17 @@ describe('Moving a bubble',
 
         it('should get on top when grabbed',
             () => {
-                var b1 = Balloons.addBalloon(100, 200);
-                var b2 = Balloons.addBalloon(300, 200);
+                var b1 = Balloons.addBalloon(100, 100);
+                var b2 = Balloons.addBalloon(300, 100);
 
                 var x0 = b2.div.attr('x');
 
-                Mouse.click(100, 200);
-                Mouse.move(300, 200);
-                Mouse.release(300, 200);
-                Mouse.click(300, 200);
-                Mouse.move(500, 200);
-                Mouse.release(500, 200);
+                Mouse.click(100, 100);
+                Mouse.move(200, 100);
+                Mouse.release(200, 100);
+                Mouse.click(200, 100);
+                Mouse.move(300, 100);
+                Mouse.release(300, 100);
 
                 var x1 = b2.div.attr('x');
 
@@ -157,12 +157,12 @@ describe('Moving a bubble',
 
         it('should no longer be grabbed when released',
             () => {
-                var b1 = Balloons.addBalloon(100, 200);
-                Mouse.click(100, 200);
-                Mouse.move(200, 200);
+                var b1 = Balloons.addBalloon(50, 100);
+                Mouse.click(50, 100);
+                Mouse.move(100, 100);
                 var x0 = b1.div.attr('x');
-                Mouse.release(200, 200);
-                Mouse.move(400, 200);
+                Mouse.release(100, 100);
+                Mouse.move(300, 100);
                 var x1 = b1.div.attr('x');
                 x0.should.equal(x1);
                 b1.isGrabbed().should.equal(false);
