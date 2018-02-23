@@ -28,7 +28,7 @@ function createBalloon(x, y) {
     fO.setAttribute('y', y);
     fO.setAttribute('width', w);
     fO.setAttribute('height', h);
-    fO.innerHTML = 'text';
+    fO.innerHTML = '<div>text</div>';
     div.after(fO);
 
     numBalloons++;

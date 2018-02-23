@@ -4,7 +4,9 @@ Balloon.prototype.openContent = function () {
     var fO = this.fO;
     var div = this.div;
 
-    fO.innerHTML = `<div id="tarea" contentEditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">${this.fO.innerHTML}</div>`;
+    var s = this.fO.textContent;
+
+    fO.innerHTML = `<div id="tarea" contentEditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">${s}</div>`;
     currentTextareaBalloon = this;
 
     var text = $('#tarea');
@@ -12,32 +14,15 @@ Balloon.prototype.openContent = function () {
     text.select();
 
     fO.oninput = function () {
-        var s = $('#tarea').html();
-        console.log(s);
+        var w = text.width();
+        if (w < 200) {
+            div.setAttribute('width', 200);
+        } else {
+            div.attr('width', w);
+            fO.setAttribute('width', w);
+        }
+
     }
-
-    //text.oninput = function () {
-    //    console.log('bbb');
-    //    var [x, y, w, h] = b.rect();
-    //    fO.setAttribute('x', x);
-    //    var s = $('#tarea').html();
-    //    console.log(s);
-    //text.cols = text.value.length;
-    //console.log(text.clientWidth + " " + fO.getAttribute('width'));
-
-    //if (text.clientWidth < 200) {
-    ////div.attr('width', 200);
-    //}
-    //else {
-    //div.attr('width', text.clientWidth);
-    //fO.setAttribute('width', text.clientWidth * 1.2);
-
-    //<div contentEditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></div>
-    //}
-    //var w = text.parentElement.getAttribute('width');
-    //w = parseFloat(w);
-    //text.parentElement.setAttribute('width', w + 15);
-    //};
 }
 
 $('body').dblclick(function (event) {
@@ -64,8 +49,8 @@ function closeCurrentTextarea() {
     if (currentTextareaBalloon === null) return;
     if (currentTextareaBalloon.fO === null) return;
 
-    var s = $('#tarea').html();
-    currentTextareaBalloon.fO.innerHTML = s;
+    var s = $('#tarea').text();
+    currentTextareaBalloon.fO.innerHTML = `<div>${s}</div>`;
 
     currentTextareaBalloon = null;
 }
