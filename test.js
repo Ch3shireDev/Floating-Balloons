@@ -1,5 +1,5 @@
 ﻿Mouse = {
-    runEvent: function(name, x, y) {
+    runEvent: function (name, x, y) {
         $('body')[0].dispatchEvent(
             new MouseEvent(name,
                 {
@@ -10,19 +10,19 @@
         );
     },
 
-    doubleclick: function(x, y) {
+    doubleclick: function (x, y) {
         this.runEvent('dblclick', x, y);
     },
 
-    click: function(x, y) {
+    click: function (x, y) {
         this.runEvent('mousedown', x, y);
     },
 
-    move: function(x, y) {
+    move: function (x, y) {
         this.runEvent('mousemove', x, y);
     },
 
-    release: function(x, y) {
+    release: function (x, y) {
         this.runEvent('mouseup', x, y);
     }
 };
@@ -34,7 +34,6 @@ describe('Creating new bubble',
     () => {
         it('should understand double click as a command to create a new bubble',
             () => {
-
                 Mouse.doubleclick(x0, y0);
 
                 var [x, y, w, h] = Balloons.getLast().rect();
@@ -61,10 +60,8 @@ describe('Creating new bubble',
                 (b.fO == null).should.equal(true);
             });
 
-
         it('should move the text together with bubble',
             () => {
-
                 var dx = 100, dy = 0;
 
                 Mouse.doubleclick(x0, y0);
@@ -91,7 +88,6 @@ describe('Creating new bubble',
                 (x2 - x1).should.equal(x4 - x3);
                 (y2 - y1).should.equal(y4 - y3);
             });
-
     });
 
 describe('Moving a bubble',
@@ -167,18 +163,16 @@ describe('Moving a bubble',
                 x0.should.equal(x1);
                 b1.isGrabbed().should.equal(false);
             });
-
     });
 
 describe('Changing a text',
     () => {
         it('should open a textarea on double click',
             () => {
+                (currentTextareaBalloon === null).should.equal(true);
                 Balloons.addBalloon(x0, y0);
                 Mouse.doubleclick(x0, y0);
-                var element = document.elementFromPoint(x0, y0);
-                element.should.not.equal(null);
-                ($('textarea')[0]).should.not.equal(null);
+                (currentTextareaBalloon).should.not.equal(null);
                 Balloons.removeLast();
             });
 
@@ -186,10 +180,9 @@ describe('Changing a text',
             () => {
                 Balloons.addBalloon(x0, y0);
                 Mouse.doubleclick(x0, y0);
+                (currentTextareaBalloon).should.not.equal(null);
                 Mouse.click(x0 + 200, y0);
-                var element = document.elementFromPoint(x0, y0);
-                element.should.not.equal(null);
-                element.tagName.toLowerCase().should.not.equal('textarea');
+                (currentTextareaBalloon == null).should.equal(true);
                 Balloons.removeLast();
             });
 
@@ -198,7 +191,7 @@ describe('Changing a text',
                 var b = Balloons.addBalloon(x0, y0);
                 b.fO.innerHTML = 'abc';
                 Mouse.doubleclick(x0, y0);
-                $('textarea').val().should.equal('abc');
+                (currentTextareaBalloon.fO.childNodes[0].innerHTML).should.equal('abc');
                 Balloons.removeLast();
             });
 
@@ -206,15 +199,13 @@ describe('Changing a text',
             () => {
                 var b = Balloons.addBalloon(x0, y0);
                 Mouse.doubleclick(x0, y0);
-                $('textarea').val('abc');
+                currentTextareaBalloon.fO.childNodes[0].innerHTML = 'abc';
                 Mouse.click(x0 + 200, y0);
                 b.fO.innerHTML.should.equal('abc');
                 Balloons.removeLast();
             });
 
         it('should resize a balloon when resizing a textbox');
-        
-        
     });
 
 describe('Connecting bubbles',

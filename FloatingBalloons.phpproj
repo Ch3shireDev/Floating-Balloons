@@ -28,5 +28,6 @@
     <Content Include="style.css" />
     <Content Include="test.html" />
     <Content Include="test.js" />
+    <Content Include="textbox.js" />
   </ItemGroup>
 </Project>

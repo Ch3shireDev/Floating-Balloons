@@ -58,11 +58,11 @@ class Balloon {
 
         this.id = this.div.attr('id');
 
-        this.w = function() { return this.div.attr('width'); }
-        this.h = function() { return this.div.attr('height'); }
+        this.w = function () { return this.div.attr('width'); }
+        this.h = function () { return this.div.attr('height'); }
     }
 
-    isGrabbed(){
+    isGrabbed() {
         return this.grabbed;
     }
 
@@ -111,19 +111,7 @@ class Balloon {
         this.fO.setAttribute('y', y);
         //this.fO.setAttribute('width', w);
     }
-
 }
-
-var js = document.createElement("script");
-js.type = "text/javascript";
-js.src = 'textbox.js';
-document.body.appendChild(js);
-
-/***/
-
-
-
-/***/
 
 var Balloons = {
     balloonsList: [],
@@ -228,7 +216,7 @@ document.body.onmousedown = (evt) => {
 
     if (element == null) return;
     console.log(element.tagName);
-    
+
     if (element.id === 'tarea') {
         mouseDown = false;
         return;
@@ -241,7 +229,6 @@ document.body.onmousedown = (evt) => {
         currElement.grab();
     }
 };
-
 
 $('body').contextmenu(() => {
     return false;
