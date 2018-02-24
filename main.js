@@ -1,17 +1,51 @@
 ﻿"use strict";
 
 var s = Snap('#body');
+
 var svg = document.querySelector('svg');
-var pt = svg.createSVGPoint();
+
+class Point {
+    constructor(x, y) {
+        this.pt = svg.createSVGPoint();
+        this.pt.x = x;
+        this.pt.y = y;
+    }
+
+    getScreenCTM() {
+        return svg.getScreenCTM();
+    }
+
+    toCursorPoint() {
+        const p = this.pt.matrixTransform(this.getScreenCTM().inverse());
+        return [p.x, p.y];
+    }
+
+    toScreenPoint() {
+        const p = this.pt.matrixTransform(this.getScreenCTM());
+        return [p.x, p.y];
+    }
+}
+
+function ScreenCTM() {
+    return svg.getScreenCTM();
+}
+
+function cursorPoint(x, y) {
+    return (new Point(x, y)).toCursorPoint();
+}
+
+function screenPoint(x, y) {
+    return (new Point(x, y)).toScreenPoint();
+}
 
 var numBalloons = 0;
 
 function createBalloon(x, y) {
-    pt = cursorPoint(x, y);
+    [x, y] = (new Point(x, y)).toCursorPoint();
     const w = 200;
     const h = 200;
-    x = pt.x - w / 2;
-    y = pt.y - h / 2;
+    x = x - w / 2;
+    y = y - h / 2;
 
     const div = s.rect(x, y, w, h, 200, 200);
     div.attr({
@@ -36,12 +70,6 @@ function createBalloon(x, y) {
     return [fO, div];
 }
 
-function cursorPoint(x, y) {
-    pt.x = x;
-    pt.y = y;
-    return pt.matrixTransform(svg.getScreenCTM().inverse());
-}
-
 class Balloon {
     constructor(x, y) {
         this.x = x;
@@ -58,8 +86,18 @@ class Balloon {
 
         this.id = this.div.attr('id');
 
-        this.w = function () { return this.div.attr('width'); }
-        this.h = function () { return this.div.attr('height'); }
+        this.wh = function () {
+            var w = this.div.attr('width'),
+                h = this.div.attr('height');
+            return (new Point(w, h)).toScreenPoint();
+        }
+
+        this.w = function () {
+            return this.wh()[0];
+        }
+        this.h = function () {
+            return this.wh()[1];
+        }
     }
 
     isGrabbed() {
@@ -93,23 +131,11 @@ class Balloon {
     }
 
     move(x, y) {
-        const w = this.w();
-        const h = this.h();
-
-        x = x - w / 2;
-        y = y - h / 2;
-
-        pt = cursorPoint(x, y);
-
-        x = pt.x;
-        y = pt.y;
-
+        [x, y] = (new Point(x, y)).toCursorPoint();
         this.div.attr('x', x);
         this.div.attr('y', y);
-
         this.fO.setAttribute('x', x);
         this.fO.setAttribute('y', y);
-        //this.fO.setAttribute('width', w);
     }
 }
 
@@ -200,63 +226,3 @@ var Balloons = {
         this.balloonsList.pop();
     }
 };
-
-var mouseDown = false;
-var editOpen = false;
-var xy = {};
-
-var currElement = null;
-
-document.body.onmousedown = (evt) => {
-    mouseDown = true;
-    var x = evt.clientX, y = evt.clientY;
-    xy = { x: x, y: y };
-
-    var element = document.elementFromPoint(x, y);
-
-    if (element == null) return;
-    console.log(element.tagName);
-
-    if (element.id === 'tarea') {
-        mouseDown = false;
-        return;
-    }
-    closeCurrentTextarea();
-
-    currElement = Balloons.findFromElement(element);
-
-    if (currElement != null) {
-        currElement.grab();
-    }
-};
-
-$('body').contextmenu(() => {
-    return false;
-});
-
-document.body.onmouseup = () => {
-    mouseDown = false;
-    if (currElement != null) {
-        currElement.drop();
-    }
-};
-
-var isDragging = false;
-document.body.onmousemove = (evt) => {
-    if (mouseDown) {
-        const x = evt.clientX;
-        const y = evt.clientY;
-        const dx = x - xy.x;
-        const dy = y - xy.y;
-        if (dx * dx + dy * dy > 10) {
-            isDragging = true;
-            dragSelectedObject(x, y);
-        }
-    }
-};
-
-function dragSelectedObject(x, y) {
-    if (currElement != null) {
-        currElement.move(x, y);
-    }
-}

@@ -23,6 +23,7 @@
     <Content Include="index.html" />
     <Content Include="LICENSE" />
     <Content Include="main.js" />
+    <Content Include="mouseEvents.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="style.css" />

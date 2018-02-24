@@ -41,10 +41,8 @@ describe('Creating new bubble',
                 x = x + w / 2;
                 y = y + h / 2;
 
-                var p = cursorPoint(x0, y0);
-                x0 = p.x;
-                y0 = p.y;
-
+                [x0, y0] = cursorPoint(x0, y0);
+                
                 x.should.equal(x0);
                 y.should.equal(y0);
 
@@ -111,20 +109,19 @@ describe('Moving a bubble',
                 Mouse.doubleclick(x0, y0);
                 Mouse.click(x0, y0);
                 Mouse.move(dx, dy);
+                Mouse.release(dx, dy);
 
                 var [x, y, w, h] = Balloons.getLast().rect();
 
-                var cPoint = cursorPoint(dx - w / 2, dy - h / 2);
-                var x1 = cPoint.x,
-                    y1 = cPoint.y;
+                var [x1, y1] = cursorPoint(dx - w / 4, dy - h / 4);
 
                 x1 = Math.floor(x1);
                 y1 = Math.floor(y1);
                 x = Math.floor(x);
                 y = Math.floor(y);
 
-                x1.should.equal(x);
-                y1.should.equal(y);
+                (Math.abs(x1 - x) > 0).should.equal(true);
+                (Math.abs(y1 - y) > 0).should.equal(true);
 
                 Balloons.removeLast();
             });
@@ -162,6 +159,26 @@ describe('Moving a bubble',
                 var x1 = b1.div.attr('x');
                 x0.should.equal(x1);
                 b1.isGrabbed().should.equal(false);
+            });
+
+        it('should not make a big step when grabbed not in center',
+            () => {
+                var b1 = Balloons.addBalloon(50, 100);
+                var x0 = b1.div.attr('x');
+                Mouse.click(50, 100);
+                Mouse.move(100, 100);
+                Mouse.release(100, 100);
+                var x1 = b1.div.attr('x');
+
+                var dx = 10;
+
+                Mouse.click(100+dx, 100);
+                Mouse.move(150+dx, 100);
+                //Mouse.release(150+dx, 100);
+                var x2 = b1.div.attr('x');
+
+                var dx1 = x1 - x0, dx2 = x2 - x1;
+                (Math.abs(dx1-dx2)<1).should.equal(true);
             });
     });
 
@@ -201,7 +218,7 @@ describe('Changing a text',
                 Mouse.doubleclick(x0, y0);
                 currentTextareaBalloon.fO.childNodes[0].innerHTML = 'abc';
                 Mouse.click(x0 + 200, y0);
-                b.fO.innerHTML.should.equal('abc');
+                b.fO.childNodes[0].innerHTML.should.equal('abc');
                 Balloons.removeLast();
             });
 
