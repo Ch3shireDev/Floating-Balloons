@@ -22,7 +22,7 @@ Balloon.prototype.openContent = function () {
     text.select();
 
     fO.oninput = function () {
-        var w = text.width()+10;
+        var w = text.width() + 10;
         if (w < 200) {
             div.setAttribute('width', 200);
         } else {
@@ -31,24 +31,6 @@ Balloon.prototype.openContent = function () {
         }
     }
 }
-
-$('body').dblclick(function (event) {
-    const x = event.clientX;
-    const y = event.clientY;
-    const element = document.elementFromPoint(x, y);
-    const tag = element.tagName.toLowerCase();
-
-    if (tag === 'svg') {
-        Balloons.addBalloon(x, y);
-    } else {
-        const b = Balloons.findFromElement(element);
-        if (b != null) {
-            b.openContent();
-            $('#tarea').onclick = function () {
-            };
-        }
-    }
-});
 
 var currentTextareaBalloon = null;
 

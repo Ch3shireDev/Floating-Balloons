@@ -38,18 +38,7 @@ describe('Creating new bubble',
         it('should understand double click as a command to create a new bubble',
             () => {
                 Mouse.doubleclick(x0, y0);
-
-                var [x, y, w, h] = Balloons.getLast().rect();
-
-                [x, y] = cursorPoint(x, y);
-                [w, h] = cursorPoint(w, h);
-
-                x = x + w / 2;
-                y = y + h / 2;
-
-                (Math.abs(x0 - x) < 10).should.equal(true);
-                (Math.abs(y0 - y) < 10).should.equal(true);
-
+                (Balloons.getLast()).should.not.equal(null);
                 Balloons.removeLast();
             });
 
@@ -174,8 +163,8 @@ describe('Moving a bubble',
 
                 var dx = 10;
 
-                Mouse.click(100+dx, 100);
-                Mouse.move(150+dx, 100);
+                Mouse.click(100 + dx, 100);
+                Mouse.move(150 + dx, 100);
                 //Mouse.release(150+dx, 100);
                 var x2 = b1.div.attr('x');
 

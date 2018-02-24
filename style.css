@@ -1,5 +1,4 @@
-﻿
-body {
+﻿body {
     font-family: Georgia;
     height: 95vh;
     padding: 0;
@@ -15,7 +14,6 @@ body {
         font-size: 20px;
     }
 
-
 foreignObject {
     background: grey;
     -webkit-touch-callout: none; /* iOS Safari */
@@ -24,7 +22,6 @@ foreignObject {
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none;
     user-select: none;
-    
 }
 
     foreignObject div {
@@ -33,13 +30,10 @@ foreignObject {
         color: #FFF;
         text-align: center;
         margin: 0 auto;
-
-        
         display: flex;
         align-items: center;
         justify-content: center;
     }
-
 
 div:focus {
     outline: 0px solid transparent;

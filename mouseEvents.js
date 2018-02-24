@@ -5,6 +5,25 @@ var dxy = { x: 0, y: 0 };
 
 var currElement = null;
 
+$('body').dblclick(function (event) {
+    var x = event.clientX,
+        y = event.clientY;
+    const element = document.elementFromPoint(x, y);
+    const tag = element.tagName.toLowerCase();
+
+    if (tag === 'svg') {
+        [x, y] = cursorPoint(x, y);
+        Balloons.addBalloon(x, y);
+    } else {
+        const b = Balloons.findFromElement(element);
+        if (b != null) {
+            b.openContent();
+            $('#tarea').onclick = function () {
+            };
+        }
+    }
+});
+
 document.body.onmousedown = (evt) => {
     mouseDown = true;
     var x = evt.clientX, y = evt.clientY;
