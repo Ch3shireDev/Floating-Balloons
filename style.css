@@ -24,25 +24,23 @@ foreignObject {
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none;
     user-select: none;
-
+    
 }
 
-foreignObject div {
-    height: 200px;
-    width: 200px;
-    font-size: 48px;
-    color: #FFF;
-    text-align: center;
-    margin-top: 20px;
-    margin-left: 5px;
-    display: table-cell;
-    vertical-align: middle;
-}
+    foreignObject div {
+        height: 100%;
+        font-size: 48px;
+        color: #FFF;
+        text-align: center;
+        margin: 0 auto;
 
-#tarea {
-    /*background: red;*/
-}
-
-    #tarea:focus {
-        outline: 0px solid transparent;
+        
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
+
+
+div:focus {
+    outline: 0px solid transparent;
+}

@@ -64,7 +64,6 @@ document.body.onmousemove = (evt) => {
         if (dx * dx + dy * dy > 10) {
             isDragging = true;
             currElement.move(x - dxy.x, y - dxy.y);
-            //currElement.move(x, y);
         }
     }
 };

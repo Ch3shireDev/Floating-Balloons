@@ -1,5 +1,8 @@
-﻿Mouse = {
+﻿$(document).scrollTop(0); //tests fail when scrolled down
+
+Mouse = {
     runEvent: function (name, x, y) {
+        var [x, y] = screenPoint(x, y);
         $('body')[0].dispatchEvent(
             new MouseEvent(name,
                 {
@@ -38,13 +41,14 @@ describe('Creating new bubble',
 
                 var [x, y, w, h] = Balloons.getLast().rect();
 
+                [x, y] = cursorPoint(x, y);
+                [w, h] = cursorPoint(w, h);
+
                 x = x + w / 2;
                 y = y + h / 2;
 
-                [x0, y0] = cursorPoint(x0, y0);
-                
-                x.should.equal(x0);
-                y.should.equal(y0);
+                (Math.abs(x0 - x) < 10).should.equal(true);
+                (Math.abs(y0 - y) < 10).should.equal(true);
 
                 Balloons.removeLast();
             });
@@ -92,8 +96,6 @@ describe('Moving a bubble',
     () => {
         it('should be grabbed on click-and-hold',
             () => {
-                var x0 = 500, y0 = 200;
-
                 Mouse.doubleclick(x0, y0);
                 Mouse.click(x0, y0);
 
@@ -178,7 +180,8 @@ describe('Moving a bubble',
                 var x2 = b1.div.attr('x');
 
                 var dx1 = x1 - x0, dx2 = x2 - x1;
-                (Math.abs(dx1-dx2)<1).should.equal(true);
+                (Math.abs(dx1 - dx2) < 1).should.equal(true);
+                Balloons.removeLast();
             });
     });
 
@@ -186,6 +189,7 @@ describe('Changing a text',
     () => {
         it('should open a textarea on double click',
             () => {
+                closeCurrentTextarea();
                 (currentTextareaBalloon === null).should.equal(true);
                 Balloons.addBalloon(x0, y0);
                 Mouse.doubleclick(x0, y0);
@@ -222,7 +226,18 @@ describe('Changing a text',
                 Balloons.removeLast();
             });
 
-        it('should resize a balloon when resizing a textbox');
+        it('should resize a balloon when resizing a textbox',
+            () => {
+                var b = Balloons.addBalloon(x0, y0);
+                var w1 = b.w();
+                Mouse.doubleclick(x0, y0);
+                currentTextareaBalloon.fO.childNodes[0].innerHTML = Array(20).join('abc');
+                var event = new Event('input');
+                currentTextareaBalloon.fO.dispatchEvent(event);
+                var w2 = b.w();
+                (w1 < w2).should.equal(true);
+                Balloons.removeLast();
+            });
     });
 
 describe('Connecting bubbles',

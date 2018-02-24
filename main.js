@@ -41,7 +41,6 @@ function screenPoint(x, y) {
 var numBalloons = 0;
 
 function createBalloon(x, y) {
-    [x, y] = (new Point(x, y)).toCursorPoint();
     const w = 200;
     const h = 200;
     x = x - w / 2;
