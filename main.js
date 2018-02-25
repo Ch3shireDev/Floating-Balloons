@@ -46,11 +46,11 @@ function createBalloon(x, y) {
     x = x - w / 2;
     y = y - h / 2;
 
-    const div = s.rect(x, y, w, h, 200, 200);
+    const div = s.rect(x, y, w, h, 20, 20);
     div.attr({
         id: `balloon${numBalloons}`,
         stroke: '#123456',
-        'strokeWidth': 20,
+        'strokeWidth': 10,
         fill: 'red',
         'opacity': 0.8
     });
