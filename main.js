@@ -70,6 +70,22 @@ function createBalloon(x, y) {
     return [fO, div];
 }
 
+//var mousePos = [0, 0];
+
+//document.body.onmousemove = (ev) => {
+//    mousePos = [ev.pageX, ev.pageY];
+//    console.log(mousePos);
+
+//    var r = mousePos;
+
+//    var [x, y] = r;
+
+//    var r = Snap.closestPoint(p, x, y);
+
+//    s.circle(r.x, r.y, 2);
+//    s.circle(x, y, 2);
+//}
+
 class Balloon {
     constructor(x, y) {
         this.x = x;
@@ -98,6 +114,21 @@ class Balloon {
         this.h = function () {
             return this.wh()[1];
         }
+
+        var attr = {
+            fill: 'transparent',
+            stroke: 'black'
+        };
+
+        var path0 = roundPathCorners('M0 0 L 200 0 L200 200 L 0 200 Z', 20);
+        //var path = s.path(path0)
+        //    .transform(`translate(${x - 120}, ${y - 120}) scale(1.2)`)
+        //    .attr(attr);
+
+        //var r = Snap.path.map(path.realPath, path.matrix);
+
+        //path.remove();
+        //path = s.path(r).attr(attr);
     }
 
     isGrabbed() {
