@@ -1,9 +1,17 @@
-﻿class Class {
-}
+﻿var mouse = { 'x': 0, 'y': 0 };
 
-Class.static_fun = function () { console.log("some static method"); }
-Class.prototype.fun = function () { console.log("some method") }
+var homex = 0;
+var homey = 0;
+var forcex = 0;
+var forcey = 0;
+var magnet = 500;
 
-var object = new Class();
-Class.static_fun();
-object.fun();
+$(document).bind('mousemove', function (e) {
+    mouse = { 'x': e.pageX, 'y': e.pageY };
+    var x = $(e.target).closest($('.ball'));
+    console.log(x);
+});
+
+setInterval(function () {
+    //console.log(x);
+}, 100);

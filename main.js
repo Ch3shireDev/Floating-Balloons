@@ -49,6 +49,7 @@ function createBalloon(x, y) {
     const div = s.rect(x, y, w, h, 20, 20);
     div.attr({
         id: `balloon${numBalloons}`,
+        class: 'balloon',
         stroke: '#123456',
         'strokeWidth': 10,
         fill: 'red',
