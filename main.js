@@ -1,4 +1,4 @@
-﻿"use strict";
+﻿'use strict';
 
 var s = Snap('#body');
 
@@ -70,21 +70,26 @@ function createBalloon(x, y) {
     return [fO, div];
 }
 
-//var mousePos = [0, 0];
+function CreatePath(x, y) {
+    var attr = {
+        fill: 'transparent',
+        stroke: 'black'
+    };
 
-//document.body.onmousemove = (ev) => {
-//    mousePos = [ev.pageX, ev.pageY];
-//    console.log(mousePos);
+    var r0 = roundPathCorners('M0 0 L 200 0 L200 200 L 0 200 Z', 20);
+    var path = s.path(r0)
+        .transform(`translate(${x - 120}, ${y - 120}) scale(1.2)`)
+        //.attr(attr)
+        .remove();
 
-//    var r = mousePos;
+    var r = Snap.path.map(path.realPath, path.matrix);
 
-//    var [x, y] = r;
+    path = s.path(r)
+        //.attr(attr)
+        .remove();
 
-//    var r = Snap.closestPoint(p, x, y);
-
-//    s.circle(r.x, r.y, 2);
-//    s.circle(x, y, 2);
-//}
+    return path;
+}
 
 class Balloon {
     constructor(x, y) {
@@ -115,20 +120,7 @@ class Balloon {
             return this.wh()[1];
         }
 
-        var attr = {
-            fill: 'transparent',
-            stroke: 'black'
-        };
-
-        var path0 = roundPathCorners('M0 0 L 200 0 L200 200 L 0 200 Z', 20);
-        //var path = s.path(path0)
-        //    .transform(`translate(${x - 120}, ${y - 120}) scale(1.2)`)
-        //    .attr(attr);
-
-        //var r = Snap.path.map(path.realPath, path.matrix);
-
-        //path.remove();
-        //path = s.path(r).attr(attr);
+        this.path = CreatePath(x, y);
     }
 
     isGrabbed() {
@@ -150,6 +142,7 @@ class Balloon {
 
     drop() {
         this.grabbed = false;
+        this.path = CreatePath(this.x + 100, this.y + 100);
     }
 
     rect() {
@@ -167,6 +160,8 @@ class Balloon {
         this.div.attr('y', y);
         this.fO.setAttribute('x', x);
         this.fO.setAttribute('y', y);
+        this.x = x;
+        this.y = y;
     }
 }
 

@@ -170,6 +170,7 @@ describe('Moving a bubble',
 
                 var dx1 = x1 - x0, dx2 = x2 - x1;
                 (Math.abs(dx1 - dx2) < 1).should.equal(true);
+
                 Balloons.removeLast();
             });
     });
@@ -231,7 +232,15 @@ describe('Changing a text',
 
 describe('Connecting bubbles',
     () => {
-        it('should show small handle when cursor is on bubble\'s edge');
+        it('should show small handle when cursor is on bubble\'s edge',
+            () => {
+                (true).should.equal(false);
+            });
+
+        it('should move handle around the bubble',
+            () => {
+                (true).should.equal(false);
+            });
 
         it('should allow to grab a handle and expand it into arrow');
 

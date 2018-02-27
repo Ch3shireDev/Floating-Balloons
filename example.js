@@ -14,19 +14,16 @@ var r = Snap.path.map(p.realPath, p.matrix);
 
 p.remove();
 p = s.path(r).attr(attr);
+p.remove();
 
 var mousePos = [0, 0];
 
 document.body.onmousemove = (ev) => {
     mousePos = [ev.pageX, ev.pageY];
-    console.log(mousePos);
-
-    var r = mousePos;
-
-    var [x, y] = r;
-
-    var r = Snap.closestPoint(p, x, y);
-
-    s.circle(r.x, r.y, 2);
-    s.circle(x, y, 2);
 }
+
+setInterval(() => {
+    var [x, y] = mousePos;
+    var r2 = Snap.closestPoint(p, x, y);
+},
+    50);
