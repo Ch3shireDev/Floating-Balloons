@@ -27,10 +27,14 @@ Mouse = {
 
     release: function (x, y) {
         this.runEvent('mouseup', x, y);
+    },
+
+    move: function (x, y) {
+        this.runEvent('mousemove', x, y);
     }
 };
 
-var x0 = 100, y0 = 50;
+var x0 = 300, y0 = 150;
 let expect = chai.expect;
 
 describe('Creating new bubble',
@@ -154,21 +158,24 @@ describe('Moving a bubble',
 
         it('should not make a big step when grabbed not in center',
             () => {
-                var b1 = Balloons.addBalloon(50, 100);
-                var x0 = b1.div.attr('x');
-                Mouse.click(50, 100);
-                Mouse.move(100, 100);
-                Mouse.release(100, 100);
+                while (Balloons.balloonsList.length > 0) Balloons.removeLast();
+
+                var b1 = Balloons.addBalloon(x0, y0);
                 var x1 = b1.div.attr('x');
+
+                Mouse.click(x0, y0);
+                Mouse.move(x0 + 100, y0);
+                Mouse.release(x0 + 100, y0);
+                var x2 = b1.div.attr('x');
 
                 var dx = 10;
 
-                Mouse.click(100 + dx, 100);
-                Mouse.move(150 + dx, 100);
-                //Mouse.release(150+dx, 100);
-                var x2 = b1.div.attr('x');
+                Mouse.click(x0 + 100 + dx, y0);
+                Mouse.move(x0 + 200 + dx, y0);
+                var x3 = b1.div.attr('x');
 
-                var dx1 = x1 - x0, dx2 = x2 - x1;
+                var dx1 = x2 - x1, dx2 = x3 - x2;
+
                 (Math.abs(dx1 - dx2) < 1).should.equal(true);
 
                 Balloons.removeLast();
@@ -234,12 +241,37 @@ describe('Connecting bubbles',
     () => {
         it('should show small handle when cursor is on bubble\'s edge',
             () => {
-                (true).should.equal(false);
+                var b = Balloons.addBalloon(x0, y0);
+                Mouse.move(x0 + 60, y0 + 120);
+                Mouse.move(x0 + 60, y0 + 130);
+                ($('#handle') !== null).should.equal(true);
+                Balloons.removeLast();
             });
 
         it('should move handle around the bubble',
             () => {
-                (true).should.equal(false);
+                while (Balloons.balloonsList.length > 0) Balloons.removeLast();
+                var b = Balloons.addBalloon(x0, y0);
+                var dx1 = 200, dx2 = 210;
+                Mouse.move(x0 + dx1, y0);
+                var x1 = $('#handle').attr('x');
+                //alert(x1);
+                Mouse.move(x0 + dx2, y0);
+                var x2 = $('#handle').attr('x');
+                //alert(x2);
+                Mouse.move(x0 - dx1, y0);
+                var x3 = $('#handle').attr('x');
+                //alert(x3);
+                Mouse.move(x0 - dx2, y0);
+                var x4 = $('#handle').attr('x');
+                alert(x4);
+
+                (Math.abs(x1 - x2) < 5).should.equal(true);
+                (Math.abs(x3 - x4) < 5).should.equal(true);
+
+                (x2 < x4).should.equal(true);
+
+                Balloons.removeLast();
             });
 
         it('should allow to grab a handle and expand it into arrow');

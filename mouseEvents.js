@@ -107,6 +107,7 @@ setInterval(
         if (circlet === null) {
             circlet = s.rect(r.x, r.y, 20, 20, 5);
             circlet.attr({
+                id: 'handle',
                 stroke: '#123456',
                 'strokeWidth': 5,
                 fill: 'red',
