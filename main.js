@@ -180,7 +180,6 @@ var Balloons = {
 
         const id = element.id;
         var name = id;
-        console.log(element);
 
         if (name == null) return null;
 
@@ -250,5 +249,9 @@ var Balloons = {
         b.fO.remove();
         b.fO = null;
         this.balloonsList.pop();
+    },
+
+    clear: function () {
+        while (this.balloonsList.length > 0) Balloons.removeLast();
     }
 };

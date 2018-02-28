@@ -81,10 +81,9 @@ document.body.onmousemove = (evt) => {
     const x = evt.clientX;
     const y = evt.clientY;
     mousePos = { x: x, y: y };
+    if (currElement == null) return;
 
     if (mouseDown) {
-        if (currElement == null) return;
-
         const dx = x - xy.x;
         const dy = y - xy.y;
         if (dx * dx + dy * dy > 10) {
@@ -98,25 +97,29 @@ var circlet = null;
 
 setInterval(
     function (e) {
-        var b = Balloons.getLast();
-        if (b === null) return;
-        var p = b.path;
-        if (p === null) return;
-        var [x, y] = cursorPoint(mousePos.x, mousePos.y);
-        var r = Snap.closestPoint(p, x, y);
-        if (circlet === null) {
-            circlet = s.rect(r.x, r.y, 20, 20, 5);
-            circlet.attr({
-                id: 'handle',
-                stroke: '#123456',
-                'strokeWidth': 5,
-                fill: 'red',
-                'opacity': 0.8
-            });
-        }
-        else {
-            circlet.attr('x', r.x - 10);
-            circlet.attr('y', r.y - 10);
-        }
+        showHandle();
     },
-    10);
+    1);
+
+function showHandle() {
+    var b = Balloons.getLast();
+    if (b === null) return;
+    var p = b.path;
+    if (p === null) return;
+    var [x, y] = cursorPoint(mousePos.x, mousePos.y);
+    var r = Snap.closestPoint(p, x, y);
+    if (circlet === null) {
+        circlet = s.rect(r.x, r.y, 20, 20, 5);
+        circlet.attr({
+            id: 'handle',
+            stroke: '#123456',
+            'strokeWidth': 5,
+            fill: 'red',
+            'opacity': 0.8
+        });
+    }
+    else {
+        circlet.attr('x', r.x - 10);
+        circlet.attr('y', r.y - 10);
+    }
+}

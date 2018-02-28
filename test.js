@@ -244,32 +244,25 @@ describe('Connecting bubbles',
                 var b = Balloons.addBalloon(x0, y0);
                 Mouse.move(x0 + 60, y0 + 120);
                 Mouse.move(x0 + 60, y0 + 130);
-                ($('#handle') !== null).should.equal(true);
+                showHandle();
+                ($('#handle')[0].id === 'handle').should.equal(true);
                 Balloons.removeLast();
             });
 
         it('should move handle around the bubble',
             () => {
-                while (Balloons.balloonsList.length > 0) Balloons.removeLast();
-                var b = Balloons.addBalloon(x0, y0);
-                var dx1 = 200, dx2 = 210;
+                Balloons.clear();
+                Balloons.addBalloon(x0, y0);
+                var dx1 = 200;
+                showHandle();
                 Mouse.move(x0 + dx1, y0);
-                var x1 = $('#handle').attr('x');
-                //alert(x1);
-                Mouse.move(x0 + dx2, y0);
-                var x2 = $('#handle').attr('x');
-                //alert(x2);
+                showHandle();
+                var x1 = parseFloat($('#handle')[0].getAttribute('x'));
                 Mouse.move(x0 - dx1, y0);
-                var x3 = $('#handle').attr('x');
-                //alert(x3);
-                Mouse.move(x0 - dx2, y0);
-                var x4 = $('#handle').attr('x');
-                alert(x4);
+                showHandle();
+                var x2 = parseFloat($('#handle')[0].getAttribute('x'));
 
-                (Math.abs(x1 - x2) < 5).should.equal(true);
-                (Math.abs(x3 - x4) < 5).should.equal(true);
-
-                (x2 < x4).should.equal(true);
+                (x1 > x2).should.equal(true);
 
                 Balloons.removeLast();
             });
