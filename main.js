@@ -1,18 +1,47 @@
 ﻿'use strict';
 
-var s = Snap('#body');
+var Space = {
+    circlet: null,
+    currentElement: null,
+    mouseDown: false,
+    s: Snap('#body'),
+    svg: document.querySelector('svg'),
+    xy: [0, 0],
+    dxy: [0, 0],
 
-var svg = document.querySelector('svg');
+    ScreenCTM: () => {
+        return this.svg.getScreenCTM();
+    },
+
+    cursorPoint: (x, y) => {
+        return (new Point(x, y)).toCursorPoint();
+    },
+
+    screenPoint: (x, y) => {
+        return (new Point(x, y)).toScreenPoint();
+    },
+
+    getElement: (event) => {
+        var x = event.clientX,
+            y = event.clientY,
+            e = document.elementFromPoint(x, y);
+        [x, y] = Space.cursorPoint(x, y);
+        return [x, y, e];
+    },
+
+    grabElement: (evt) => {
+    }
+}
 
 class Point {
     constructor(x, y) {
-        this.pt = svg.createSVGPoint();
+        this.pt = Space.svg.createSVGPoint();
         this.pt.x = x;
         this.pt.y = y;
     }
 
     getScreenCTM() {
-        return svg.getScreenCTM();
+        return Space.svg.getScreenCTM();
     }
 
     toCursorPoint() {
@@ -26,18 +55,6 @@ class Point {
     }
 }
 
-function ScreenCTM() {
-    return svg.getScreenCTM();
-}
-
-function cursorPoint(x, y) {
-    return (new Point(x, y)).toCursorPoint();
-}
-
-function screenPoint(x, y) {
-    return (new Point(x, y)).toScreenPoint();
-}
-
 var numBalloons = 0;
 
 function createBalloon(x, y) {
@@ -46,7 +63,7 @@ function createBalloon(x, y) {
     x = x - w / 2;
     y = y - h / 2;
 
-    const div = s.rect(x, y, w, h, 20, 20);
+    const div = Space.s.rect(x, y, w, h, 20, 20);
     div.attr({
         id: `balloon${numBalloons}`,
         class: 'balloon',
@@ -71,21 +88,14 @@ function createBalloon(x, y) {
 }
 
 function CreatePath(x, y) {
-    var attr = {
-        fill: 'transparent',
-        stroke: 'black'
-    };
-
     var r0 = roundPathCorners('M0 0 L 200 0 L200 200 L 0 200 Z', 20);
-    var path = s.path(r0)
-        .transform(`translate(${x - 120}, ${y - 120}) scale(1.2)`)
-        //.attr(attr)
+    var path = Space.s.path(r0)
+        .transform(`translate(${x - 130}, ${y - 130}) scale(1.3)`)
         .remove();
 
     var r = Snap.path.map(path.realPath, path.matrix);
 
-    path = s.path(r)
-        //.attr(attr)
+    path = Space.s.path(r)
         .remove();
 
     return path;
@@ -136,8 +146,8 @@ class Balloon {
         //probably not the best way to accomplish that
         this.div.remove();
         this.fO.remove();
-        s.append(this.div);
-        svg.appendChild(this.fO);
+        Space.s.append(this.div);
+        Space.svg.appendChild(this.fO);
     }
 
     drop() {
@@ -251,7 +261,5 @@ var Balloons = {
         this.balloonsList.pop();
     },
 
-    clear: function () {
-        while (this.balloonsList.length > 0) Balloons.removeLast();
-    }
+    clear: () => { while (Balloons.balloonsList.length > 0) Balloons.removeLast(); }
 };

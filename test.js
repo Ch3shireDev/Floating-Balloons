@@ -2,7 +2,7 @@
 
 Mouse = {
     runEvent: function (name, x, y) {
-        var [x, y] = screenPoint(x, y);
+        var [x, y] = Space.screenPoint(x, y);
         $('body')[0].dispatchEvent(
             new MouseEvent(name,
                 {
@@ -34,7 +34,8 @@ Mouse = {
     }
 };
 
-var x0 = 300, y0 = 150;
+var [x0, y0] = Space.screenPoint(100, 50);
+var [xx0, yy0] = Space.screenPoint(300, 50);
 let expect = chai.expect;
 
 describe('Creating new bubble',
@@ -98,8 +99,7 @@ describe('Moving a bubble',
 
         it('should move with cursor when grabbed',
             () => {
-                var [x0, y0] = [500, 200],
-                    [dx, dy] = [200, 300];
+                var [dx, dy] = [200, 300];
 
                 Mouse.doubleclick(x0, y0);
                 Mouse.click(x0, y0);
@@ -108,7 +108,7 @@ describe('Moving a bubble',
 
                 var [x, y, w, h] = Balloons.getLast().rect();
 
-                var [x1, y1] = cursorPoint(dx - w / 4, dy - h / 4);
+                var [x1, y1] = Space.cursorPoint(dx - w / 4, dy - h / 4);
 
                 x1 = Math.floor(x1);
                 y1 = Math.floor(y1);
@@ -118,26 +118,27 @@ describe('Moving a bubble',
                 (Math.abs(x1 - x) > 0).should.equal(true);
                 (Math.abs(y1 - y) > 0).should.equal(true);
 
+                console.log(x1 + " " + x);
+
                 Balloons.removeLast();
             });
 
         it('should get on top when grabbed',
             () => {
-                var b1 = Balloons.addBalloon(100, 100);
-                var b2 = Balloons.addBalloon(300, 100);
-
-                var x0 = b2.div.attr('x');
-
-                Mouse.click(100, 100);
-                Mouse.move(200, 100);
-                Mouse.release(200, 100);
-                Mouse.click(200, 100);
-                Mouse.move(300, 100);
-                Mouse.release(300, 100);
+                var b1 = Balloons.addBalloon(x0, y0);
+                var b2 = Balloons.addBalloon(300, y0);
 
                 var x1 = b2.div.attr('x');
 
-                x0.should.equal(x1);
+                Mouse.click(x0, y0);
+                Mouse.move(200, y0);
+                Mouse.release(200, y0);
+                Mouse.click(200, y0);
+                Mouse.move(300, y0);
+                Mouse.release(300, y0);
+
+                var x2 = b2.div.attr('x');
+                x1.should.equal(x2);
 
                 Balloons.removeLast();
                 Balloons.removeLast();
@@ -164,19 +165,19 @@ describe('Moving a bubble',
                 var x1 = b1.div.attr('x');
 
                 Mouse.click(x0, y0);
-                Mouse.move(x0 + 100, y0);
-                Mouse.release(x0 + 100, y0);
+                Mouse.move(x0 + 50, y0);
+                Mouse.release(x0 + 50, y0);
                 var x2 = b1.div.attr('x');
 
                 var dx = 10;
 
-                Mouse.click(x0 + 100 + dx, y0);
-                Mouse.move(x0 + 200 + dx, y0);
+                Mouse.click(x0 + 50 + dx, y0);
+                Mouse.move(x0 + 100 + dx, y0);
                 var x3 = b1.div.attr('x');
 
                 var dx1 = x2 - x1, dx2 = x3 - x2;
 
-                (Math.abs(dx1 - dx2) < 1).should.equal(true);
+                (Math.abs(dx1 - dx2) < 5).should.equal(true);
 
                 Balloons.removeLast();
             });
