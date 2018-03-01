@@ -27,6 +27,7 @@
     <Content Include="mouseEvents.js" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
+    <Content Include="point.js" />
     <Content Include="rounding.js" />
     <Content Include="README.md" />
     <Content Include="space.js" />

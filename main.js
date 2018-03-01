@@ -1,41 +1,5 @@
 ﻿'use strict';
 
-class Point {
-    constructor(x, y) {
-        this.pt = Space.svg.createSVGPoint();
-        this.pt.x = x;
-        this.pt.y = y;
-    }
-
-    getScreenCTM() {
-        return Space.svg.getScreenCTM();
-    }
-
-    toCursorPoint() {
-        const p = this.pt.matrixTransform(this.getScreenCTM().inverse());
-        return [p.x, p.y];
-    }
-
-    toScreenPoint() {
-        const p = this.pt.matrixTransform(this.getScreenCTM());
-        return [p.x, p.y];
-    }
-}
-
-function CreatePath(x, y) {
-    var r0 = roundPathCorners('M0 0 L 200 0 L200 200 L 0 200 Z', 20);
-    var path = Space.s.path(r0)
-        .transform(`translate(${x - 130}, ${y - 130}) scale(1.3)`)
-        .remove();
-
-    var r = Snap.path.map(path.realPath, path.matrix);
-
-    path = Space.s.path(r)
-        .remove();
-
-    return path;
-}
-
 class Balloon {
     constructor(x, y) {
         this.x = x;
@@ -65,7 +29,7 @@ class Balloon {
             return this.wh()[1];
         }
 
-        this.path = CreatePath(x, y);
+        this.path = this.CreatePath(x, y);
     }
 
     isGrabbed() {
@@ -87,7 +51,7 @@ class Balloon {
 
     drop() {
         this.grabbed = false;
-        this.path = CreatePath(this.x + 100, this.y + 100);
+        this.path = this.CreatePath(this.x + 100, this.y + 100);
     }
 
     rect() {
@@ -137,5 +101,19 @@ class Balloon {
         Balloons.numBalloons++;
 
         return [fO, div];
+    }
+
+    CreatePath(x, y) {
+        var r0 = roundPathCorners('M0 0 L 200 0 L200 200 L 0 200 Z', 20);
+        var path = Space.s.path(r0)
+            .transform(`translate(${x - 130}, ${y - 130}) scale(1.3)`)
+            .remove();
+
+        var r = Snap.path.map(path.realPath, path.matrix);
+
+        path = Space.s.path(r)
+            .remove();
+
+        return path;
     }
 }
