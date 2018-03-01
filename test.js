@@ -245,7 +245,7 @@ describe('Connecting bubbles',
                 var b = Balloons.addBalloon(x0, y0);
                 Mouse.move(x0 + 60, y0 + 120);
                 Mouse.move(x0 + 60, y0 + 130);
-                showHandle();
+                Space.showHandle();
                 ($('#handle')[0].id === 'handle').should.equal(true);
                 Balloons.removeLast();
             });
@@ -255,12 +255,12 @@ describe('Connecting bubbles',
                 Balloons.clear();
                 Balloons.addBalloon(x0, y0);
                 var dx1 = 200;
-                showHandle();
+                Space.showHandle();
                 Mouse.move(x0 + dx1, y0);
-                showHandle();
+                Space.showHandle();
                 var x1 = parseFloat($('#handle')[0].getAttribute('x'));
                 Mouse.move(x0 - dx1, y0);
-                showHandle();
+                Space.showHandle();
                 var x2 = parseFloat($('#handle')[0].getAttribute('x'));
 
                 (x1 > x2).should.equal(true);
