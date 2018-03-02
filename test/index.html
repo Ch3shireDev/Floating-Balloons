@@ -3,31 +3,27 @@
 <head>
     <title>Mocha Tests</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/5.0.0/mocha.css">
+    <link rel="stylesheet" href="../style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="style.css">
-
     <script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/snap.svg/0.5.1/snap.svg.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/5.0.0/mocha.js"></script>
+    <script src="../node_modules/chai/chai.js"></script>
+    <script src="../node_modules/should/should.js"></script>
 </head>
 <body>
-
     <svg id="body" width="100%" height="100%" style="background: grey"
          viewBox="0 0 1000 1000" preserveAspectRatio="xMinYMin">
     </svg>
-
-    <div id="mocha">
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/5.0.0/mocha.js"></script>
-    <script src="node_modules/chai/chai.js"></script>
-    <script src="node_modules/should/should.js"></script>
+    <div id="mocha"></div>
     <script>mocha.setup('bdd')</script>
-    <script src="main.js"></script>
-    <script src="point.js"></script>
-    <script src="space.js"></script>
-    <script src="balloons.js"></script>
-    <script src="mouseEvents.js"></script>
-    <script src="rounding.js"></script>
-    <script src="textbox.js"></script>
+    <script src="../scripts/main.js"></script>
+    <script src="../scripts/point.js"></script>
+    <script src="../scripts/space.js"></script>
+    <script src="../scripts/balloons.js"></script>
+    <script src="../scripts/mouseEvents.js"></script>
+    <script src="../scripts/rounding.js"></script>
+    <script src="../scripts/textbox.js"></script>
     <script src="test.js"></script>
 </body>
 </html>
