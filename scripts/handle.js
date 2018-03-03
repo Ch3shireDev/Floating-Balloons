@@ -25,12 +25,20 @@
 
     grab() {
         this.isDragged = true;
+        var [x, y] = this.getXY();
+        this.pathStr = 'M ' + x + ' ' + y + ' L ';
+        this.arrow = Space.s.path(this.pathStr + x + ' ' + y);
+        this.arrow.attr({
+            stroke: 'black',
+            fill: 'transparent'
+        });
     }
 
     move(x, y) {
         [x, y] = (new Point(x, y)).toCursorPoint();
-        this.handle.attr('x', x);
-        this.handle.attr('y', y);
+        this.handle.attr('x', x-20);
+        this.handle.attr('y', y-20);
+        this.arrow.attr({d: this.pathStr + x + ' ' + y});
     }
 
     drop() {
