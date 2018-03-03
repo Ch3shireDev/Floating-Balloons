@@ -17,23 +17,29 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="balloons.js" />
-    <Content Include="example.html" />
-    <Content Include="example.js" />
+    <Content Include="scripts\balloons.js" />
+    <Content Include="example\index.html" />
+    <Content Include="example\example.js" />
     <Content Include="hello.html" />
     <Content Include="index.html" />
     <Content Include="LICENSE" />
-    <Content Include="main.js" />
-    <Content Include="mouseEvents.js" />
+    <Content Include="scripts\handle.js" />
+    <Content Include="scripts\main.js" />
+    <Content Include="scripts\mouseEvents.js" />
     <Content Include="package-lock.json" />
     <Content Include="package.json" />
-    <Content Include="point.js" />
-    <Content Include="rounding.js" />
+    <Content Include="scripts\point.js" />
+    <Content Include="scripts\rounding.js" />
     <Content Include="README.md" />
-    <Content Include="space.js" />
+    <Content Include="scripts\space.js" />
     <Content Include="style.css" />
-    <Content Include="test.html" />
-    <Content Include="test.js" />
-    <Content Include="textbox.js" />
+    <Content Include="test\index.html" />
+    <Content Include="test\test.js" />
+    <Content Include="scripts\textbox.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="example\" />
+    <Folder Include="test\" />
+    <Folder Include="scripts\" />
   </ItemGroup>
 </Project>

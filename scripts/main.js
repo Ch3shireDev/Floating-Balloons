@@ -116,4 +116,10 @@ class Balloon {
 
         return path;
     }
+
+    closestPoint() {
+        var [x, y] = Space.cursorPoint(Space.mousePos[0], Space.mousePos[1]);
+        var r = Snap.closestPoint(this.path, x, y);
+        return r;
+    }
 }

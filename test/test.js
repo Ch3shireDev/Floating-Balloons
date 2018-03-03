@@ -102,23 +102,19 @@ describe('Moving a bubble',
                 var [dx, dy] = [200, 300];
 
                 Mouse.doubleclick(x0, y0);
+
+                var b = Balloons.getLast();
+                var [x2, y2] = [b.div.attr('x'), b.div.attr('y')];
+
                 Mouse.click(x0, y0);
                 Mouse.move(dx, dy);
                 Mouse.release(dx, dy);
-
-                var [x, y, w, h] = Balloons.getLast().rect();
-
-                var [x1, y1] = Space.cursorPoint(dx - w / 4, dy - h / 4);
-
-                x1 = Math.floor(x1);
-                y1 = Math.floor(y1);
-                x = Math.floor(x);
-                y = Math.floor(y);
-
-                (Math.abs(x1 - x) > 0).should.equal(true);
-                (Math.abs(y1 - y) > 0).should.equal(true);
-
-                console.log(x1 + " " + x);
+                
+                var [x3, y3] = [b.div.attr('x'), b.div.attr('y')];
+                
+                (x2).should.not.equal(x3);
+                (y2).should.not.equal(y3);
+                
 
                 Balloons.removeLast();
             });
