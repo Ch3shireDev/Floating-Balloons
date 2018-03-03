@@ -1,40 +1,6 @@
 ﻿$(document).scrollTop(0); //tests fail when scrolled down
 
-Mouse = {
-    runEvent: function (name, x, y) {
-        var [x, y] = Space.screenPoint(x, y);
-        $('body')[0].dispatchEvent(
-            new MouseEvent(name,
-                {
-                    view: window,
-                    clientX: x,
-                    clientY: y
-                })
-        );
-    },
-
-    doubleclick: function (x, y) {
-        this.runEvent('dblclick', x, y);
-    },
-
-    click: function (x, y) {
-        this.runEvent('mousedown', x, y);
-    },
-
-    move: function (x, y) {
-        this.runEvent('mousemove', x, y);
-    },
-
-    release: function (x, y) {
-        this.runEvent('mouseup', x, y);
-    },
-
-    move: function (x, y) {
-        this.runEvent('mousemove', x, y);
-    }
-};
-
-var [x0, y0] = Space.screenPoint(100, 50);
+var [x0, y0] = Space.screenPoint(250, 300);
 var [xx0, yy0] = Space.screenPoint(300, 50);
 let expect = chai.expect;
 
@@ -246,7 +212,7 @@ describe('Connecting bubbles',
                 Balloons.removeLast();
             });
 
-        it('should move handle around the bubble',
+        it('should move handle around the bubble together with cursor',
             () => {
                 Balloons.clear();
                 Balloons.addBalloon(x0, y0);
@@ -264,7 +230,21 @@ describe('Connecting bubbles',
                 Balloons.removeLast();
             });
 
-        it('should allow to grab a handle and expand it into arrow');
+        it('should allow to grab and move a handle',
+            () => {
+                Mouse.release(0, 0);
+                var [dx, dy] = [100, 200];
+                Balloons.addBalloon(x0, y0);
+                var handle = Balloons.handle;
+                var [x, y] = handle.getXY();
+                Mouse.move(0, y);
+                handle.showHandle(Balloons.getLast());
+                Mouse.click(x, y);
+                Mouse.move(x + dx, y+dy);
+                var [x2, y2] = handle.getXY();
+                x.should.not.equal(x2);
+                y.should.not.equal(y2);
+            });
 
         it('should connect when arrow is released over another bubble');
 

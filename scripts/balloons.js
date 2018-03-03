@@ -92,7 +92,6 @@
         if (this.handle === null) {
             this.handle = new Handle();
         }
-        var b = this.getLast();
-        this.handle.showHandle(b);
+        this.handle.showHandle(this.getLast());
     }
 };

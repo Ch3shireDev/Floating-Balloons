@@ -45,6 +45,7 @@
 
         if (element.id === 'handle') {
             this.draggingHandle = true;
+            this.draggingBalloon = false;
             Balloons.handle.grab();
             return;
         }
@@ -53,6 +54,7 @@
         
         if (Space.currentElement != null) {
             Space.draggingBalloon = true;
+            Space.draggingHandle = false;
             Space.currentElement.grab();
             //code to avoid jumping balloon on grab
             const [x0, y0, ,] = Space.currentElement.rect();
@@ -63,16 +65,17 @@
     moveElement(event){
         var [x, y] = [event.clientX, event.clientY];
         Space.mousePos = [x, y];
-        if (Space.currentElement == null) return;
 
         if (Space.mouseDown) {
             const [dx, dy] = [x - Space.xy[0], y - Space.xy[1]];
-            [x, y] = [x - Space.dxy[0], y - Space.dxy[1]];
             if (dx * dx + dy * dy > 10) {
                 if (Space.draggingBalloon) {
+                    if (Space.currentElement == null) return;
+                    [x, y] = [x - Space.dxy[0], y - Space.dxy[1]];
                     Space.currentElement.move(x, y);
                 }
                 else if (Space.draggingHandle) {
+                    //[x, y] = [x - Space.dxy[0], y - Space.dxy[1]];
                     Balloons.handle.move(x, y);
                 }
             }
@@ -82,12 +85,14 @@
     releaseElement(){
         Space.mouseDown = false;
         if (this.draggingBalloon) {
-            Space.currentElement.drop();
             Space.dxy = [0, 0];
             this.draggingBalloon = false;
+            if (Space.currentElement === null) return;
+            Space.currentElement.drop();
         }
         else if (this.draggingHandle) {
-
+            Balloons.handle.drop();
+            this.draggingHandle = false;
         }
     },
 
@@ -108,5 +113,7 @@
         }
     },
 
-    showHandle(){Balloons.showHandle();}
+    showHandle() {
+        Balloons.showHandle();
+    }
 }
