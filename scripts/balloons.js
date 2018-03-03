@@ -89,12 +89,10 @@
     clear: () => { while (Balloons.balloonsList.length > 0) Balloons.removeLast(); },
 
     showHandle() {
-        var b = this.getLast();
-        if (b === null) return;
         if (this.handle === null) {
             this.handle = new Handle();
         }
-        var r = b.closestPoint();
-        this.handle.setLocation(r);
+        var b = this.getLast();
+        this.handle.showHandle(b);
     }
 };

@@ -30,6 +30,10 @@ class Balloon {
         }
 
         this.path = this.CreatePath(x, y);
+
+        //remove selection
+        if (window.getSelection) { window.getSelection().removeAllRanges(); }
+        else if (document.selection) { document.selection.empty(); }
     }
 
     isGrabbed() {

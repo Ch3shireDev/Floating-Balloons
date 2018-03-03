@@ -17,6 +17,7 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="package.json" />
     <Content Include="scripts\balloons.js" />
     <Content Include="example\index.html" />
     <Content Include="example\example.js" />
@@ -24,10 +25,8 @@
     <Content Include="index.html" />
     <Content Include="LICENSE" />
     <Content Include="scripts\handle.js" />
-    <Content Include="scripts\main.js" />
+    <Content Include="scripts\balloon.js" />
     <Content Include="scripts\mouseEvents.js" />
-    <Content Include="package-lock.json" />
-    <Content Include="package.json" />
     <Content Include="scripts\point.js" />
     <Content Include="scripts\rounding.js" />
     <Content Include="README.md" />

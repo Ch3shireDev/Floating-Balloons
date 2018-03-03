@@ -21,7 +21,7 @@
         return (new Point(x, y)).toScreenPoint();
     },
 
-    getElement: (event) => {
+    getElement(event){
         var x = event.clientX,
             y = event.clientY,
             e = document.elementFromPoint(x, y);
@@ -29,10 +29,10 @@
         return [x, y, e];
     },
 
-    grabElement: (evt) => {
+    grabElement(event){
         Space.mouseDown = true;
-        var [x, y, element] = Space.getElement(evt);
-        Space.xy = [evt.clientX, evt.clientY];
+        var [x, y, element] = Space.getElement(event);
+        Space.xy = [event.clientX, event.clientY];
 
         if (element == null) return;
 
@@ -60,16 +60,8 @@
         }
     },
 
-    releaseElement: () => {
-        Space.mouseDown = false;
-        if (Space.currentElement != null) {
-            Space.currentElement.drop();
-            Space.dxy = [0, 0];
-        }
-    },
-
-    moveElement: (evt) => {
-        var [x, y] = [evt.clientX, evt.clientY];
+    moveElement(event){
+        var [x, y] = [event.clientX, event.clientY];
         Space.mousePos = [x, y];
         if (Space.currentElement == null) return;
 
@@ -87,8 +79,20 @@
         }
     },
 
-    createElement: (evt) => {
-        var [x, y, element] = Space.getElement(evt);
+    releaseElement(){
+        Space.mouseDown = false;
+        if (this.draggingBalloon) {
+            Space.currentElement.drop();
+            Space.dxy = [0, 0];
+            this.draggingBalloon = false;
+        }
+        else if (this.draggingHandle) {
+
+        }
+    },
+
+    createElement(event){
+        var [x, y, element] = Space.getElement(event);
 
         const tag = element.tagName.toLowerCase();
 
@@ -104,5 +108,5 @@
         }
     },
 
-    showHandle: () => {Balloons.showHandle();}
+    showHandle(){Balloons.showHandle();}
 }
