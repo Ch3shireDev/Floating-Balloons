@@ -4,10 +4,6 @@
   "devDependencies": {
     "angular": "^1.6.9",
     "chai": "^4.1.2",
-    "jquery": "^3.3.1",
-    "should": "^13.2.1",
-    "snap": "^0.2.2",
-    "typescript.api": "^0.7.7",
-    "vivus": "^0.4.3"
+    "should": "^13.2.1"
   }
 }
