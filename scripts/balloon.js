@@ -10,30 +10,31 @@ class Balloon {
 
         this.grabbed = false;
 
-        const tb = this.createBalloon(x, y);
-
-        [this.fO, this.div] = tb;
+        [this.fO, this.div] = this.createBalloon(x, y);
 
         this.id = this.div.attr('id');
-
-        this.wh = function () {
-            var w = this.div.attr('width'),
-                h = this.div.attr('height');
-            return (new Point(w, h)).toScreenPoint();
-        }
-
-        this.w = function () {
-            return this.wh()[0];
-        }
-        this.h = function () {
-            return this.wh()[1];
-        }
 
         this.path = this.CreatePath(x, y);
 
         //remove selection
         if (window.getSelection) { window.getSelection().removeAllRanges(); }
         else if (document.selection) { document.selection.empty(); }
+
+        this.childBalloons = [];
+        this.childArrows = [];
+    }
+
+    wh() {
+        var w = this.div.attr('width'),
+            h = this.div.attr('height');
+        return (new Point(w, h)).toScreenPoint();
+    }
+
+    w() {
+        return this.wh()[0];
+    }
+    h() {
+        return this.wh()[1];
     }
 
     isGrabbed() {

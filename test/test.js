@@ -245,6 +245,8 @@ describe('Connecting bubbles',
                 y.should.not.equal(y2);
             });
 
+        it('should create an arrow between parent and child balloon');
+
         it('should connect when arrow is released over another bubble');
 
         it('should create another bubble when arrow is released over an empty space');

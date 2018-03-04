@@ -27,31 +27,25 @@
 
     grab() {
         this.isDragged = true;
-        var [x, y] = this.getXY();
-        this.pathStr = 'M ' + x + ' ' + y + ' L ';
         if (this.arrow !== null) {
             this.arrow.remove();
         }
-        this.arrow = Space.s.path(this.pathStr + x + ' ' + y);
-        this.arrow.attr({
-            stroke: 'black',
-            strokeWidth: 2,
-            opacity: 0.8,
-            fill: 'transparent'
-        });
-
+        this.arrow = new Arrow(this.getXY());
     }
 
     move(x, y) {
         [x, y] = (new Point(x, y)).toCursorPoint();
         this.handle.attr('x', x - 20);
         this.handle.attr('y', y - 20);
-        this.arrow.attr({ d: this.pathStr + x + ' ' + y });
+        this.arrow.moveHead(x, y);
     }
 
     drop(x, y, e) {
         this.isDragged = false;
-        this.createBalloon(x, y);
+        var b = this.createBalloon(x, y);
+        this.parentBalloon.childBalloons.push(b);
+        this.parentBalloon.childArrows.push(this.arrow);
+        this.arrow = null;
     }
 
     showHandle() {

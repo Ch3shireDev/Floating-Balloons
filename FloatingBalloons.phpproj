@@ -17,6 +17,7 @@
     <IncludeDebugInformation>false</IncludeDebugInformation>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="scripts\arrow.js" />
     <Content Include="package.json" />
     <Content Include="scripts\balloons.js" />
     <Content Include="example\index.html" />
