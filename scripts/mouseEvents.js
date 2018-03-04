@@ -10,8 +10,8 @@ document.body.onmousedown = (event) => {
     Space.grabElement(event);
 };
 
-document.body.onmouseup = () => {
-    Space.releaseElement();
+document.body.onmouseup = (event) => {
+    Space.releaseElement(event);
 };
 
 document.body.onmousemove = (event) => {
@@ -20,7 +20,7 @@ document.body.onmousemove = (event) => {
 
 Mouse = {
     runEvent(name, x, y) {
-        var [x, y] = Space.screenPoint(x, y);
+        [x, y] = Space.screenPoint(x, y);
         $('body')[0].dispatchEvent(
             new MouseEvent(name,
                 {

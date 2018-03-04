@@ -21,7 +21,7 @@
         return (new Point(x, y)).toScreenPoint();
     },
 
-    getElement(event){
+    getElement(event) {
         var x = event.clientX,
             y = event.clientY,
             e = document.elementFromPoint(x, y);
@@ -29,7 +29,7 @@
         return [x, y, e];
     },
 
-    grabElement(event){
+    grabElement(event) {
         Space.mouseDown = true;
         var [x, y, element] = Space.getElement(event);
         Space.xy = [event.clientX, event.clientY];
@@ -40,7 +40,7 @@
             Space.mouseDown = false;
             return;
         }
-        
+
         closeCurrentTextarea();
 
         if (element.id === 'handle') {
@@ -51,7 +51,7 @@
         }
 
         Space.currentElement = Balloons.findFromElement(element);
-        
+
         if (Space.currentElement != null) {
             Space.draggingBalloon = true;
             Space.draggingHandle = false;
@@ -62,7 +62,7 @@
         }
     },
 
-    moveElement(event){
+    moveElement(event) {
         var [x, y] = [event.clientX, event.clientY];
         Space.mousePos = [x, y];
 
@@ -75,15 +75,15 @@
                     Space.currentElement.move(x, y);
                 }
                 else if (Space.draggingHandle) {
-                    //[x, y] = [x - Space.dxy[0], y - Space.dxy[1]];
                     Balloons.handle.move(x, y);
                 }
             }
         }
     },
 
-    releaseElement(){
+    releaseElement(event) {
         Space.mouseDown = false;
+        var [x, y, e] = this.getElement(event);
         if (this.draggingBalloon) {
             Space.dxy = [0, 0];
             this.draggingBalloon = false;
@@ -91,12 +91,12 @@
             Space.currentElement.drop();
         }
         else if (this.draggingHandle) {
-            Balloons.handle.drop();
+            Balloons.handle.drop(x, y, e);
             this.draggingHandle = false;
         }
     },
 
-    createElement(event){
+    createElement(event) {
         var [x, y, element] = Space.getElement(event);
 
         const tag = element.tagName.toLowerCase();

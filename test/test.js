@@ -75,12 +75,11 @@ describe('Moving a bubble',
                 Mouse.click(x0, y0);
                 Mouse.move(dx, dy);
                 Mouse.release(dx, dy);
-                
+
                 var [x3, y3] = [b.div.attr('x'), b.div.attr('y')];
-                
+
                 (x2).should.not.equal(x3);
                 (y2).should.not.equal(y3);
-                
 
                 Balloons.removeLast();
             });
@@ -240,7 +239,7 @@ describe('Connecting bubbles',
                 Mouse.move(0, y);
                 handle.showHandle(Balloons.getLast());
                 Mouse.click(x, y);
-                Mouse.move(x + dx, y+dy);
+                Mouse.move(x + dx, y + dy);
                 var [x2, y2] = handle.getXY();
                 x.should.not.equal(x2);
                 y.should.not.equal(y2);

@@ -89,9 +89,13 @@
     clear: () => { while (Balloons.balloonsList.length > 0) Balloons.removeLast(); },
 
     showHandle() {
-        if (this.handle === null) {
-            this.handle = new Handle();
+        var b = this.getLast();
+        if (b !== null) {
+            if (this.handle === null) {
+                this.handle = new Handle();
+            }
+            this.handle.parentBalloon = b;
+            this.handle.showHandle();
         }
-        this.handle.showHandle(this.getLast());
     }
 };
