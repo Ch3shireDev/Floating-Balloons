@@ -1,4 +1,7 @@
-﻿$(document).scrollTop(0); //tests fail when scrolled down
+﻿//$.getScript('./script/main.js');
+//$.getScript('./script/space.js');
+
+$(document).scrollTop(0); //tests fail when scrolled down
 
 var [x0, y0] = Space.screenPoint(250, 300);
 var [xx0, yy0] = Space.screenPoint(300, 50);

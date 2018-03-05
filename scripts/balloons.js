@@ -1,4 +1,7 @@
-﻿var Balloons = {
+﻿//$.getScript('./scripts/handle.js');
+//$.getScript('./scripts/textbox.js');
+
+var Balloons = {
     handle: null,
     numBalloons: 0,
     balloonsList: [],

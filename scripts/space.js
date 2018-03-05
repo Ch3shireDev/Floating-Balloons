@@ -1,4 +1,7 @@
-﻿var Space = {
+﻿$.getScript('./scripts/arrow.js');
+//$.getScript('./scripts/point.js');
+
+var Space = {
     currentElement: null,
     mouseDown: false,
     draggingBalloon: false,

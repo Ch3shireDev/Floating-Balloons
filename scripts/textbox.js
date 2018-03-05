@@ -1,6 +1,5 @@
 Balloon.prototype.openContent = function () {
     closeCurrentTextarea();
-    var b = this;
     var fO = this.fO;
     var div = this.div;
 

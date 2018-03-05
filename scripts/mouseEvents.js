@@ -1,4 +1,6 @@
-﻿setInterval(() => { Space.showHandle(); }, 10);
+﻿//$.getScript('./scripts/space.js');
+
+setInterval(() => { Space.showHandle(); }, 10);
 
 $('body').contextmenu(() => { return false; });
 

@@ -1,4 +1,6 @@
-﻿'use strict';
+﻿//$.getScript('./scripts/point.js');
+//$.getScript('./scripts/space.js');
+//$.getScript('./scripts/textbox.js');
 
 class Balloon {
     constructor(x, y) {

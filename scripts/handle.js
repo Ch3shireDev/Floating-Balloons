@@ -1,4 +1,7 @@
-﻿class Handle {
+﻿//$.getScript('/scripts/arrow.js');
+//$.getScript('./scripts/point.js');
+
+class Handle {
     constructor() {
         this.arrow = null;
         this.isDragged = false;
@@ -30,7 +33,9 @@
         if (this.arrow !== null) {
             this.arrow.remove();
         }
-        this.arrow = new Arrow(this.getXY());
+        if (this.parentBalloon !== null) {
+            this.arrow = new Arrow(this.parentBalloon, this.getXY());
+        }
     }
 
     move(x, y) {

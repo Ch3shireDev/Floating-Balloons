@@ -27,13 +27,15 @@
     <Content Include="LICENSE" />
     <Content Include="scripts\handle.js" />
     <Content Include="scripts\balloon.js" />
+    <Content Include="scripts\main.js" />
     <Content Include="scripts\mouseEvents.js" />
     <Content Include="scripts\point.js" />
     <Content Include="scripts\rounding.js" />
     <Content Include="README.md" />
     <Content Include="scripts\space.js" />
     <Content Include="style.css" />
-    <Content Include="test\index.html" />
+    <Content Include="test.html" />
+    <Content Include="test\test.html" />
     <Content Include="test\test.js" />
     <Content Include="scripts\textbox.js" />
   </ItemGroup>

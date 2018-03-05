@@ -1,7 +1,9 @@
 ﻿class Arrow {
-    constructor(p) {
+    constructor(balloon, p) {
         [this.x0, this.y0] = p;
         [this.x1, this.y1] = p;
+        this.headBalloon = null;
+        this.tailBalloon = balloon;
         this.arrow = Space.s.path(this.getPathString());
         this.arrow.attr({
             stroke: 'black',

@@ -1,4 +1,6 @@
-﻿class Point {
+﻿//$.getScript('./scripts/space.js');
+
+class Point {
     constructor(x, y) {
         this.pt = Space.svg.createSVGPoint();
         this.pt.x = x;
