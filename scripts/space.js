@@ -1,7 +1,4 @@
-﻿$.getScript('./scripts/arrow.js');
-//$.getScript('./scripts/point.js');
-
-var Space = {
+﻿var Space = {
     currentElement: null,
     mouseDown: false,
     draggingBalloon: false,
@@ -118,5 +115,12 @@ var Space = {
 
     showHandle() {
         Balloons.showHandle();
+    },
+
+    clear() {
+        this.currentElement = null;
+        this.draggingBalloon = false;
+        this.draggingHandle = false;
+        Balloons.clear();
     }
 }

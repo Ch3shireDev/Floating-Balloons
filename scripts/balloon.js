@@ -1,8 +1,4 @@
-﻿//$.getScript('./scripts/point.js');
-//$.getScript('./scripts/space.js');
-//$.getScript('./scripts/textbox.js');
-
-class Balloon {
+﻿class Balloon {
     constructor(x, y) {
         this.x = x;
         this.y = y;

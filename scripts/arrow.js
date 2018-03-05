@@ -4,6 +4,7 @@
         [this.x1, this.y1] = p;
         this.headBalloon = null;
         this.tailBalloon = balloon;
+        balloon.childArrows.push(this);
         this.arrow = Space.s.path(this.getPathString());
         this.arrow.attr({
             stroke: 'black',

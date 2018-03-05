@@ -1,7 +1,4 @@
-﻿//$.getScript('/scripts/arrow.js');
-//$.getScript('./scripts/point.js');
-
-class Handle {
+﻿class Handle {
     constructor() {
         this.arrow = null;
         this.isDragged = false;
@@ -50,6 +47,7 @@ class Handle {
         var b = this.createBalloon(x, y);
         this.parentBalloon.childBalloons.push(b);
         this.parentBalloon.childArrows.push(this.arrow);
+        this.arrow.headBalloon = b;
         this.arrow = null;
     }
 
@@ -59,6 +57,6 @@ class Handle {
     }
 
     createBalloon(x, y) {
-        Balloons.addBalloon(x, y);
+        return Balloons.addBalloon(x, y);
     }
 }
