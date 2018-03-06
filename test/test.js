@@ -240,7 +240,7 @@ describe('Connecting bubbles',
             });
     });
 
-describe('Arrow behaviour',
+describe('Arrow behavior',
     () => {
         it('should create an arrow between parent and child balloon');
 
@@ -265,6 +265,17 @@ describe('Arrow behaviour',
                 b.childBalloons[0].should.equal(b2);
                 Space.clear();
             });
+    });
+
+describe('Space behavior',
+    () => {
+        it('should allow to grab and move around the canvas');
+
+        it('should allow to zoom in and out the canvas');
+
+        it('should not modify ability to move balloons after zoom');
+
+        it('should not move balloons far away when grabbed after zoom');
     });
 
 describe('Selecting bubbles',

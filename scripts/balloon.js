@@ -82,12 +82,12 @@
         x = x - w / 2;
         y = y - h / 2;
 
-        const div = Space.s.rect(x, y, w, h, 20, 20);
+        const div = Space.s.rect(x, y, w, h);
         div.attr({
             id: `balloon${Balloons.numBalloons}`,
             class: 'balloon',
-            stroke: '#123456',
-            'strokeWidth': 10,
+            //stroke: '#123456',
+            //'strokeWidth': 10,
             fill: 'red',
             'opacity': 0.8
         });

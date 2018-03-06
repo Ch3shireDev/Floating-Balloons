@@ -18,6 +18,11 @@ document.body.onmousemove = (event) => {
     Space.moveElement(event);
 };
 
+document.body.addEventListener('wheel',
+    (event) => {
+        Space.zoom(event.deltaY);
+    });
+
 Mouse = {
     runEvent(name, x, y) {
         [x, y] = Space.screenPoint(x, y);

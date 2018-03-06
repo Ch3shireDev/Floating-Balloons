@@ -122,5 +122,25 @@
         this.draggingBalloon = false;
         this.draggingHandle = false;
         Balloons.clear();
+    },
+
+    zoom(value) {
+        var viewBox = this.s.attr('viewBox');
+        console.log(viewBox);
+        var [x, y, w, h] = [viewBox.x, viewBox.y, viewBox.w, viewBox.h];
+
+        var alpha = (w - x) / (h - y);
+
+        x -= value * alpha;
+        y -= value;
+        w += value * alpha;
+        h += value;
+        this.s.attr({ viewBox: `${x},${y},${w},${h}` });
+        this.refresh();
+    },
+
+    refresh() {
+        $('#body').css({ display: 'none' });
+        $('#body').css({ display: 'initial' });
     }
 }

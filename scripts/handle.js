@@ -3,12 +3,12 @@
         this.arrow = null;
         this.isDragged = false;
         this.parentBalloon = Balloons.getLast();
-        this.handle = Space.s.rect(0, 0, 40, 40, 10);
+        this.handle = Space.s.rect(0, 0, 40, 40);
         this.handle.attr({
             class: 'balloon',
             id: 'handle',
-            stroke: '#123456',
-            strokeWidth: 5,
+            //stroke: '#123456',
+            //strokeWidth: 5,
             fill: 'red',
             opacity: 0.8
         });
