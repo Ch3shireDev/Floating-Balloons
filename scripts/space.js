@@ -10,14 +10,15 @@
     mousePos: [0, 0],
 
     ScreenCTM: () => {
+        console.log(this.svg.getScreenCTM());
         return this.svg.getScreenCTM();
     },
 
-    cursorPoint: (x, y) => {
+    toCursorPoint: (x, y) => {
         return (new Point(x, y)).toCursorPoint();
     },
 
-    screenPoint: (x, y) => {
+    toScreenPoint: (x, y) => {
         return (new Point(x, y)).toScreenPoint();
     },
 
@@ -25,14 +26,14 @@
         var x = event.clientX,
             y = event.clientY,
             e = document.elementFromPoint(x, y);
-        [x, y] = Space.cursorPoint(x, y);
+        [x, y] = Space.toCursorPoint(x, y);
         return [x, y, e];
     },
 
     grabElement(event) {
         Space.mouseDown = true;
         var [x, y, element] = Space.getElement(event);
-        Space.xy = [event.clientX, event.clientY];
+        this.xy = this.toScreenPoint(event.clientX, event.clientY);
 
         if (element == null) return;
 
@@ -57,26 +58,23 @@
             Space.draggingHandle = false;
             Space.currentElement.grab();
             //code to avoid jumping balloon on grab
-            const [x0, y0, ,] = Space.currentElement.rect();
-            Space.dxy = Space.screenPoint(x - x0, y - y0);
+            var [x1, y1, w, h] = Space.currentElement.rect();
+            var [x2, y2] = this.toCursorPoint(event.clientX, event.clientY);
+            this.dxy = this.toScreenPoint(x2 - x1, y2 - y1);
         }
     },
 
     moveElement(event) {
         var [x, y] = [event.clientX, event.clientY];
         Space.mousePos = [x, y];
-
         if (Space.mouseDown) {
-            const [dx, dy] = [x - Space.xy[0], y - Space.xy[1]];
-            if (dx * dx + dy * dy > 10) {
-                if (Space.draggingBalloon) {
-                    if (Space.currentElement == null) return;
-                    [x, y] = [x - Space.dxy[0], y - Space.dxy[1]];
-                    Space.currentElement.move(x, y);
-                }
-                else if (Space.draggingHandle) {
-                    Balloons.handle.move(x, y);
-                }
+            if (Space.draggingBalloon) {
+                if (Space.currentElement == null) return;
+                var [dx, dy] = this.dxy;
+                Space.currentElement.move(x - dx, y - dy);
+            }
+            else if (Space.draggingHandle) {
+                Balloons.handle.move(x, y);
             }
         }
     },
@@ -122,11 +120,13 @@
         this.draggingBalloon = false;
         this.draggingHandle = false;
         Balloons.clear();
+        this.svg.innerHTML = '';
+        var [x, y, w, h] = [0, 0, 800, 600];
+        this.s.attr({ viewBox: `${x},${y},${w},${h}` });
     },
 
     zoom(value) {
         var viewBox = this.s.attr('viewBox');
-        console.log(viewBox);
         var [x, y, w, h] = [viewBox.x, viewBox.y, viewBox.w, viewBox.h];
 
         var alpha = (w - x) / (h - y);
@@ -136,7 +136,6 @@
         w += value * alpha;
         h += value;
         this.s.attr({ viewBox: `${x},${y},${w},${h}` });
-        this.refresh();
     },
 
     refresh() {

@@ -86,7 +86,13 @@
         this.balloonsList.pop();
     },
 
-    clear: () => { while (Balloons.balloonsList.length > 0) Balloons.removeLast(); },
+    clear() {
+        while (Balloons.balloonsList.length > 0) Balloons.removeLast();
+        if (this.handle !== null) {
+            this.handle.handle.remove();
+        }
+        this.handle = null;
+    },
 
     showHandle() {
         var b = this.getLast();

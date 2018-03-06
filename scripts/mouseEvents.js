@@ -20,12 +20,11 @@ document.body.onmousemove = (event) => {
 
 document.body.addEventListener('wheel',
     (event) => {
-        Space.zoom(event.deltaY);
+        Space.zoom(10 * event.deltaY);
     });
 
 Mouse = {
     runEvent(name, x, y) {
-        [x, y] = Space.screenPoint(x, y);
         $('body')[0].dispatchEvent(
             new MouseEvent(name,
                 {

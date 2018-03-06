@@ -66,8 +66,14 @@
         return [x, y, w, h];
     }
 
+    getXY() {
+        const [x, y, w, h] = this.rect();
+        return [x, y];
+    }
+
     move(x, y) {
         [x, y] = (new Point(x, y)).toCursorPoint();
+        console.log(x + " " + y);
         this.div.attr('x', x);
         this.div.attr('y', y);
         this.fO.setAttribute('x', x);
@@ -121,7 +127,7 @@
     }
 
     closestPoint() {
-        var [x, y] = Space.cursorPoint(Space.mousePos[0], Space.mousePos[1]);
+        var [x, y] = Space.toCursorPoint(Space.mousePos[0], Space.mousePos[1]);
         var r = Snap.closestPoint(this.path, x, y);
         return r;
     }
