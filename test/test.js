@@ -247,6 +247,84 @@ describe('Connecting bubbles',
             });
     });
 
+describe('Space behavior',
+    () => {
+        it('should allow to grab and move around the canvas',
+            () => {
+                Space.isTesting = true;
+                var b = Balloons.addBalloon(x0, y0);
+                var [x1, y1, w1, h1] = Space.viewBox();
+                Mouse.click(x0 + 200, y0 + 200);
+                Mouse.move(x0 + 300, y0 + 300);
+                Space.draggingBalloon.should.equal(false);
+                Space.draggingSpace.should.equal(true);
+                var [x2, y2, w2, h2] = Space.viewBox();
+                x1.should.not.equal(x2);
+                y1.should.not.equal(y2);
+            });
+
+        it('should allow to zoom in and out the canvas',
+            () => {
+                var [x1, y1, w1, h1] = Space.viewBox();
+                Space.zoom(10);
+                var [x2, y2, w2, h2] = Space.viewBox();
+                Space.zoom(-20);
+                var [x3, y3, w3, h3] = Space.viewBox();
+                //console.log(x1 + " " + y1 + " " + w1 + " " + h1);
+                //console.log(x2 + " " + y2 + " " + w2 + " " + h2);
+                //console.log(x3 + " " + y3 + " " + w3 + " " + h3);
+                w2.should.be.above(w1);
+                w1.should.be.above(w3);
+                h2.should.be.above(h1);
+                h1.should.be.above(h3);
+                //Space.clear();
+            });
+
+        it('should allow to create balloons in same cursor place after zoom',
+            () => {
+                Space.zoom(10);
+                Mouse.doubleclick(x0, y0);
+                var [x1, y1] = Space.toScreenPoint(x0, y0);
+                var b = Balloons.getLast();
+                var [x2, y2, w, h] = b.rect();
+                [x2, y2] = Space.toScreenPoint(x2 + w / 2, y2 + h / 2);
+                x1.should.equal(x2);
+                y1.should.equal(y2);
+                Space.clear();
+            });
+
+        it('should not modify ability to move balloons after zoom',
+            () => {
+                var b = Balloons.addBalloon(x0, y0);
+                Space.zoom(10);
+                var [x, y] = b.getXY();
+                b.isGrabbed().should.equal(false);
+                Mouse.click(x, y);
+                b.isGrabbed().should.equal(true);
+                Mouse.move(x + 10, y + 10);
+                var [x2, y2] = b.getXY();
+                x.should.not.equal(x2);
+                y.should.not.equal(y2);
+                Space.clear();
+            });
+
+        it('should not move balloons far away when grabbed after zoom',
+            () => {
+                Space.zoom(10);
+                Space.draggingBalloon.should.equal(false);
+                Mouse.doubleclick(x0, y0);
+                var b = Balloons.getLast();
+                Mouse.click(x0, y0);
+                Space.draggingBalloon.should.equal(true);
+                var [x1, y1] = b.getXY();
+                Mouse.move(x0, y0);
+                var [x2, y2] = b.getXY();
+                (Math.abs(x2 - x1) < 1).should.equal(true);
+                (Math.abs(y2 - y1) < 1).should.equal(true);
+                Space.clear();
+            });
+    });
+
 describe('Arrow behavior',
     () => {
         it('should create an arrow between parent and child balloon');
@@ -271,41 +349,6 @@ describe('Arrow behavior',
                 b.childArrows[0].should.equal(arrow);
                 b.childBalloons[0].should.equal(b2);
                 Space.clear();
-            });
-    });
-
-describe('Space behavior',
-    () => {
-        it('should allow to grab and move around the canvas');
-
-        it('should allow to zoom in and out the canvas');
-
-        it('should allow to create balloons in same cursor place after zoom',
-            () => {
-                Space.zoom(200);
-                Mouse.doubleclick(x0, y0);
-                var [x1, y1] = Space.toCursorPoint(x0, y0);
-                var b = Balloons.getLast();
-                b.x.should.equal(x1);
-                b.y.should.equal(y1);
-                Space.clear();
-            });
-
-        it('should not modify ability to move balloons after zoom');
-
-        it('should not move balloons far away when grabbed after zoom',
-            () => {
-                Space.zoom(1);
-                Space.draggingBalloon.should.equal(false);
-                Mouse.doubleclick(x0, y0);
-                var b = Balloons.getLast();
-                Mouse.click(x0, y0);
-                Space.draggingBalloon.should.equal(true);
-                var [x1, y1] = b.getXY();
-                Mouse.move(x0, y0);
-                var [x2, y2] = b.getXY();
-                (Math.abs(x2 - x1) < 1).should.equal(true);
-                (Math.abs(y2 - y1) < 1).should.equal(true);
             });
     });
 

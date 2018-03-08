@@ -86,7 +86,8 @@
         Space.mousePos = [event.clientX, event.clientY];
         var [dx, dy] = [x1 - x0, y1 - y0];
         this.xy = [x1, y1];
-        if (event.buttons !== 1) return;
+        if (typeof
+            Space.isTesting === 'undefined' && event.buttons !== 1) return;
         if (Space.mouseDown === false) return;
         if (Space.draggingBalloon) {
             if (Space.currentElement == null) return;
@@ -142,6 +143,7 @@
 
     clear() {
         this.currentElement = null;
+        this.handle = null;
         this.draggingBalloon = false;
         this.draggingHandle = false;
         this.draggingSpace = false;
@@ -163,7 +165,7 @@
 
     zoom(value) {
         var [x, y, w, h] = this.viewBox();
-        var alpha = (w - x) / (h - y);
+        var alpha = w / h;
         x -= value * alpha / 2;
         y -= value / 2;
         w += value * alpha;
