@@ -71,7 +71,7 @@ describe('Moving a bubble',
                 Mouse.doubleclick(x0, y0);
 
                 var b = Balloons.getLast();
-                var [x2, y2] = [b.div.attr('x'), b.div.attr('y')];
+                var [x2, y2] = b.getXY();
 
                 Space.draggingBalloon.should.equal(false);
                 Mouse.click(x0, y0);
@@ -158,7 +158,7 @@ describe('Changing a text',
                 //var [x, y] = Space.toCursorPoint(x0, y0);
                 Mouse.doubleclick(x0, y0);
                 (currentTextareaBalloon).should.not.equal(null);
-                Mouse.click(0, 0);
+                Mouse.click(1, 1);
                 (currentTextareaBalloon == null).should.equal(true);
                 Space.clear();
             });
@@ -211,31 +211,12 @@ describe('Connecting bubbles',
                 Space.clear();
             });
 
-        it('should move handle around the bubble together with cursor',
-            () => {
-                Balloons.addBalloon(x0, y0);
-                var dx1 = 200;
-                Space.showHandle();
-                var [x, y] = Space.toScreenPoint(x0, y0);
-                Mouse.move(x + dx1, y);
-                Space.showHandle();
-                var handle = $('#handle')[0];
-                var x1 = parseFloat(handle.getAttribute('x'));
-                Mouse.move(x - dx1, y);
-                Space.showHandle();
-                var x2 = parseFloat(handle.getAttribute('x'));
-
-                (x1 > x2).should.equal(true);
-                Space.clear();
-            });
-
         it('should allow to grab and move a handle',
             () => {
-                Mouse.release(0, 0);
                 var [dx, dy] = [100, 200];
                 Balloons.addBalloon(x0, y0);
                 Space.showHandle();
-                var handle = Balloons.handle;
+                var handle = Space.handle;
                 var [x, y] = handle.getXY();
                 Mouse.move(0, y);
                 handle.showHandle(Balloons.getLast());
@@ -244,6 +225,24 @@ describe('Connecting bubbles',
                 var [x2, y2] = handle.getXY();
                 x.should.not.equal(x2);
                 y.should.not.equal(y2);
+                Space.clear();
+            });
+
+        it('should move handle around the bubble together with cursor',
+            () => {
+                Balloons.addBalloon(x0, y0);
+                var dx1 = 100;
+                Space.showHandle();
+                var [x, y] = Space.toScreenPoint(x0, y0);
+                Mouse.move(x + dx1, y);
+                Space.showHandle();
+                var handle = Space.handle;
+                var [x1, y1] = handle.getXY();
+                Mouse.move(x, y);
+                Space.showHandle();
+                var [x2, y2] = handle.getXY();
+
+                (x1 > x2).should.equal(true);
                 Space.clear();
             });
     });
@@ -260,9 +259,9 @@ describe('Arrow behavior',
             () => {
                 var b = Balloons.addBalloon(x0, y0);
                 Balloons.showHandle();
-                var [x, y] = Balloons.handle.getXY();
+                var [x, y] = Space.handle.getXY();
                 [x, y] = Space.toScreenPoint(x, y);
-                Mouse.click(x, y);
+                Mouse.click(x + 5, y + 5);
                 Mouse.move(x + 200, y);
                 var arrow = b.childArrows[0];
                 arrow.tailBalloon.should.equal(b);

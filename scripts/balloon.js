@@ -73,7 +73,6 @@
 
     move(x, y) {
         [x, y] = (new Point(x, y)).toCursorPoint();
-        console.log(x + " " + y);
         this.div.attr('x', x);
         this.div.attr('y', y);
         this.fO.setAttribute('x', x);
@@ -92,8 +91,6 @@
         div.attr({
             id: `balloon${Balloons.numBalloons}`,
             class: 'balloon',
-            //stroke: '#123456',
-            //'strokeWidth': 10,
             fill: 'red',
             'opacity': 0.8
         });

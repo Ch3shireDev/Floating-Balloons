@@ -15,8 +15,8 @@
     }
 
     getXY() {
-        var x = parseFloat(this.handle.attr('x')) + 20;
-        var y = parseFloat(this.handle.attr('y')) + 20;
+        var x = parseFloat(this.handle.attr('x'));
+        var y = parseFloat(this.handle.attr('y'));
         return [x, y];
     }
 
@@ -31,15 +31,17 @@
             this.arrow.remove();
         }
         if (this.parentBalloon !== null) {
-            this.arrow = new Arrow(this.parentBalloon, this.getXY());
+            var [x, y] = this.getXY();
+            [x, y] = [x + 20, y + 20];
+            this.arrow = new Arrow(this.parentBalloon, [x, y]);
         }
     }
 
     move(x, y) {
         [x, y] = (new Point(x, y)).toCursorPoint();
-        this.handle.attr('x', x - 20);
-        this.handle.attr('y', y - 20);
-        this.arrow.moveHead(x, y);
+        this.handle.attr('x', x);
+        this.handle.attr('y', y);
+        this.arrow.moveHead(x + 20, y + 20);
     }
 
     drop(x, y, e) {

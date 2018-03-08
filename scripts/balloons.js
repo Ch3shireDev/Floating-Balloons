@@ -1,9 +1,8 @@
 ﻿var Balloons = {
-    handle: null,
     numBalloons: 0,
     balloonsList: [],
 
-    findFromElement: function (element) {
+    findFromElement(element) {
         while (element != null) {
             if (element.parentElement === null) return null;
             if (element.parentElement.tagName === 'svg') {
@@ -32,7 +31,7 @@
         }
     },
 
-    findFromId: function (id) {
+    findFromId(id) {
         const n = this.balloonsList.length;
         const b = this.balloonsList;
         for (let i = 0; i < n; i++) {
@@ -43,7 +42,7 @@
         return null;
     },
 
-    findFromForeignId: function (id) {
+    findFromForeignId(id) {
         const n = this.balloonsList.length;
         const b = this.balloonsList;
         for (let i = 0; i < n; i++) {
@@ -54,21 +53,21 @@
         return null;
     },
 
-    findFromDiv: function (div) {
+    findFromDiv(div) {
         return this.findFromId(div.attr('id'));
     },
 
-    insert: function (balloon) {
+    insert(balloon) {
         this.balloonsList.push(balloon);
     },
 
-    addBalloon: function (x, y) {
+    addBalloon(x, y) {
         const b = new Balloon(x, y);
         this.insert(b);
         return b;
     },
 
-    getLast: function () {
+    getLast() {
         const n = this.balloonsList.length;
         if (n > 0) {
             return this.balloonsList[n - 1];
@@ -77,7 +76,7 @@
         }
     },
 
-    removeLast: function () {
+    removeLast() {
         const b = this.getLast();
         b.div.remove();
         b.div = null;
@@ -88,20 +87,20 @@
 
     clear() {
         while (Balloons.balloonsList.length > 0) Balloons.removeLast();
-        if (this.handle !== null) {
-            this.handle.handle.remove();
+        if (Space.handle !== null) {
+            Space.handle.handle.remove();
         }
-        this.handle = null;
+        Space.handle = null;
     },
 
     showHandle() {
         var b = this.getLast();
         if (b !== null) {
-            if (this.handle === null) {
-                this.handle = new Handle();
+            if (Space.handle === null) {
+                Space.handle = new Handle();
             }
-            this.handle.parentBalloon = b;
-            this.handle.showHandle();
+            Space.handle.parentBalloon = b;
+            Space.handle.showHandle();
         }
     }
 };

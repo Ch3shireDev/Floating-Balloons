@@ -18,6 +18,14 @@ document.body.onmousemove = (event) => {
     Space.moveElement(event);
 };
 
+$(document).mouseout((event) => {
+    //if (event.target.id === 'body') {
+    //    if (event.relatedTarget === null) {
+    //        Space.leave(event);
+    //    }
+    //}
+});
+
 document.body.addEventListener('wheel',
     (event) => {
         Space.zoom(10 * event.deltaY);
