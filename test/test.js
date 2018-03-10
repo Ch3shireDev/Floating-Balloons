@@ -327,7 +327,10 @@ describe('Space behavior',
 
 describe('Arrow behavior',
     () => {
-        it('should create an arrow between parent and child balloon');
+        it('should create an arrow between parent and child balloon',
+            () => {
+
+            });
 
         it('should connect when arrow is released over another bubble');
 

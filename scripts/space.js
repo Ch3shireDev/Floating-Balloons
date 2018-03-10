@@ -115,7 +115,7 @@
             }
         }
         else if (this.draggingHandle) {
-            Space.handle.drop(x, y, e);
+            Space.handle.drop(x, y, event);
         }
         this.draggingBalloon = false;
         this.draggingHandle = false;

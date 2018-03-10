@@ -45,12 +45,28 @@
     }
 
     drop(x, y, e) {
+        this.handle.attr({
+            visibility: "hidden"
+        });
+
+        var [x0, y0, element] = Space.getElement(e);
+
+        if (element.id === 'body') {
+            var b = this.createBalloon(x, y);
+            this.parentBalloon.childBalloons.push(b);
+            this.parentBalloon.childArrows.push(this.arrow);
+            this.arrow.headBalloon = b;
+            this.arrow = null;
+        }
+        else if (element.class === 'balloon') {
+            var b = Balloons.findFromElement(element);
+            this.parentBalloon.childArrows.push(this.arrow);
+            this.arrow.headBalloon = b;
+            this.parentBalloon.childBalloons.push(b);
+            this.arrow = null;
+        }
+
         this.isDragged = false;
-        var b = this.createBalloon(x, y);
-        this.parentBalloon.childBalloons.push(b);
-        this.parentBalloon.childArrows.push(this.arrow);
-        this.arrow.headBalloon = b;
-        this.arrow = null;
     }
 
     showHandle() {
