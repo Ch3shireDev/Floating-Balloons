@@ -199,8 +199,25 @@ describe('Changing a text',
             });
     });
 
-describe('Connecting bubbles',
+describe('Handle behavior',
     () => {
+        it('should show handle near every balloon when cursor is nearby',
+            () => {
+                var dist = (a, b) => { return Math.sqrt((a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1])); }
+
+                var b1 = Balloons.addBalloon(x0, y0);
+                var b2 = Balloons.addBalloon(x0 + 600, y0);
+                Mouse.move(x0 + 500, y0);
+                Space.showHandle();
+                var [x1, y1] = Space.handle.getXY();
+                expect(dist([x0 + 600, y0], [x1, y1])).to.be.below(120);
+
+                Mouse.move(x0 + 100, y0);
+                Space.showHandle();
+                var [x2, y2] = Space.handle.getXY();
+                expect(dist([x0 + 100, y0], [x2, y2])).to.be.below(120);
+            });
+
         it('should show small handle when cursor is on bubble\'s edge',
             () => {
                 var b = Balloons.addBalloon(x0, y0);
@@ -231,7 +248,7 @@ describe('Connecting bubbles',
         it('should move handle around the bubble together with cursor',
             () => {
                 Balloons.addBalloon(x0, y0);
-                var dx1 = 100;
+                var dx1 = 50;
                 Space.showHandle();
                 var [x, y] = Space.toScreenPoint(x0, y0);
                 Mouse.move(x + dx1, y);
@@ -251,6 +268,7 @@ describe('Space behavior',
     () => {
         it('should allow to grab and move around the canvas',
             () => {
+                Space.clear();
                 Space.isTesting = true;
                 var b = Balloons.addBalloon(x0, y0);
                 var [x1, y1, w1, h1] = Space.viewBox();
@@ -265,6 +283,7 @@ describe('Space behavior',
 
         it('should allow to zoom in and out the canvas',
             () => {
+                Space.clear();
                 var [x1, y1, w1, h1] = Space.viewBox();
                 Space.zoom(10);
                 var [x2, y2, w2, h2] = Space.viewBox();
@@ -278,21 +297,23 @@ describe('Space behavior',
                 //Space.clear();
             });
 
-        it('should allow to create balloons in same cursor place after zoom',
-            () => {
-                Space.zoom(10);
-                Mouse.doubleclick(x0, y0);
-                var [x1, y1] = Space.toScreenPoint(x0, y0);
-                var b = Balloons.getLast();
-                var [x2, y2, w, h] = b.rect();
-                [x2, y2] = Space.toScreenPoint(x2 + w / 2, y2 + h / 2);
-                x1.should.equal(x2);
-                y1.should.equal(y2);
-                Space.clear();
-            });
+        //it('should allow to create balloons in same cursor place after zoom',
+        //    () => {
+        //        Space.clear();
+        //        Space.zoom(10);
+        //        Mouse.doubleclick(x0, y0);
+        //        var [x1, y1] = Space.toScreenPoint(x0, y0);
+        //        var b = Balloons.getLast();
+        //        var [x2, y2, w, h] = b.rect();
+        //        [x2, y2] = Space.toScreenPoint(x2 + w / 2, y2 + h / 2);
+        //        x1.should.equal(x2);
+        //        y1.should.equal(y2);
+        //        Space.clear();
+        //    });
 
         it('should not modify ability to move balloons after zoom',
             () => {
+                Space.clear();
                 var b = Balloons.addBalloon(x0, y0);
                 Space.zoom(10);
                 var [x, y] = b.getXY();
@@ -309,6 +330,7 @@ describe('Space behavior',
 
         it('should not move balloons far away when grabbed after zoom',
             () => {
+                Space.clear();
                 Space.zoom(10);
                 Space.draggingBalloon.should.equal(false);
                 Mouse.doubleclick(x0, y0);

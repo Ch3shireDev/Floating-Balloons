@@ -86,8 +86,16 @@
         Space.mousePos = [event.clientX, event.clientY];
         var [dx, dy] = [x1 - x0, y1 - y0];
         this.xy = [x1, y1];
-        if (typeof
-            Space.isTesting === 'undefined' && event.buttons !== 1) return;
+
+        if (Space.handle !== null) {
+            var closestBalloon = Balloons.findClosest(event.clientX, event.clientY);
+            if (closestBalloon !== null) {
+                Space.handle.parentBalloon = closestBalloon;
+                Space.handle.showHandle();
+            }
+        }
+
+        if (typeof Space.isTesting === 'undefined' && event.buttons !== 1) return;
         if (Space.mouseDown === false) return;
         if (Space.draggingBalloon) {
             if (Space.currentElement == null) return;
