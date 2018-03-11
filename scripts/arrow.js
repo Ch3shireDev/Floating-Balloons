@@ -7,11 +7,24 @@
         balloon.childArrows.push(this);
         this.arrow = Space.s.path(this.getPathString());
         this.arrow.attr({
+            class: 'arrow',
             stroke: 'black',
             strokeWidth: 2,
             opacity: 0.8,
             fill: 'transparent'
         });
+    }
+
+    setVisibility(value) {
+        this.arrow.attr({ visibility: value });
+    }
+
+    hide() {
+        this.setVisibility('hidden');
+    }
+
+    show() {
+        this.setVisibility('visible');
     }
 
     getStartAndEnd() {

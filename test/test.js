@@ -270,9 +270,7 @@ describe('Space behavior',
                 var [x2, y2, w2, h2] = Space.viewBox();
                 Space.zoom(-20);
                 var [x3, y3, w3, h3] = Space.viewBox();
-                //console.log(x1 + " " + y1 + " " + w1 + " " + h1);
-                //console.log(x2 + " " + y2 + " " + w2 + " " + h2);
-                //console.log(x3 + " " + y3 + " " + w3 + " " + h3);
+
                 w2.should.be.above(w1);
                 w1.should.be.above(w3);
                 h2.should.be.above(h1);
@@ -299,7 +297,8 @@ describe('Space behavior',
                 Space.zoom(10);
                 var [x, y] = b.getXY();
                 b.isGrabbed().should.equal(false);
-                Mouse.click(x, y);
+                [x, y] = Space.toScreenPoint(x, y);
+                Mouse.click(x + 1, y + 1);
                 b.isGrabbed().should.equal(true);
                 Mouse.move(x + 10, y + 10);
                 var [x2, y2] = b.getXY();
@@ -329,12 +328,56 @@ describe('Arrow behavior',
     () => {
         it('should create an arrow between parent and child balloon',
             () => {
-
+                var b1 = Balloons.addBalloon(x0, y0);
+                Balloons.showHandle();
+                var [x, y] = Space.handle.getXY();
+                [x, y] = Space.toScreenPoint(x, y);
+                Mouse.click(x + 5, y + 5);
+                Mouse.move(x + 100, y);
+                Mouse.release(x + 100, y);
+                expect($('.arrow')[0]).to.not.equal(null);
+                var b2 = Balloons.getLast();
+                expect(b1).should.not.be.equal(b2);
+                expect(b1.childBalloons[0]).to.be.equal(b2);
+                Space.clear();
             });
 
-        it('should connect when arrow is released over another bubble');
+        it('should connect when arrow is released over another bubble',
+            () => {
+                var b1 = Balloons.addBalloon(x0, y0);
+                var b2 = Balloons.addBalloon(x0 + 300, y0);
+                var [x, y] = b2.getXY();
+                [x, y] = Space.toScreenPoint(x, y);
+                Mouse.move(x, y);
+                Balloons.showHandle();
+                [x, y] = Space.handle.getXY();
+                [x, y] = Space.toScreenPoint(x, y);
+                Mouse.click(x + 1, y + 1);
+                var [x2, y2] = Space.toScreenPoint(x0, y0);
+                Mouse.move(x2 + 10, y2 + 10);
+                Mouse.release(x2 + 10, y2 + 10);
+                (b2.childArrows[0]).should.not.equal(null);
+                Balloons.balloonsList.length.should.equal(2);
+                Space.clear();
+            });
 
-        it('should create another bubble when arrow is released over an empty space');
+        it('should create another bubble when arrow is released over an empty space',
+            () => {
+                Balloons.balloonsList.length.should.equal(0);
+                var b1 = Balloons.addBalloon(x0, y0);
+                Balloons.balloonsList.length.should.equal(1);
+                var [x, y] = b1.getXY();
+                [x, y] = Space.toScreenPoint(x, y);
+                Mouse.move(x, y);
+                Balloons.showHandle();
+                [x, y] = Space.handle.getXY();
+                [x, y] = Space.toScreenPoint(x, y);
+                Mouse.click(x + 1, y + 1);
+                Mouse.move(x + 200, y);
+                Mouse.release(x + 200, y);
+                Balloons.balloonsList.length.should.equal(2);
+                Space.clear();
+            });
 
         it('should create dependency between arrow, parent and child balloons',
             () => {

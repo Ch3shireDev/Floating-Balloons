@@ -87,6 +87,7 @@
 
     clear() {
         while (Balloons.balloonsList.length > 0) Balloons.removeLast();
+        Balloons.numBalloons = 0;
         if (Space.handle !== null) {
             Space.handle.handle.remove();
         }

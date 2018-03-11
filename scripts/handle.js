@@ -7,8 +7,6 @@
         this.handle.attr({
             class: 'balloon',
             id: 'handle',
-            //stroke: '#123456',
-            //strokeWidth: 5,
             fill: 'red',
             opacity: 0.8
         });
@@ -45,28 +43,30 @@
     }
 
     drop(x, y, e) {
-        this.handle.attr({
-            visibility: "hidden"
-        });
+        this.handle.attr({ visibility: 'hidden' });
+        this.arrow.hide();
 
         var [x0, y0, element] = Space.getElement(e);
 
+        var b = null;
+
         if (element.id === 'body') {
-            var b = this.createBalloon(x, y);
-            this.parentBalloon.childBalloons.push(b);
-            this.parentBalloon.childArrows.push(this.arrow);
-            this.arrow.headBalloon = b;
-            this.arrow = null;
+            b = this.createBalloon(x, y);
         }
         else if (element.class === 'balloon') {
-            var b = Balloons.findFromElement(element);
-            this.parentBalloon.childArrows.push(this.arrow);
-            this.arrow.headBalloon = b;
-            this.parentBalloon.childBalloons.push(b);
-            this.arrow = null;
+            b = Balloons.findFromElement(element);
         }
 
+        if (b !== null) {
+            this.parentBalloon.childArrows.push(this.arrow);
+            this.parentBalloon.childBalloons.push(b);
+            this.arrow.headBalloon = b;
+        }
+
+        this.arrow.show();
+        this.arrow = null;
         this.isDragged = false;
+        this.handle.attr({ visibility: 'visible' });
     }
 
     showHandle() {
