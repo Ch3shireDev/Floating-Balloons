@@ -101,7 +101,7 @@
         fO.setAttribute('y', y);
         fO.setAttribute('width', w);
         fO.setAttribute('height', h);
-        fO.innerHTML = '<div>text</div>';
+        fO.innerHTML = '<div class="inner-text">text</div>';
         div.after(fO);
 
         Balloons.numBalloons++;
@@ -121,11 +121,5 @@
             .remove();
 
         return path;
-    }
-
-    closestPoint() {
-        var [x, y] = Space.toCursorPoint(Space.mousePos[0], Space.mousePos[1]);
-        var r = Snap.closestPoint(this.path, x, y);
-        return r;
     }
 }

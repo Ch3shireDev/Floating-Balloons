@@ -91,18 +91,19 @@ describe('Moving a bubble',
             () => {
                 var b1 = Balloons.addBalloon(x0, y0);
                 var b2 = Balloons.addBalloon(x0, y0);
-                Mouse.click(x0, y0);
+                var [x, y] = Space.toScreenPoint(x0, y0);
+                Mouse.click(x, y);
                 b1.isGrabbed().should.equal(false);
                 b2.isGrabbed().should.equal(true);
-                Mouse.release(x0, y0);
+                Mouse.release(x, y);
                 b1.grab();
                 b1.drop();
                 b1.isGrabbed().should.equal(false);
                 b2.isGrabbed().should.equal(false);
-                Mouse.click(x0, y0);
+                Mouse.click(x, y);
                 b1.isGrabbed().should.equal(true);
                 b2.isGrabbed().should.equal(false);
-                Mouse.release(x0, y0);
+                Mouse.release(x, y);
                 Space.clear();
             });
 
@@ -201,21 +202,37 @@ describe('Changing a text',
 
 describe('Handle behavior',
     () => {
+        it('should allow to grab and move a handle',
+            () => {
+                var [dx, dy] = [100, 200];
+                Balloons.addBalloon(x0, y0);
+                Space.showHandle();
+                var handle = Space.handle;
+                var [x, y] = handle.getXY();
+                Mouse.move(0, y);
+                handle.showHandle();
+                [x, y] = Space.toScreenPoint(x, y);
+                Mouse.click(x, y);
+                Mouse.move(x - dx, y - dy);
+                var [x2, y2] = handle.getXY();
+                x.should.not.equal(x2);
+                y.should.not.equal(y2);
+                Space.clear();
+            });
+
         it('should show handle near every balloon when cursor is nearby',
             () => {
-                var dist = (a, b) => { return Math.sqrt((a[0] - b[0]) * (a[0] - b[0]) + (a[1] - b[1]) * (a[1] - b[1])); }
-
-                var b1 = Balloons.addBalloon(x0, y0);
-                var b2 = Balloons.addBalloon(x0 + 600, y0);
-                Mouse.move(x0 + 500, y0);
+                Mouse.doubleclick(x0, y0);
+                Mouse.doubleclick(x0 + 400, y0);
+                Mouse.move(x0 - 200, y0);
+                Mouse.move(x0 - 300, y0);
                 Space.showHandle();
                 var [x1, y1] = Space.handle.getXY();
-                expect(dist([x0 + 600, y0], [x1, y1])).to.be.below(120);
-
-                Mouse.move(x0 + 100, y0);
+                Mouse.move(x0 + 400, y0);
                 Space.showHandle();
                 var [x2, y2] = Space.handle.getXY();
-                expect(dist([x0 + 100, y0], [x2, y2])).to.be.below(120);
+                expect(x2 - x1).to.be.above(200);
+                Space.clear();
             });
 
         it('should show small handle when cursor is on bubble\'s edge',
@@ -228,34 +245,17 @@ describe('Handle behavior',
                 Space.clear();
             });
 
-        it('should allow to grab and move a handle',
-            () => {
-                var [dx, dy] = [100, 200];
-                Balloons.addBalloon(x0, y0);
-                Space.showHandle();
-                var handle = Space.handle;
-                var [x, y] = handle.getXY();
-                Mouse.move(0, y);
-                handle.showHandle(Balloons.getLast());
-                Mouse.click(x, y);
-                Mouse.move(x + dx, y + dy);
-                var [x2, y2] = handle.getXY();
-                x.should.not.equal(x2);
-                y.should.not.equal(y2);
-                Space.clear();
-            });
-
         it('should move handle around the bubble together with cursor',
             () => {
                 Balloons.addBalloon(x0, y0);
-                var dx1 = 50;
+                var dx = 100;
                 Space.showHandle();
-                var [x, y] = Space.toScreenPoint(x0, y0);
-                Mouse.move(x + dx1, y);
+                var [x, y] = Space.toCursorPoint(x0, y0);
+                Mouse.move(x + dx, y);
                 Space.showHandle();
                 var handle = Space.handle;
                 var [x1, y1] = handle.getXY();
-                Mouse.move(x, y);
+                Mouse.move(x - dx, y);
                 Space.showHandle();
                 var [x2, y2] = handle.getXY();
 
@@ -350,8 +350,9 @@ describe('Arrow behavior',
     () => {
         it('should create an arrow between parent and child balloon',
             () => {
+                Space.clear();
                 var b1 = Balloons.addBalloon(x0, y0);
-                Balloons.showHandle();
+                Space.showHandle();
                 var [x, y] = Space.handle.getXY();
                 [x, y] = Space.toScreenPoint(x, y);
                 Mouse.click(x + 5, y + 5);
@@ -371,7 +372,7 @@ describe('Arrow behavior',
                 var [x, y] = b2.getXY();
                 [x, y] = Space.toScreenPoint(x, y);
                 Mouse.move(x, y);
-                Balloons.showHandle();
+                Space.showHandle();
                 [x, y] = Space.handle.getXY();
                 [x, y] = Space.toScreenPoint(x, y);
                 Mouse.click(x + 1, y + 1);
@@ -391,7 +392,7 @@ describe('Arrow behavior',
                 var [x, y] = b1.getXY();
                 [x, y] = Space.toScreenPoint(x, y);
                 Mouse.move(x, y);
-                Balloons.showHandle();
+                Space.showHandle();
                 [x, y] = Space.handle.getXY();
                 [x, y] = Space.toScreenPoint(x, y);
                 Mouse.click(x + 1, y + 1);
@@ -404,7 +405,7 @@ describe('Arrow behavior',
         it('should create dependency between arrow, parent and child balloons',
             () => {
                 var b = Balloons.addBalloon(x0, y0);
-                Balloons.showHandle();
+                Space.showHandle();
                 var [x, y] = Space.handle.getXY();
                 [x, y] = Space.toScreenPoint(x, y);
                 Mouse.click(x + 5, y + 5);

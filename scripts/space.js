@@ -88,11 +88,6 @@
         this.xy = [x1, y1];
 
         if (Space.handle !== null) {
-            var closestBalloon = Balloons.findClosest(event.clientX, event.clientY);
-            if (closestBalloon !== null) {
-                Space.handle.parentBalloon = closestBalloon;
-                Space.handle.showHandle();
-            }
         }
 
         if (typeof Space.isTesting === 'undefined' && event.buttons !== 1) return;
@@ -146,7 +141,18 @@
     },
 
     showHandle() {
-        Balloons.showHandle();
+        if (Balloons.getLast() === null) return;
+        if (Space.handle === null) {
+            Space.handle = new Handle();
+        }
+        var [x, y] = this.mousePos;
+        var closestBalloon = Balloons.findClosest(x, y);
+        if (closestBalloon !== null) {
+            Space.handle.parentBalloon = closestBalloon;
+            Space.handle.showHandle();
+        }
+
+        this.handle.showHandle();
     },
 
     clear() {

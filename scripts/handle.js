@@ -56,6 +56,9 @@
         else if (element.class === 'balloon') {
             b = Balloons.findFromElement(element);
         }
+        else if (element.getAttribute('class') === 'inner-text') {
+            b = Balloons.findFromElement(element.parentElement);
+        }
 
         if (b !== null) {
             this.parentBalloon.childArrows.push(this.arrow);
@@ -71,7 +74,10 @@
 
     showHandle() {
         if (this.parentBalloon === null || this.isDragged) return;
-        this.setLocation(this.parentBalloon.closestPoint());
+        var [x, y] = Space.mousePos;
+        [x, y] = Space.toCursorPoint(x, y);
+        var r = Snap.closestPoint(this.parentBalloon.path, x, y);
+        this.setLocation(r);
     }
 
     createBalloon(x, y) {

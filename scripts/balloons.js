@@ -94,23 +94,13 @@
         Space.handle = null;
     },
 
-    showHandle() {
-        var b = this.getLast();
-        if (b !== null) {
-            if (Space.handle === null) {
-                Space.handle = new Handle();
-            }
-            //Space.handle.parentBalloon = b;
-            Space.handle.showHandle();
-        }
-    },
-
     findClosest(x, y) {
+        [x, y] = Space.toScreenPoint(x, y);
         var closest = null;
-        var dist = 9999999;
+        var dist = 9999999999;
         this.balloonsList.forEach(function (element) {
             var [x0, y0] = element.getXY();
-            var d = (x - x0) * (x - x0) + (y - y0) * (y - y0);
+            var d = Math.abs(x - x0) + Math.abs(y - y0);
             if (d < dist) {
                 closest = element;
                 dist = d;
