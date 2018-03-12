@@ -61,13 +61,20 @@
         const div = this.div;
         const w = parseFloat(div.attr('width'));
         const h = parseFloat(div.attr('height'));
-        const x = parseFloat(div.attr('x'));
-        const y = parseFloat(div.attr('y'));
+        const [x, y] = this.getXY();
         return [x, y, w, h];
     }
 
     getXY() {
-        const [x, y, w, h] = this.rect();
+        const div = this.div;
+        const x = parseFloat(div.attr('x')),
+            y = parseFloat(div.attr('y'));
+        return [x, y];
+    }
+
+    screenXY() {
+        var [x, y, ,] = this.rect();
+        [x, y] = Space.toScreenPoint(x, y);
         return [x, y];
     }
 
@@ -114,12 +121,15 @@
         var path = Space.s.path(r0)
             .transform(`translate(${x - 130}, ${y - 130}) scale(1.3)`)
             .remove();
-
         var r = Snap.path.map(path.realPath, path.matrix);
-
-        path = Space.s.path(r)
-            .remove();
-
+        path = Space.s.path(r).remove();
         return path;
+    }
+
+    distance(x, y) {
+        [x, y] = Space.toScreenPoint(x, y);
+        var [x2, y2] = this.screenXY();
+        var d = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
+        return d;
     }
 }

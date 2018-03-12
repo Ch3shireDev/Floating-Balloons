@@ -18,6 +18,11 @@
         return [x, y];
     }
 
+    screenXY() {
+        const [x, y] = this.getXY();
+        return Space.toScreenPoint(x, y);
+    }
+
     setLocation(r) {
         this.handle.attr('x', r.x - 20);
         this.handle.attr('y', r.y - 20);
@@ -75,6 +80,7 @@
     showHandle() {
         if (this.parentBalloon === null || this.isDragged) return;
         var [x, y] = Space.mousePos;
+        console.log(this.parentBalloon.distance(x, y));
         [x, y] = Space.toCursorPoint(x, y);
         var r = Snap.closestPoint(this.parentBalloon.path, x, y);
         this.setLocation(r);

@@ -156,7 +156,6 @@ describe('Changing a text',
         it('should close a textarea on click outside the bubble',
             () => {
                 Balloons.addBalloon(x0, y0);
-                //var [x, y] = Space.toCursorPoint(x0, y0);
                 Mouse.doubleclick(x0, y0);
                 (currentTextareaBalloon).should.not.equal(null);
                 Mouse.click(1, 1);
@@ -208,10 +207,9 @@ describe('Handle behavior',
                 Balloons.addBalloon(x0, y0);
                 Space.showHandle();
                 var handle = Space.handle;
-                var [x, y] = handle.getXY();
+                var [x, y] = handle.screenXY();
                 Mouse.move(0, y);
                 handle.showHandle();
-                [x, y] = Space.toScreenPoint(x, y);
                 Mouse.click(x, y);
                 Mouse.move(x - dx, y - dy);
                 var [x2, y2] = handle.getXY();
@@ -227,10 +225,10 @@ describe('Handle behavior',
                 Mouse.move(x0 - 200, y0);
                 Mouse.move(x0 - 300, y0);
                 Space.showHandle();
-                var [x1, y1] = Space.handle.getXY();
+                var [x1,] = Space.handle.getXY();
                 Mouse.move(x0 + 400, y0);
                 Space.showHandle();
-                var [x2, y2] = Space.handle.getXY();
+                var [x2,] = Space.handle.getXY();
                 expect(x2 - x1).to.be.above(200);
                 Space.clear();
             });
@@ -254,10 +252,10 @@ describe('Handle behavior',
                 Mouse.move(x + dx, y);
                 Space.showHandle();
                 var handle = Space.handle;
-                var [x1, y1] = handle.getXY();
+                var [x1,] = handle.getXY();
                 Mouse.move(x - dx, y);
                 Space.showHandle();
-                var [x2, y2] = handle.getXY();
+                var [x2,] = handle.getXY();
 
                 (x1 > x2).should.equal(true);
                 Space.clear();
@@ -270,13 +268,13 @@ describe('Space behavior',
             () => {
                 Space.clear();
                 Space.isTesting = true;
-                var b = Balloons.addBalloon(x0, y0);
-                var [x1, y1, w1, h1] = Space.viewBox();
+                Balloons.addBalloon(x0, y0);
+                var [x1, y1, ,] = Space.viewBox();
                 Mouse.click(x0 + 200, y0 + 200);
                 Mouse.move(x0 + 300, y0 + 300);
                 Space.draggingBalloon.should.equal(false);
                 Space.draggingSpace.should.equal(true);
-                var [x2, y2, w2, h2] = Space.viewBox();
+                var [x2, y2, ,] = Space.viewBox();
                 x1.should.not.equal(x2);
                 y1.should.not.equal(y2);
             });
@@ -284,11 +282,11 @@ describe('Space behavior',
         it('should allow to zoom in and out the canvas',
             () => {
                 Space.clear();
-                var [x1, y1, w1, h1] = Space.viewBox();
+                var [, , w1, h1] = Space.viewBox();
                 Space.zoom(10);
-                var [x2, y2, w2, h2] = Space.viewBox();
+                var [, , w2, h2] = Space.viewBox();
                 Space.zoom(-20);
-                var [x3, y3, w3, h3] = Space.viewBox();
+                var [, , w3, h3] = Space.viewBox();
 
                 w2.should.be.above(w1);
                 w1.should.be.above(w3);
@@ -316,9 +314,8 @@ describe('Space behavior',
                 Space.clear();
                 var b = Balloons.addBalloon(x0, y0);
                 Space.zoom(10);
-                var [x, y] = b.getXY();
+                var [x, y] = b.screenXY();
                 b.isGrabbed().should.equal(false);
-                [x, y] = Space.toScreenPoint(x, y);
                 Mouse.click(x + 1, y + 1);
                 b.isGrabbed().should.equal(true);
                 Mouse.move(x + 10, y + 10);
@@ -353,8 +350,7 @@ describe('Arrow behavior',
                 Space.clear();
                 var b1 = Balloons.addBalloon(x0, y0);
                 Space.showHandle();
-                var [x, y] = Space.handle.getXY();
-                [x, y] = Space.toScreenPoint(x, y);
+                var [x, y] = Space.handle.screenXY();
                 Mouse.click(x + 5, y + 5);
                 Mouse.move(x + 100, y);
                 Mouse.release(x + 100, y);
@@ -369,12 +365,10 @@ describe('Arrow behavior',
             () => {
                 var b1 = Balloons.addBalloon(x0, y0);
                 var b2 = Balloons.addBalloon(x0 + 300, y0);
-                var [x, y] = b2.getXY();
-                [x, y] = Space.toScreenPoint(x, y);
+                var [x, y] = b2.screenXY();
                 Mouse.move(x, y);
                 Space.showHandle();
-                [x, y] = Space.handle.getXY();
-                [x, y] = Space.toScreenPoint(x, y);
+                [x, y] = Space.handle.screenXY();
                 Mouse.click(x + 1, y + 1);
                 var [x2, y2] = Space.toScreenPoint(x0, y0);
                 Mouse.move(x2 + 10, y2 + 10);
@@ -389,12 +383,10 @@ describe('Arrow behavior',
                 Balloons.balloonsList.length.should.equal(0);
                 var b1 = Balloons.addBalloon(x0, y0);
                 Balloons.balloonsList.length.should.equal(1);
-                var [x, y] = b1.getXY();
-                [x, y] = Space.toScreenPoint(x, y);
+                var [x, y] = b1.screenXY();
                 Mouse.move(x, y);
                 Space.showHandle();
-                [x, y] = Space.handle.getXY();
-                [x, y] = Space.toScreenPoint(x, y);
+                [x, y] = Space.handle.screenXY();
                 Mouse.click(x + 1, y + 1);
                 Mouse.move(x + 200, y);
                 Mouse.release(x + 200, y);
@@ -406,8 +398,7 @@ describe('Arrow behavior',
             () => {
                 var b = Balloons.addBalloon(x0, y0);
                 Space.showHandle();
-                var [x, y] = Space.handle.getXY();
-                [x, y] = Space.toScreenPoint(x, y);
+                var [x, y] = Space.handle.screenXY();
                 Mouse.click(x + 5, y + 5);
                 Mouse.move(x + 200, y);
                 var arrow = b.childArrows[0];

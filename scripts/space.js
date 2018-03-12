@@ -101,6 +101,7 @@
         else if (Space.draggingHandle) {
             var [x, y] = Space.handle.getXY();
             [x, y] = Space.toScreenPoint(x + dx, y + dy);
+
             Space.handle.move(x, y);
         }
         else if (Space.draggingSpace) {
@@ -147,11 +148,11 @@
         }
         var [x, y] = this.mousePos;
         var closestBalloon = Balloons.findClosest(x, y);
+        //var closestBalloon = Balloons.getLast();
         if (closestBalloon !== null) {
             Space.handle.parentBalloon = closestBalloon;
             Space.handle.showHandle();
         }
-
         this.handle.showHandle();
     },
 
@@ -175,6 +176,11 @@
         else if (h !== undefined) {
             this.s.attr({ viewBox: `${x},${y},${w},${h}` });
         }
+    },
+
+    getXY() {
+        const [x, y, ,] = this.viewBox();
+        return [x, y];
     },
 
     zoom(value) {
