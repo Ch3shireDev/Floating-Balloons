@@ -218,31 +218,6 @@ describe('Handle behavior',
                 Space.clear();
             });
 
-        it('should show handle near every balloon when cursor is nearby',
-            () => {
-                Mouse.doubleclick(x0, y0);
-                Mouse.doubleclick(x0 + 400, y0);
-                Mouse.move(x0 - 200, y0);
-                Mouse.move(x0 - 300, y0);
-                Space.showHandle();
-                var [x1,] = Space.handle.getXY();
-                Mouse.move(x0 + 400, y0);
-                Space.showHandle();
-                var [x2,] = Space.handle.getXY();
-                expect(x2 - x1).to.be.above(200);
-                Space.clear();
-            });
-
-        it('should show small handle when cursor is on bubble\'s edge',
-            () => {
-                var b = Balloons.addBalloon(x0, y0);
-                Mouse.move(x0 + 60, y0 + 120);
-                Mouse.move(x0 + 60, y0 + 130);
-                Space.showHandle();
-                ($('#handle')[0].id === 'handle').should.equal(true);
-                Space.clear();
-            });
-
         it('should move handle around the bubble together with cursor',
             () => {
                 Balloons.addBalloon(x0, y0);
@@ -259,6 +234,45 @@ describe('Handle behavior',
 
                 (x1 > x2).should.equal(true);
                 Space.clear();
+            });
+
+        it('should show small handle when cursor is on bubble\'s edge',
+            () => {
+                var b = Balloons.addBalloon(x0, y0);
+                Mouse.move(x0 + 60, y0 + 120);
+                Mouse.move(x0 + 60, y0 + 130);
+                Space.showHandle();
+                ($('#handle')[0].id === 'handle').should.equal(true);
+                Space.clear();
+            });
+
+        it('should show handle near every balloon when cursor is nearby',
+            () => {
+                Mouse.doubleclick(x0, y0);
+                Mouse.doubleclick(x0 + 400, y0);
+                Mouse.move(x0 - 200, y0);
+                Mouse.move(x0 - 300, y0);
+                Space.showHandle();
+                var [x1,] = Space.handle.getXY();
+                Mouse.move(x0 + 400, y0);
+                Space.showHandle();
+                var [x2,] = Space.handle.getXY();
+                expect(x2 - x1).to.be.above(200);
+                Space.clear();
+            });
+
+        it('should move handle between balloons after zoom together with cursor',
+            () => {
+                Space.zoom(5000);
+                Mouse.doubleclick(100, 400);
+                Mouse.doubleclick(500, 400);
+                Mouse.move(300, 400);
+                Space.showHandle();
+                var [x1, y1] = Space.handle.getXY();
+                Mouse.move(200, 400);
+                Space.showHandle();
+                var [x2, y2] = Space.handle.getXY();
+                x1.should.be.above(x2);
             });
     });
 
