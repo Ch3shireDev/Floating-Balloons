@@ -73,7 +73,8 @@
     }
 
     screenXY() {
-        var [x, y, ,] = this.rect();
+        //if negative then more left, if positive then more right
+        var [x, y] = this.getXY();
         [x, y] = Space.toScreenPoint(x, y);
         return [x, y];
     }
@@ -127,7 +128,6 @@
     }
 
     distance(x, y) {
-        [x, y] = Space.toScreenPoint(x, y);
         var [x2, y2] = this.screenXY();
         var d = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
         return d;
