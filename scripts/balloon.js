@@ -7,19 +7,17 @@
         this.H = 100;
 
         this.grabbed = false;
-
         [this.fO, this.div] = this.createBalloon(x, y);
-
         this.id = this.div.attr('id');
-
         this.path = this.CreatePath(x, y);
-
         //remove selection
-        if (window.getSelection) { window.getSelection().removeAllRanges(); }
-        else if (document.selection) { document.selection.empty(); }
-
+        if (window.getSelection)
+            window.getSelection().removeAllRanges();
+        else if (document.selection)
+            document.selection.empty();
         this.childBalloons = [];
         this.childArrows = [];
+        this.parentArrows = [];
     }
 
     wh() {
@@ -80,21 +78,19 @@
     }
 
     move(x, y) {
-        [x, y] = (new Point(x, y)).toCursorPoint();
+        [x, y] = Space.toCursorPoint(x, y);
         this.div.attr('x', x);
         this.div.attr('y', y);
         this.fO.setAttribute('x', x);
         this.fO.setAttribute('y', y);
         this.x = x;
         this.y = y;
-
-        //alert(this.childBalloons.length);
-
-        //console.log(this.childArrows);
-        //if (this.childArrows.length === 0) return;
-        //this.childArrows.forEach(function(arrow) {
-        //arrow.moveTail(x, y);
-        //});
+        this.childArrows.forEach(function (arrow) {
+            arrow.moveTail(x, y);
+        });
+        this.parentArrows.forEach(function (arrow) {
+            arrow.moveHead(x, y);
+        });
     }
 
     createBalloon(x, y) {

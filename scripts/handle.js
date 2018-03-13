@@ -13,8 +13,8 @@
     }
 
     getXY() {
-        var x = parseFloat(this.handle.attr('x'));
-        var y = parseFloat(this.handle.attr('y'));
+        var x = parseFloat(this.handle.attr('x')),
+            y = parseFloat(this.handle.attr('y'));
         return [x, y];
     }
 
@@ -30,9 +30,8 @@
 
     grab() {
         this.isDragged = true;
-        if (this.arrow !== null) {
+        if (this.arrow !== null)
             this.arrow.remove();
-        }
         if (this.parentBalloon !== null) {
             var [x, y] = this.getXY();
             [x, y] = [x + 20, y + 20];
@@ -50,38 +49,37 @@
     drop(x, y, e) {
         this.handle.attr({ visibility: 'hidden' });
         this.arrow.hide();
-
-        var [x0, y0, element] = Space.getElement(e);
-
+        var [, , element] = Space.getElement(e);
         var b = null;
-
-        if (element.id === 'body') {
-            b = this.createBalloon(x, y);
-        }
-        else if (element.class === 'balloon') {
+        if (element.id === 'body') b = this.createBalloon(x, y);
+        else if (element.class === 'balloon')
             b = Balloons.findFromElement(element);
-        }
-        else if (element.getAttribute('class') === 'inner-text') {
+        else if (element.getAttribute('class') === 'inner-text')
             b = Balloons.findFromElement(element.parentElement);
-        }
-
-        if (b !== null) {
+        if (b !== null && typeof b !== 'undefined') {
             this.parentBalloon.childArrows.push(this.arrow);
             this.parentBalloon.childBalloons.push(b);
             this.arrow.headBalloon = b;
+            b.parentArrows.push(this.arrow);
         }
-
         this.arrow.show();
+
+        [x, y] = this.arrow.headBalloon.getXY();
+        this.arrow.moveHead(x, y);
+
+        [x, y] = this.arrow.tailBalloon.getXY();
+        this.arrow.moveTail(x, y);
+
         this.arrow = null;
         this.isDragged = false;
         this.handle.attr({ visibility: 'visible' });
     }
 
     showHandle() {
-        if (this.parentBalloon === null || this.isDragged) return;
-        
+        if (this.isDragged) return;
         var [x, y] = Space.mousePos;
-        console.log(this.parentBalloon.distance(x, y));
+        var closestBalloon = Balloons.findClosest(x, y);
+        if (closestBalloon !== null) this.parentBalloon = closestBalloon;
         [x, y] = Space.toCursorPoint(x, y);
         var r = Snap.closestPoint(this.parentBalloon.path, x, y);
         this.setLocation(r);

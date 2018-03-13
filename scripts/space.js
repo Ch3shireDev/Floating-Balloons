@@ -146,13 +146,6 @@
         if (Space.handle === null) {
             Space.handle = new Handle();
         }
-        var [x, y] = this.mousePos;
-        var closestBalloon = Balloons.findClosest(x, y);
-        //var closestBalloon = Balloons.getLast();
-        if (closestBalloon !== null) {
-            Space.handle.parentBalloon = closestBalloon;
-            Space.handle.showHandle();
-        }
         this.handle.showHandle();
     },
 

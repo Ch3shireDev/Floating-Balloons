@@ -359,6 +359,44 @@ describe('Space behavior',
 
 describe('Arrow behavior',
     () => {
+        it('should move arrow together with balloons',
+            () => {
+                Mouse.doubleclick(x0, y0);
+                var b1 = Balloons.getLast();
+                Mouse.doubleclick(x0 + 400, y0);
+                var b2 = Balloons.getLast();
+                Mouse.move(x0 + 100, y0);
+                Space.showHandle();
+                var [x, y] = Space.handle.getXY();
+                [x, y] = Space.toScreenPoint(x, y);
+                Mouse.click(x + 5, y + 5);
+                Mouse.move(x0 + 400, y0);
+                Mouse.release(x0 + 400, y0);
+
+                var arrow = b1.childArrows[0];
+                var [x1, y1, x2, y2] = arrow.getStartAndEnd();
+
+                Mouse.click(x0, y0);
+                Mouse.move(x0 + 100, y0 + 100);
+                Mouse.release(x0 + 100, y0 + 100);
+
+                var [x3, y3, x4, y4] = arrow.getStartAndEnd();
+
+                x3.should.be.above(x1);
+                y3.should.be.above(y1);
+
+                Mouse.click(x0 + 400, y0);
+                Mouse.move(x0 + 500, y0 + 200);
+                Mouse.release(x0 + 500, y0 + 200);
+
+                var [x5, y5, x6, y6] = arrow.getStartAndEnd();
+
+                x6.should.be.above(x2);
+                y6.should.be.above(y2);
+
+                Space.clear();
+            });
+
         it('should create an arrow between parent and child balloon',
             () => {
                 Space.clear();
@@ -423,40 +461,6 @@ describe('Arrow behavior',
                 b.childArrows[0].should.equal(arrow);
                 b.childBalloons[0].should.equal(b2);
                 Space.clear();
-            });
-
-        it('should move arrow together with balloons',
-            () => {
-                Mouse.doubleclick(x0, y0);
-                var b1 = Balloons.getLast();
-                Mouse.doubleclick(x0 + 400, y0);
-                var b2 = Balloons.getLast();
-                Mouse.move(x0 + 100, y0);
-                Space.showHandle();
-                var [x, y] = Space.handle.getXY();
-                Mouse.click(x, y);
-                Mouse.move(x0 + 400, y0);
-                Mouse.release(x0 + 400, y0);
-
-                var arrow = b1.childArrows[0];
-                var [x1, y1, x2, y2] = arrow.getStartAndEnd();
-
-                Mouse.click(x0, y0);
-                Mouse.move(x0+100, y0 + 200);
-                Mouse.release(x0+100, y0 + 200);
-
-                var [x3, y3, x4, y4] = arrow.getStartAndEnd();
-
-                x3.should.be.above(x1);
-                y3.should.be.above(y1);
-
-                Mouse.click(x0 + 400, y0);
-                Mouse.click(x0 + 500, y0+200);
-
-                var [x5, y5, x6, y6] = arrow.getStartAndEnd();
-
-                x6.should.be.above(x2);
-                y6.should.be.above(y2);
             });
     });
 
