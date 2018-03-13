@@ -87,6 +87,14 @@
         this.fO.setAttribute('y', y);
         this.x = x;
         this.y = y;
+
+        //alert(this.childBalloons.length);
+
+        //console.log(this.childArrows);
+        //if (this.childArrows.length === 0) return;
+        //this.childArrows.forEach(function(arrow) {
+        //arrow.moveTail(x, y);
+        //});
     }
 
     createBalloon(x, y) {

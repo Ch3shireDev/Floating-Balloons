@@ -79,6 +79,7 @@
 
     showHandle() {
         if (this.parentBalloon === null || this.isDragged) return;
+        
         var [x, y] = Space.mousePos;
         console.log(this.parentBalloon.distance(x, y));
         [x, y] = Space.toCursorPoint(x, y);
