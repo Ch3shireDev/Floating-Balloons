@@ -95,6 +95,7 @@
         if (Space.mouseDown === false) return;
         if (Space.draggingBalloon) {
             if (Space.currentElement == null) return;
+            console.log("Movement started");
             var [x, y] = Space.currentElement.getXY();
             [x, y] = Space.toScreenPoint(x + dx, y + dy);
             Space.currentElement.move(x, y);
@@ -116,7 +117,8 @@
         if (this.draggingBalloon) {
             Space.dxy = [0, 0];
             if (Space.currentElement !== null) {
-                Space.currentElement.drop();
+                Balloons.drop();
+                //Space.currentElement.drop();
             }
         }
         else if (this.draggingHandle) {

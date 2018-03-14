@@ -221,14 +221,15 @@ describe('Handle behavior',
         it('should move handle around the bubble together with cursor',
             () => {
                 Balloons.addBalloon(x0, y0);
-                var dx = 100;
+                var dx = 200;
                 Space.showHandle();
-                var [x, y] = Space.toCursorPoint(x0, y0);
-                Mouse.move(x + dx, y);
+                var [x, y] = Space.toCursorPoint(x0 + dx, y0);
+                Mouse.move(x, y);
                 Space.showHandle();
                 var handle = Space.handle;
                 var [x1,] = handle.getXY();
-                Mouse.move(x - dx, y);
+                [x, y] = Space.toCursorPoint(x0 - dx, y0);
+                Mouse.move(x, y);
                 Space.showHandle();
                 var [x2,] = handle.getXY();
                 (x1 > x2).should.equal(true);
@@ -494,6 +495,24 @@ describe('Arrow behavior',
                 y2.should.be.above(y1);
 
                 Space.clear();
+            });
+
+        it('should not allow for different behavior when there are loops in hierarchy',
+            () => {
+                var b1 = Balloons.addBalloon(x0, y0),
+                    b2 = Balloons.addBalloon(x0 + 300, y0);
+                b1.childBalloons.push(b2);
+                b1.move(x0, y0);
+                var [x1, y1] = b2.getXY();
+                b1.move(x0 + 50, y0 + 50);
+                var [x2, y2] = b2.getXY();
+                b1.move(x0, y0);
+                b1.childBalloons.push(b2);
+                var [x3, y3] = b2.getXY();
+                b1.move(x0 + 50, y0 + 50);
+                var [x4, y4] = b2.getXY();
+                (x2 - x1).should.be.equal(x4 - x3);
+                (y2 - y1).should.be.equal(y4 - y3);
             });
     });
 

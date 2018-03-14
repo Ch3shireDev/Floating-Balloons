@@ -17,6 +17,7 @@
         else if (document.selection)
             document.selection.empty();
         this.childBalloons = [];
+        this.parentBalloons = [];
         this.childArrows = [];
         this.parentArrows = [];
     }
@@ -54,9 +55,6 @@
     drop() {
         this.grabbed = false;
         this.path = this.CreatePath(this.x + 100, this.y + 100);
-        this.childBalloons.forEach(function (balloon) {
-            balloon.drop();
-        });
     }
 
     rect() {
@@ -86,6 +84,31 @@
         this.freezeMovement = true;
         var [x0, y0] = [x, y];
         var [x1, y1] = this.screenXY();
+        var [x2, y2] = Space.toScreenPoint(x0, y0);
+        this.moveInternal(x, y);
+        if (Space.moveChildren) {
+            var balloonSet = new Set(this.childBalloons);
+            var n = 0;
+            while (balloonSet.size != n) {
+                balloonSet.forEach(function (balloon) {
+                    balloon.childBalloons.forEach(function (b) {
+                        balloonSet.add(b);
+                    });
+                });
+                n = balloonSet.size;
+            }
+            var b = this;
+            balloonSet.forEach(function (balloon) {
+                if (balloon === b) return;
+                if (b.parentBalloons.includes(balloon)) return;
+                var [x2, y2] = balloon.screenXY();
+                balloon.moveInternal(x2 - x1 + x0, y2 - y1 + y0);
+            });
+        }
+        this.freezeMovement = false;
+    }
+
+    moveInternal(x, y) {
         [x, y] = Space.toCursorPoint(x, y);
         this.div.attr('x', x);
         this.div.attr('y', y);
@@ -93,20 +116,12 @@
         this.fO.setAttribute('y', y);
         this.x = x;
         this.y = y;
-        var [x2, y2] = Space.toScreenPoint(x0, y0);
         this.childArrows.forEach(function (arrow) {
             arrow.moveTail(x, y);
         });
         this.parentArrows.forEach(function (arrow) {
             arrow.moveHead(x, y);
         });
-        if (Space.moveChildren) {
-            this.childBalloons.forEach(function (balloon) {
-                var [x2, y2] = balloon.screenXY();
-                balloon.move(x2 - x1 + x0, y2 - y1 + y0);
-            });
-        }
-        this.freezeMovement = false;
     }
 
     createBalloon(x, y) {

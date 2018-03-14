@@ -59,6 +59,7 @@
         if (b !== null && typeof b !== 'undefined') {
             this.parentBalloon.childArrows.push(this.arrow);
             this.parentBalloon.childBalloons.push(b);
+            b.parentBalloons.push(this.parentBalloon);
             this.arrow.headBalloon = b;
             b.parentArrows.push(this.arrow);
         }

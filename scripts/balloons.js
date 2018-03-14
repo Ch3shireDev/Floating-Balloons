@@ -1,6 +1,7 @@
 ﻿var Balloons = {
     numBalloons: 0,
     balloonsList: [],
+    movedBalloons: null,
 
     findFromElement(element) {
         while (element != null) {
@@ -105,5 +106,11 @@
             }
         });
         return closest;
+    },
+
+    drop() {
+        this.balloonsList.forEach(function (balloon) {
+            balloon.drop();
+        });
     }
 };
