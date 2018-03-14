@@ -5,6 +5,7 @@
     draggingBalloon: false,
     draggingHandle: false,
     draggingSpace: false,
+    moveChildren: true,
     s: Snap('#body'),
     svg: document.querySelector('svg'),
     xy: [0, 0],
@@ -155,6 +156,7 @@
         this.draggingBalloon = false;
         this.draggingHandle = false;
         this.draggingSpace = false;
+        this.moveChildren = true;
         Balloons.clear();
         this.svg.innerHTML = '';
         var [x, y, w, h] = [0, 0, 800, 600];

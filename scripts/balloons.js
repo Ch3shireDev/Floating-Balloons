@@ -95,7 +95,6 @@
     },
 
     findClosest(x, y) {
-        //[x, y] = Space.toScreenPoint(x, y);
         var closest = null;
         var dist = 9999999999;
         this.balloonsList.forEach(function (element) {

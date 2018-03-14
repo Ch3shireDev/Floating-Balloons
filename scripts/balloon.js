@@ -7,6 +7,7 @@
         this.H = 100;
 
         this.grabbed = false;
+        this.freezeMovement = false;
         [this.fO, this.div] = this.createBalloon(x, y);
         this.id = this.div.attr('id');
         this.path = this.CreatePath(x, y);
@@ -53,6 +54,9 @@
     drop() {
         this.grabbed = false;
         this.path = this.CreatePath(this.x + 100, this.y + 100);
+        this.childBalloons.forEach(function (balloon) {
+            balloon.drop();
+        });
     }
 
     rect() {
@@ -78,6 +82,10 @@
     }
 
     move(x, y) {
+        if (this.freezeMovement) return;
+        this.freezeMovement = true;
+        var [x0, y0] = [x, y];
+        var [x1, y1] = this.screenXY();
         [x, y] = Space.toCursorPoint(x, y);
         this.div.attr('x', x);
         this.div.attr('y', y);
@@ -85,12 +93,20 @@
         this.fO.setAttribute('y', y);
         this.x = x;
         this.y = y;
+        var [x2, y2] = Space.toScreenPoint(x0, y0);
         this.childArrows.forEach(function (arrow) {
             arrow.moveTail(x, y);
         });
         this.parentArrows.forEach(function (arrow) {
             arrow.moveHead(x, y);
         });
+        if (Space.moveChildren) {
+            this.childBalloons.forEach(function (balloon) {
+                var [x2, y2] = balloon.screenXY();
+                balloon.move(x2 - x1 + x0, y2 - y1 + y0);
+            });
+        }
+        this.freezeMovement = false;
     }
 
     createBalloon(x, y) {

@@ -231,7 +231,6 @@ describe('Handle behavior',
                 Mouse.move(x - dx, y);
                 Space.showHandle();
                 var [x2,] = handle.getXY();
-
                 (x1 > x2).should.equal(true);
                 Space.clear();
             });
@@ -361,6 +360,7 @@ describe('Arrow behavior',
     () => {
         it('should move arrow together with balloons',
             () => {
+                Space.moveChildren = false;
                 Mouse.doubleclick(x0, y0);
                 var b1 = Balloons.getLast();
                 Mouse.doubleclick(x0 + 400, y0);
@@ -460,6 +460,39 @@ describe('Arrow behavior',
                 arrow.headBalloon.should.equal(b2);
                 b.childArrows[0].should.equal(arrow);
                 b.childBalloons[0].should.equal(b2);
+                Space.clear();
+            });
+
+        it('should move all child balloons together with parent balloon',
+            () => {
+                Space.moveChildren = true;
+                Mouse.doubleclick(x0, y0);
+                var b1 = Balloons.getLast();
+                Mouse.doubleclick(x0 + 300, y0);
+                var b2 = Balloons.getLast();
+                var [x1, y1] = b2.getXY();
+                Mouse.move(x0 + 100, y0);
+                Space.showHandle();
+                Mouse.move(x0, y0);
+                Space.showHandle();
+                var [x, y] = Space.handle.getXY();
+                [x, y] = Space.toScreenPoint(x, y);
+                Mouse.click(x + 5, y + 5);
+
+                Mouse.move(x0 + 300, y0);
+                Mouse.release(x0 + 300, y0);
+
+                Mouse.click(x0 + 5, y0 + 5);
+
+                (b1.isGrabbed()).should.be.equal(true);
+
+                Mouse.move(x0 + 200, y0 + 200);
+                Mouse.release(x0 + 200, y0 + 200);
+                var [x2, y2] = b2.getXY();
+
+                x2.should.be.above(x1);
+                y2.should.be.above(y1);
+
                 Space.clear();
             });
     });
