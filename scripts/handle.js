@@ -64,13 +64,8 @@
             b.parentArrows.push(this.arrow);
         }
         this.arrow.show();
-
-        [x, y] = this.arrow.headBalloon.getXY();
-        this.arrow.moveHead(x, y);
-
-        [x, y] = this.arrow.tailBalloon.getXY();
-        this.arrow.moveTail(x, y);
-
+        b.centerHead(this.arrow);
+        this.parentBalloon.centerTail(this.arrow);
         this.arrow = null;
         this.isDragged = false;
         this.handle.attr({ visibility: 'visible' });
@@ -80,7 +75,10 @@
         if (this.isDragged) return;
         var [x, y] = Space.mousePos;
         var closestBalloon = Balloons.findClosest(x, y);
-        if (closestBalloon !== null) this.parentBalloon = closestBalloon;
+        if (closestBalloon !== null && closestBalloon !== this.parentBalloon) {
+            this.parentBalloon = closestBalloon;
+            this.parentBalloon.drop();
+        }
         [x, y] = Space.toCursorPoint(x, y);
         var r = Snap.closestPoint(this.parentBalloon.path, x, y);
         this.setLocation(r);

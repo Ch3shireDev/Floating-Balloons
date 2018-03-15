@@ -361,18 +361,20 @@ describe('Arrow behavior',
     () => {
         it('should move arrow together with balloons',
             () => {
+                Space.isTesting = true;
                 Space.moveChildren = false;
                 Mouse.doubleclick(x0, y0);
                 var b1 = Balloons.getLast();
                 Mouse.doubleclick(x0 + 400, y0);
                 var b2 = Balloons.getLast();
-                Mouse.move(x0 + 100, y0);
+                Mouse.move(x0, y0);
                 Space.showHandle();
                 var [x, y] = Space.handle.getXY();
                 [x, y] = Space.toScreenPoint(x, y);
                 Mouse.click(x + 5, y + 5);
-                Mouse.move(x0 + 400, y0);
-                Mouse.release(x0 + 400, y0);
+                [x, y] = b2.screenXY();
+                Mouse.move(x+50, y+50);
+                Mouse.release(x+50, y+50);
 
                 var arrow = b1.childArrows[0];
                 var [x1, y1, x2, y2] = arrow.getStartAndEnd();
@@ -385,7 +387,7 @@ describe('Arrow behavior',
 
                 x3.should.be.above(x1);
                 y3.should.be.above(y1);
-
+                
                 Mouse.click(x0 + 400, y0);
                 Mouse.move(x0 + 500, y0 + 200);
                 Mouse.release(x0 + 500, y0 + 200);

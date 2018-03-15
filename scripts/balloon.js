@@ -1,10 +1,10 @@
 ﻿class Balloon {
     constructor(x, y) {
-        this.x = x;
-        this.y = y;
-
         this.W = 100;
         this.H = 100;
+
+        this.x = x - this.W;
+        this.y = y - this.H;
 
         this.grabbed = false;
         this.freezeMovement = false;
@@ -116,12 +116,25 @@
         this.fO.setAttribute('y', y);
         this.x = x;
         this.y = y;
+        var b = this;
         this.childArrows.forEach(function (arrow) {
-            arrow.moveTail(x, y);
+            b.centerTail(arrow);
         });
         this.parentArrows.forEach(function (arrow) {
-            arrow.moveHead(x, y);
+            b.centerHead(arrow);
         });
+    }
+
+    centerTail(arrow) {
+        var [w, h] = this.wh();
+        [w, h] = Space.toCursorPoint(w, h);
+        arrow.moveTail(this.x + w / 2, this.y + h / 2);
+    }
+
+    centerHead(arrow) {
+        var [w, h] = this.wh();
+        [w, h] = Space.toCursorPoint(w, h);
+        arrow.moveHead(this.x + w / 2, this.y + h / 2);
     }
 
     createBalloon(x, y) {

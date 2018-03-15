@@ -50,6 +50,12 @@
         this.updateArrow();
     }
 
+    positionToParent() {
+    }
+
+    positionToChildren() {
+    }
+
     remove() {
         this.arrow.remove();
     }
