@@ -28,7 +28,18 @@
     }
 
     getStartAndEnd() {
-        return [this.x0, this.y0, this.x1, this.y1];
+        var [x0, y0, x1, y1] = [this.x0, this.y0, this.x1, this.y1];
+        var [dx, dy] = [x1 - x0, y1 - y0];
+        var d = Math.sqrt(dx * dx + dy * dy);
+        if (d > 200) {
+            var x = function (t) { return x0 + (x1 - x0) * t; }
+            var y = function (t) { return y0 + (y1 - y0) * t; }
+
+            var L = 150;
+            var [t0, t1] = [L / d, 1 - L / d];
+            [x0, y0, x1, y1] = [x(t0), y(t0), x(t1), y(t1)];
+        }
+        return [x0, y0, x1, y1];
     }
 
     getPathString() {
@@ -51,9 +62,13 @@
     }
 
     positionToParent() {
+        if (this.tailBalloon === null) return;
+        this.tailBalloon.centerTail(this);
     }
 
     positionToChildren() {
+        if (this.headBalloon === null) return;
+        this.headBalloon.centerHead(this);
     }
 
     remove() {

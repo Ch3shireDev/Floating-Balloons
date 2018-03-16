@@ -51,21 +51,27 @@
         this.arrow.hide();
         var [, , element] = Space.getElement(e);
         var b = null;
-        if (element.id === 'body') b = this.createBalloon(x, y);
-        else if (element.class === 'balloon')
+        if (element.id === 'body') {
+            b = this.createBalloon(x, y);
+        }
+        else if (element.class === 'balloon') {
             b = Balloons.findFromElement(element);
-        else if (element.getAttribute('class') === 'inner-text')
+        }
+        else if (element.getAttribute('class') === 'inner-text') {
             b = Balloons.findFromElement(element.parentElement);
+        }
         if (b !== null && typeof b !== 'undefined') {
             this.parentBalloon.childArrows.push(this.arrow);
             this.parentBalloon.childBalloons.push(b);
             b.parentBalloons.push(this.parentBalloon);
             this.arrow.headBalloon = b;
             b.parentArrows.push(this.arrow);
+            b.centerHead(this.arrow);
+        }
+        if (this.parentBalloon !== null) {
+            this.parentBalloon.centerTail(this.arrow);
         }
         this.arrow.show();
-        b.centerHead(this.arrow);
-        this.parentBalloon.centerTail(this.arrow);
         this.arrow = null;
         this.isDragged = false;
         this.handle.attr({ visibility: 'visible' });

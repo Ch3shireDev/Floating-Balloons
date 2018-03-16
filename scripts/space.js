@@ -5,7 +5,9 @@
     draggingBalloon: false,
     draggingHandle: false,
     draggingSpace: false,
+    autoText: true,
     moveChildren: true,
+    isVisible: true,
     s: Snap('#body'),
     svg: document.querySelector('svg'),
     xy: [0, 0],
@@ -73,6 +75,7 @@
     },
 
     moveSpace(dx, dy) {
+        this.hide();
         var [x, y, w, h] = this.viewBox();
         dx *= 0.5;
         dy *= 0.5;
@@ -181,6 +184,7 @@
     },
 
     zoom(value) {
+        this.hide();
         var [x, y, w, h] = this.viewBox();
         var alpha = w / h;
         x -= value * alpha / 2;
@@ -190,9 +194,23 @@
         this.viewBox(x, y, w, h);
     },
 
-    refresh() {
-        $('#body').css({ display: 'none' });
-        $('#body').css({ display: 'initial' });
+    hide() {
+        var tab = $('#body').children();
+        var n = tab.length;
+        for (var i = 0; i < n; i++) {
+            if ($(tab[i]).attr('class') !== 'arrow') continue;
+            $(tab[i]).css({ display: 'none' });
+        }
+        this.isVisible = false;
+    },
+
+    show() {
+        var tab = $('#body').children();
+        var n = tab.length;
+        for (var i = 0; i < n; i++) {
+            $(tab[i]).css({ display: 'initial' });
+        }
+        this.isVisible = true;
     }
 }
 

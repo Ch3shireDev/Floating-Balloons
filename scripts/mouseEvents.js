@@ -18,6 +18,17 @@ document.body.onmousemove = (event) => {
     Space.moveElement(event);
 };
 
+document.body.onkeyup = (event) => {
+    if (event.keyCode == 32) {
+        if (!Space.isVisible) {
+            Space.show();
+        }
+        else {
+            Space.hide();
+        }
+    }
+};
+
 $(document).mouseout((event) => {
     //if (event.target.id === 'body') {
     //    if (event.relatedTarget === null) {
@@ -25,6 +36,13 @@ $(document).mouseout((event) => {
     //    }
     //}
 });
+
+$(document).idle({
+    onIdle: function () {
+        Space.show();
+    },
+    idle: 10
+})
 
 document.body.addEventListener('wheel',
     (event) => {

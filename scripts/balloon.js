@@ -73,7 +73,6 @@
     }
 
     screenXY() {
-        //if negative then more left, if positive then more right
         var [x, y] = this.getXY();
         [x, y] = Space.toScreenPoint(x, y);
         return [x, y];
