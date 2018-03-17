@@ -164,7 +164,7 @@
         this.moveChildren = true;
         Balloons.clear();
         this.svg.innerHTML = '';
-        var [x, y, w, h] = [0, 0, 800, 600];
+        var [x, y, w, h] = [0, 0, 3200, 2400];
         this.s.attr({ viewBox: `${x},${y},${w},${h}` });
     },
 

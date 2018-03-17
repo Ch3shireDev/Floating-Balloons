@@ -21,14 +21,19 @@ Balloon.prototype.openContent = function () {
     text.select();
 
     fO.oninput = function () {
-        var w = text.width() + 10;
-        if (w < 200) {
-            div.setAttribute('width', 200);
-        } else {
-            div.attr('width', w);
-            fO.setAttribute('width', w);
+        var w = getTextLength(text);
+        //if (w < 200) {
+        //    div.setAttribute('width', 200);
+        //} else {
+            div.attr('width', w.x);
+            fO.setAttribute('width', w.x);
+            fO.setAttribute('height', w.y);
         }
     }
+
+function getTextLength(text) {
+    var x = text[0].innerHTML;
+    return { x: 200, y: 200 };
 }
 
 var currentTextareaBalloon = null;
@@ -36,7 +41,7 @@ var currentTextareaBalloon = null;
 function closeCurrentTextarea() {
     if (currentTextareaBalloon === null) return;
     if (currentTextareaBalloon.fO != null) {
-        var s = $('#tarea').text();
+        var s = $('#tarea')[0].innerHTML;
         currentTextareaBalloon.fO.innerHTML = `<div>${s}</div>`;
         currentTextareaBalloon = null;
     }

@@ -513,8 +513,8 @@ describe('Arrow behavior',
                 var [x3, y3] = b2.getXY();
                 b1.move(x0 + 50, y0 + 50);
                 var [x4, y4] = b2.getXY();
-                (x2 - x1).should.be.equal(x4 - x3);
-                (y2 - y1).should.be.equal(y4 - y3);
+                Math.abs((x2 - x1) - (x4 - x3)).should.be.below(1);
+                Math.abs((y2 - y1) - (y4 - y3)).should.be.below(1);
             });
     });
 

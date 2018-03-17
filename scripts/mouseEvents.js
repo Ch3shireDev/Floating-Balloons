@@ -39,9 +39,10 @@ $(document).mouseout((event) => {
 
 $(document).idle({
     onIdle: function () {
+        if (Space.draggingSpace) return;
         Space.show();
     },
-    idle: 10
+    idle: 50
 })
 
 document.body.addEventListener('wheel',
