@@ -517,6 +517,47 @@ describe('Arrow behavior',
                 var [x4, y4] = b2.getXY();
                 Math.abs((x2 - x1) - (x4 - x3)).should.be.below(1);
                 Math.abs((y2 - y1) - (y4 - y3)).should.be.below(1);
+                Space.clear();
+            });
+
+        it('should move all arrows when autoText is enabled',
+            () => {
+                Space.autoText = true;
+                var [x1, y1] = Space.toCursorPoint(x0, y0),
+                    [x2, y2] = Space.toCursorPoint(x0 + 200, y0),
+                    [x3, y3] = Space.toCursorPoint(x0 + 400, y0);
+                var b1 = Balloons.addBalloon(x1, y1),
+                    b2 = Balloons.addBalloon(x2, y2),
+                    b3 = Balloons.addBalloon(x3, y3);
+                Mouse.move(x0, y0);
+                Space.showHandle();
+                var [x4, y4] = Space.handle.screenXY();
+                Mouse.click(x4 + 5, y4 + 5);
+                Mouse.move(x0 + 200, y0);
+                Mouse.release(x0 + 200, y0);
+                Mouse.move(x0 + 400, y0);
+                Space.showHandle();
+                [x4, y4] = Space.handle.screenXY();
+                Mouse.click(x4 + 5, y4 + 5);
+                Mouse.move(x0 + 200, y0);
+                Mouse.release(x0 + 200, y0);
+                var a0 = b1.childArrows[0],
+                    a1 = b3.childArrows[0];
+
+                var ay0 = a0.y1,
+                    ay1 = a1.y1;
+
+                Mouse.click(x0 + 200, y0);
+                Mouse.move(x0 + 200, y0 + 200);
+                Mouse.release(x0 + 200, y0 + 200);
+
+                var ay2 = a0.y1,
+                    ay3 = a1.y1;
+
+                ay2.should.be.above(ay0);
+                ay3.should.be.above(ay1);
+
+                Space.autoText = false;
             });
     });
 
