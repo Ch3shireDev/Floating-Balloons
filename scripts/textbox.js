@@ -51,7 +51,7 @@ function closeCurrentTextarea() {
     currentTextareaBalloon.drop();
     if (currentTextareaBalloon.fO != null) {
         var s = $('#tarea')[0].innerHTML;
-        currentTextareaBalloon.fO.innerHTML = `<div>${s}</div>`;
+        currentTextareaBalloon.fO.innerHTML = `<div class="inner-text">${s}</div>`;
         currentTextareaBalloon = null;
     }
     currentTextareaBalloon = null;
