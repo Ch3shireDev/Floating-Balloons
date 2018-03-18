@@ -1,10 +1,10 @@
 ﻿class Balloon {
     constructor(x, y) {
-        this.W = 100;
-        this.H = 100;
+        this.W = 200;
+        this.H = 200;
 
-        this.x = x - this.W;
-        this.y = y - this.H;
+        this.x = x - this.W / 2;
+        this.y = y - this.H / 2;
 
         this.grabbed = false;
         this.freezeMovement = false;
@@ -20,6 +20,9 @@
         this.parentBalloons = [];
         this.childArrows = [];
         this.parentArrows = [];
+        if (Space.openContent) {
+            this.openContent();
+        }
     }
 
     wh() {
@@ -54,7 +57,7 @@
 
     drop() {
         this.grabbed = false;
-        this.path = this.CreatePath(this.x + 100, this.y + 100);
+        this.path = this.CreatePath(this.x + this.W / 2, this.y + this.H / 2);
     }
 
     rect() {
@@ -156,7 +159,7 @@
         fO.setAttribute('y', y);
         fO.setAttribute('width', w);
         fO.setAttribute('height', h);
-        fO.innerHTML = '<div class="inner-text">text</div>';
+        fO.innerHTML = '<div class="inner-text"></div>';
         div.after(fO);
 
         Balloons.numBalloons++;
@@ -165,9 +168,9 @@
     }
 
     CreatePath(x, y) {
-        var r0 = roundPathCorners('M0 0 L 200 0 L200 200 L 0 200 Z', 20);
+        var r0 = roundPathCorners(`M0 0 L ${this.W} 0 L${this.W} ${this.H} L 0 ${this.H} Z`, 20);
         var path = Space.s.path(r0)
-            .transform(`translate(${x - 130}, ${y - 130}) scale(1.3)`)
+            .transform(`translate(${x - this.W / 2 * 1.3}, ${y - this.H / 2 * 1.3}) scale(1.3)`)
             .remove();
         var r = Snap.path.map(path.realPath, path.matrix);
         path = Space.s.path(r).remove();
@@ -175,7 +178,10 @@
     }
 
     distance(x, y) {
-        var [x2, y2] = this.screenXY();
+        var [x1, y1] = this.getXY();
+        x1 += this.W / 2;
+        y1 += this.H / 2;
+        var [x2, y2] = Space.toScreenPoint(x1, y1);
         var d = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
         return d;
     }

@@ -11,7 +11,7 @@
 
     #body * {
         font-family: Georgia;
-        font-size: 20px;
+        /*font-size: 20px;*/
         -webkit-touch-callout: none; /* iOS Safari */
         -webkit-user-select: none; /* Safari */
         -moz-user-select: none;
@@ -25,7 +25,7 @@ foreignObject {
 
     foreignObject div {
         height: 100%;
-        font-size: 48px;
+        font-size: 100px;
         color: #FFF;
         text-align: center;
         margin: 0 auto;

@@ -264,8 +264,8 @@ describe('Handle behavior',
         it('should move handle between balloons after zoom together with cursor',
             () => {
                 Space.zoom(5000);
-                Mouse.doubleclick(100, 400);
-                Mouse.doubleclick(500, 400);
+                Mouse.doubleclick(100, 200);
+                Mouse.doubleclick(500, 200);
                 Mouse.move(300, 400);
                 Space.showHandle();
                 var [x1, y1] = Space.handle.getXY();

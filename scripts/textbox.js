@@ -20,26 +20,34 @@ Balloon.prototype.openContent = function () {
     text.focus();
     text.select();
 
+    var balloon = this;
+
     fO.oninput = function () {
         var w = getTextLength(text);
-        //if (w < 200) {
-        //    div.setAttribute('width', 200);
-        //} else {
-            div.attr('width', w.x);
-            fO.setAttribute('width', w.x);
-            fO.setAttribute('height', w.y);
-        }
+        var width = w.x;
+        var height = w.y;
+
+        balloon.W = width;
+        balloon.H = height;
+
+        div.attr('width', width);
+        div.attr('height', height);
+        fO.setAttribute('width', width);
+        fO.setAttribute('height', height);
     }
+}
 
 function getTextLength(text) {
-    var x = text[0].innerHTML;
-    return { x: 200, y: 200 };
+    var x = text[0].textContent;
+    var n = 50 * x.length + 200;
+    return { x: n, y: 200 };
 }
 
 var currentTextareaBalloon = null;
 
 function closeCurrentTextarea() {
     if (currentTextareaBalloon === null) return;
+    currentTextareaBalloon.drop();
     if (currentTextareaBalloon.fO != null) {
         var s = $('#tarea')[0].innerHTML;
         currentTextareaBalloon.fO.innerHTML = `<div>${s}</div>`;
