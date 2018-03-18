@@ -34,6 +34,7 @@ Balloon.prototype.openContent = function () {
         div.attr('height', height);
         fO.setAttribute('width', width);
         fO.setAttribute('height', height);
+        balloon.drop();
     }
 }
 

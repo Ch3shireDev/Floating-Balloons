@@ -20,7 +20,7 @@
         this.parentBalloons = [];
         this.childArrows = [];
         this.parentArrows = [];
-        if (Space.openContent) {
+        if (Space.autoText) {
             this.openContent();
         }
     }

@@ -5,14 +5,9 @@
         this.headBalloon = null;
         this.tailBalloon = balloon;
         balloon.childArrows.push(this);
-        this.arrow = Space.s.path(this.getPathString());
-        this.arrow.attr({
-            class: 'arrow',
-            stroke: 'black',
-            strokeWidth: 2,
-            opacity: 0.8,
-            fill: 'transparent'
-        });
+        this.arrow = Space.s.line();
+        //this.arrow = Space.s.path(this.getPathString());
+        this.updateArrow();
     }
 
     setVisibility(value) {
@@ -36,7 +31,7 @@
             var y = function (t) { return y0 + (y1 - y0) * t; }
 
             var L = 150;
-            var [t0, t1] = [L / d, 1 - L / d];
+            var [t0, t1] = [L / d, 1 - (L + 70) / d];
             [x0, y0, x1, y1] = [x(t0), y(t0), x(t1), y(t1)];
         }
         return [x0, y0, x1, y1];
@@ -48,7 +43,20 @@
     }
 
     updateArrow() {
-        this.arrow.attr({ d: this.getPathString() });
+        var [x1, y1, x2, y2] = this.getStartAndEnd();
+        this.arrow.attr({
+            x1: x1,
+            y1: y1,
+            x2: x2,
+            y2: y2,
+            class: 'arrow',
+            stroke: 'black',
+            strokeWidth: 8,
+            opacity: 0.8
+        });
+        this.arrow.node.setAttribute('marker-end', 'url(#arrowhead)');
+        console.log(this.arrow.node.attributes);
+        //this.arrow.attr({ d: this.getPathString() });
     }
 
     moveHead(x, y) {

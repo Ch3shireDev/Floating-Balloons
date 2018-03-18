@@ -98,7 +98,6 @@
         if (Space.mouseDown === false) return;
         if (Space.draggingBalloon) {
             if (Space.currentElement == null) return;
-            console.log("Movement started");
             var [x, y] = Space.currentElement.getXY();
             [x, y] = Space.toScreenPoint(x + dx, y + dy);
             Space.currentElement.move(x, y);
@@ -166,6 +165,7 @@
         this.svg.innerHTML = '';
         var [x, y, w, h] = [0, 0, 3200, 2400];
         this.s.attr({ viewBox: `${x},${y},${w},${h}` });
+        this.svg.innerHTML += '<marker id="arrowhead" markerWidth="10" markerHeight="7" refX = "0" refY= "3.5" orient= "auto" ><polygon points="0 0, 10 3.5, 0 7" /></marker >';
     },
 
     viewBox(x, y, w, h) {

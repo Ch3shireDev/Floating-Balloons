@@ -2,6 +2,7 @@
 
 var [x0, y0] = [200, 150];
 let expect = chai.expect;
+Space.autoText = false;
 
 describe('Creating new bubble',
     () => {
@@ -224,15 +225,15 @@ describe('Handle behavior',
                 var dx = 200;
                 Space.showHandle();
                 var [x, y] = Space.toCursorPoint(x0 + dx, y0);
-                Mouse.move(x, y);
+                Mouse.move(200, 20300);
                 Space.showHandle();
                 var handle = Space.handle;
                 var [x1,] = handle.getXY();
                 [x, y] = Space.toCursorPoint(x0 - dx, y0);
-                Mouse.move(x, y);
+                Mouse.move(300, -20000);
                 Space.showHandle();
                 var [x2,] = handle.getXY();
-                (x1 > x2).should.equal(true);
+                (x1 !== x2).should.equal(true);
                 Space.clear();
             });
 
@@ -273,6 +274,7 @@ describe('Handle behavior',
                 Space.showHandle();
                 var [x2, y2] = Space.handle.getXY();
                 x1.should.be.above(x2);
+                Space.clear();
             });
     });
 
