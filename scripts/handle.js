@@ -20,7 +20,7 @@
 
     screenXY() {
         const [x, y] = this.getXY();
-        return Space.toScreenPoint(x, y);
+        return Space.toScreen(x, y);
     }
 
     setLocation(r) {
@@ -40,7 +40,7 @@
     }
 
     move(x, y) {
-        [x, y] = (new Point(x, y)).toCursorPoint();
+        [x, y] = (new Point(x, y)).toInternal();
         this.handle.attr('x', x);
         this.handle.attr('y', y);
         this.arrow.moveHead(x + 20, y + 20);
@@ -88,7 +88,7 @@
             this.parentBalloon = closestBalloon;
             this.parentBalloon.drop();
         }
-        [x, y] = Space.toCursorPoint(x, y);
+        [x, y] = Space.toInternal(x, y);
         var r = Snap.closestPoint(this.parentBalloon.path, x, y);
         this.setLocation(r);
     }

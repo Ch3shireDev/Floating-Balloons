@@ -92,7 +92,7 @@ describe('Moving a bubble',
             () => {
                 var b1 = Balloons.addBalloon(x0, y0);
                 var b2 = Balloons.addBalloon(x0, y0);
-                var [x, y] = Space.toScreenPoint(x0, y0);
+                var [x, y] = Space.toScreen(x0, y0);
                 Mouse.click(x, y);
                 b1.isGrabbed().should.equal(false);
                 b2.isGrabbed().should.equal(true);
@@ -148,7 +148,7 @@ describe('Changing a text',
                 closeCurrentTextarea();
                 (currentTextareaBalloon === null).should.equal(true);
                 Balloons.addBalloon(x0, y0);
-                var [x, y] = Space.toScreenPoint(x0, y0);
+                var [x, y] = Space.toScreen(x0, y0);
                 Mouse.doubleclick(x, y);
                 (currentTextareaBalloon).should.not.equal(null);
                 Space.clear();
@@ -168,7 +168,7 @@ describe('Changing a text',
             () => {
                 var b = Balloons.addBalloon(x0, y0);
                 b.fO.innerHTML = 'abc';
-                var [x, y] = Space.toScreenPoint(x0, y0);
+                var [x, y] = Space.toScreen(x0, y0);
                 Mouse.doubleclick(x, y);
                 (currentTextareaBalloon.fO.childNodes[0].innerHTML).should.equal('abc');
                 Space.clear();
@@ -177,7 +177,7 @@ describe('Changing a text',
         it('should contain text from textarea in a textbox',
             () => {
                 var b = Balloons.addBalloon(x0, y0);
-                var [x, y] = Space.toScreenPoint(x0, y0);
+                var [x, y] = Space.toScreen(x0, y0);
                 Mouse.doubleclick(x, y);
                 currentTextareaBalloon.fO.childNodes[0].innerHTML = 'abc';
                 Mouse.click(x + 200, y);
@@ -189,7 +189,7 @@ describe('Changing a text',
             () => {
                 var b = Balloons.addBalloon(x0, y0);
                 var w1 = b.w();
-                var [x, y] = Space.toScreenPoint(x0, y0);
+                var [x, y] = Space.toScreen(x0, y0);
                 Mouse.doubleclick(x, y);
                 currentTextareaBalloon.fO.childNodes[0].innerHTML = Array(20).join('abc');
                 var event = new Event('input');
@@ -224,12 +224,12 @@ describe('Handle behavior',
                 Balloons.addBalloon(x0, y0);
                 var dx = 200;
                 Space.showHandle();
-                var [x, y] = Space.toCursorPoint(x0 + dx, y0);
+                var [x, y] = Space.toInternal(x0 + dx, y0);
                 Mouse.move(200, 20300);
                 Space.showHandle();
                 var handle = Space.handle;
                 var [x1,] = handle.getXY();
-                [x, y] = Space.toCursorPoint(x0 - dx, y0);
+                [x, y] = Space.toInternal(x0 - dx, y0);
                 Mouse.move(300, -20000);
                 Space.showHandle();
                 var [x2,] = handle.getXY();
@@ -316,10 +316,10 @@ describe('Space behavior',
         //        Space.clear();
         //        Space.zoom(10);
         //        Mouse.doubleclick(x0, y0);
-        //        var [x1, y1] = Space.toScreenPoint(x0, y0);
+        //        var [x1, y1] = Space.toScreen(x0, y0);
         //        var b = Balloons.getLast();
         //        var [x2, y2, w, h] = b.rect();
-        //        [x2, y2] = Space.toScreenPoint(x2 + w / 2, y2 + h / 2);
+        //        [x2, y2] = Space.toScreen(x2 + w / 2, y2 + h / 2);
         //        x1.should.equal(x2);
         //        y1.should.equal(y2);
         //        Space.clear();
@@ -372,7 +372,7 @@ describe('Arrow behavior',
                 Mouse.move(x0, y0);
                 Space.showHandle();
                 var [x, y] = Space.handle.getXY();
-                [x, y] = Space.toScreenPoint(x, y);
+                [x, y] = Space.toScreen(x, y);
                 Mouse.click(x + 5, y + 5);
                 [x, y] = b2.screenXY();
                 Mouse.move(x + 50, y + 50);
@@ -427,7 +427,7 @@ describe('Arrow behavior',
                 Space.showHandle();
                 [x, y] = Space.handle.screenXY();
                 Mouse.click(x + 1, y + 1);
-                var [x2, y2] = Space.toScreenPoint(x0, y0);
+                var [x2, y2] = Space.toScreen(x0, y0);
                 Mouse.move(x2 + 10, y2 + 10);
                 Mouse.release(x2 + 10, y2 + 10);
                 (b2.childArrows[0]).should.not.equal(null);
@@ -481,7 +481,7 @@ describe('Arrow behavior',
                 Mouse.move(x0, y0);
                 Space.showHandle();
                 var [x, y] = Space.handle.getXY();
-                [x, y] = Space.toScreenPoint(x, y);
+                [x, y] = Space.toScreen(x, y);
                 Mouse.click(x + 5, y + 5);
 
                 Mouse.move(x0 + 300, y0);
@@ -523,9 +523,9 @@ describe('Arrow behavior',
         it('should move all arrows when autoText is enabled',
             () => {
                 Space.autoText = true;
-                var [x1, y1] = Space.toCursorPoint(x0, y0),
-                    [x2, y2] = Space.toCursorPoint(x0 + 200, y0),
-                    [x3, y3] = Space.toCursorPoint(x0 + 400, y0);
+                var [x1, y1] = Space.toInternal(x0, y0),
+                    [x2, y2] = Space.toInternal(x0 + 200, y0),
+                    [x3, y3] = Space.toInternal(x0 + 400, y0);
                 var b1 = Balloons.addBalloon(x1, y1),
                     b2 = Balloons.addBalloon(x2, y2),
                     b3 = Balloons.addBalloon(x3, y3);

@@ -28,7 +28,7 @@
     wh() {
         var w = this.div.attr('width'),
             h = this.div.attr('height');
-        return (new Point(w, h)).toScreenPoint();
+        return (new Point(w, h)).toScreen();
     }
 
     w() {
@@ -77,7 +77,7 @@
 
     screenXY() {
         var [x, y] = this.getXY();
-        [x, y] = Space.toScreenPoint(x, y);
+        [x, y] = Space.toScreen(x, y);
         return [x, y];
     }
 
@@ -86,7 +86,7 @@
         this.freezeMovement = true;
         var [x0, y0] = [x, y];
         var [x1, y1] = this.screenXY();
-        var [x2, y2] = Space.toScreenPoint(x0, y0);
+        var [x2, y2] = Space.toScreen(x0, y0);
         this.moveInternal(x, y);
         if (Space.moveChildren) {
             var balloonSet = new Set(this.childBalloons);
@@ -111,7 +111,7 @@
     }
 
     moveInternal(x, y) {
-        [x, y] = Space.toCursorPoint(x, y);
+        [x, y] = Space.toInternal(x, y);
         this.div.attr('x', x);
         this.div.attr('y', y);
         this.fO.setAttribute('x', x);
@@ -129,13 +129,13 @@
 
     centerTail(arrow) {
         var [w, h] = this.wh();
-        [w, h] = Space.toCursorPoint(w, h);
+        [w, h] = Space.toInternal(w, h);
         arrow.moveTail(this.x + w / 2, this.y + h / 2);
     }
 
     centerHead(arrow) {
         var [w, h] = this.wh();
-        [w, h] = Space.toCursorPoint(w, h);
+        [w, h] = Space.toInternal(w, h);
         arrow.moveHead(this.x + w / 2, this.y + h / 2);
     }
 
@@ -181,7 +181,7 @@
         var [x1, y1] = this.getXY();
         x1 += this.W / 2;
         y1 += this.H / 2;
-        var [x2, y2] = Space.toScreenPoint(x1, y1);
+        var [x2, y2] = Space.toScreen(x1, y1);
         var d = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
         return d;
     }

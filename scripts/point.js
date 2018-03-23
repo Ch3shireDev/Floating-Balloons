@@ -9,12 +9,12 @@
         return Space.svg.getScreenCTM();
     }
 
-    toCursorPoint() {
+    toInternal() {
         const p = this.pt.matrixTransform(this.getScreenCTM().inverse());
         return [p.x, p.y];
     }
 
-    toScreenPoint() {
+    toScreen() {
         const p = this.pt.matrixTransform(this.getScreenCTM());
         return [p.x, p.y];
     }

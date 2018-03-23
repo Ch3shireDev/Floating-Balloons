@@ -19,12 +19,12 @@
         return this.svg.getScreenCTM();
     },
 
-    toCursorPoint(x, y) {
-        return (new Point(x, y)).toCursorPoint();
+    toInternal(x, y) {
+        return (new Point(x, y)).toInternal();
     },
 
-    toScreenPoint(x, y) {
-        return (new Point(x, y)).toScreenPoint();
+    toScreen(x, y) {
+        return (new Point(x, y)).toScreen();
     },
 
     leave(event) {
@@ -35,14 +35,14 @@
         var x = event.clientX,
             y = event.clientY,
             e = document.elementFromPoint(x, y);
-        [x, y] = Space.toCursorPoint(x, y);
+        [x, y] = Space.toInternal(x, y);
         return [x, y, e];
     },
 
     grabElement(event) {
         Space.mouseDown = true;
         var [x, y, element] = Space.getElement(event);
-        this.xy = Space.toCursorPoint(event.clientX, event.clientY);
+        this.xy = Space.toInternal(event.clientX, event.clientY);
         this.draggingBalloon = false;
         this.draggingHandle = false;
         this.draggingSpace = false;
@@ -85,7 +85,7 @@
     moveElement(event) {
         if (event === null) return;
         if (typeof event == 'undefined') return;
-        var [x1, y1] = Space.toCursorPoint(event.clientX, event.clientY);
+        var [x1, y1] = Space.toInternal(event.clientX, event.clientY);
         var [x0, y0] = this.xy;
         Space.mousePos = [event.clientX, event.clientY];
         var [dx, dy] = [x1 - x0, y1 - y0];
@@ -99,12 +99,12 @@
         if (Space.draggingBalloon) {
             if (Space.currentElement == null) return;
             var [x, y] = Space.currentElement.getXY();
-            [x, y] = Space.toScreenPoint(x + dx, y + dy);
+            [x, y] = Space.toScreen(x + dx, y + dy);
             Space.currentElement.move(x, y);
         }
         else if (Space.draggingHandle) {
             var [x, y] = Space.handle.getXY();
-            [x, y] = Space.toScreenPoint(x + dx, y + dy);
+            [x, y] = Space.toScreen(x + dx, y + dy);
 
             Space.handle.move(x, y);
         }
