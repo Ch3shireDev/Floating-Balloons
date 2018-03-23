@@ -3,6 +3,7 @@
 var [x0, y0] = [200, 150];
 let expect = chai.expect;
 Space.autoText = false;
+Space.useViewBox = true;
 
 describe('Creating new bubble',
     () => {

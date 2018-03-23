@@ -8,7 +8,7 @@
     autoText: true,
     moveChildren: true,
     isVisible: true,
-    useViewBox: true,
+    useViewBox: false,
     s: Snap('#body'),
     svg: document.querySelector('svg'),
     xy: [0, 0],
@@ -16,22 +16,22 @@
     mousePos: [0, 0],
     point: { x: 0, y: 0, w: 3200, h: 2400 },
     pointZero: { x: 0, y: 0, w: 3200, h: 2400 },
-    
+
     moveSpace(dx, dy) {
         var [x, y, w, h] = this.viewBox();
-        dx *= 0.5;
-        dy *= 0.5;
         if (this.useViewBox) {
             this.hide();
+            dx *= 0.5;
+            dy *= 0.5;
             this.viewBox(x - dx, y - dy, w, h);
         }
         else {
-            this.point.x += dx;
-            this.point.y += dy;
+            this.point.x -= dx;
+            this.point.y -= dy;
             Balloons.refresh();
         }
     },
-    
+
     zoom(value) {
         if (this.useViewBox) {
             this.hide();
@@ -44,7 +44,6 @@
             this.viewBox(x, y, w, h);
         }
         else {
-
         }
     },
 

@@ -86,6 +86,9 @@
         this.freezeMovement = true;
         var [x0, y0] = [x, y];
         var [x1, y1] = this.screenXY();
+        [x, y] = Space.toInternal(x, y);
+        this.x = x;
+        this.y = y;
         this.moveInternal(x, y);
         if (Space.moveChildren) {
             var balloonSet = new Set(this.childBalloons);
@@ -103,20 +106,20 @@
                 if (balloon === b) return;
                 if (b.parentBalloons.includes(balloon)) return;
                 var [x2, y2] = balloon.screenXY();
-                balloon.moveInternal(x2 - x1 + x0, y2 - y1 + y0);
+                [x, y] = Space.toInternal(x2 - x1 + x0, y2 - y1 + y0);
+                balloon.x = x;
+                balloon.y = y;
+                balloon.moveInternal(x, y);
             });
         }
         this.freezeMovement = false;
     }
 
     moveInternal(x, y) {
-        [x, y] = Space.toInternal(x, y);
         this.div.attr('x', x);
         this.div.attr('y', y);
         this.fO.setAttribute('x', x);
         this.fO.setAttribute('y', y);
-        this.x = x;
-        this.y = y;
         var b = this;
         this.childArrows.forEach(function (arrow) {
             b.centerTail(arrow);
@@ -187,7 +190,10 @@
 
     refresh() {
         if (!Space.useViewBox) {
-
+            var [x, y] = [this.x, this.y];
+            var p = [Space.point.x, Space.point.y];
+            this.moveInternal(x - p[0], y - p[1]);
+            console.log(p);
         }
     }
 }
