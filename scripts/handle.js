@@ -40,7 +40,7 @@
     }
 
     move(x, y) {
-        [x, y] = (new Point(x, y)).toInternal();
+        [x, y] = Space.toInternal(x, y);
         this.handle.attr('x', x);
         this.handle.attr('y', y);
         this.arrow.moveHead(x + 20, y + 20);

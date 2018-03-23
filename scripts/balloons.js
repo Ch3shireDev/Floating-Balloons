@@ -112,5 +112,11 @@
         this.balloonsList.forEach(function (balloon) {
             balloon.drop();
         });
+    },
+
+    refresh() {
+        this.balloonsList.forEach(function (balloon) {
+            balloon.refresh();
+        });
     }
 };

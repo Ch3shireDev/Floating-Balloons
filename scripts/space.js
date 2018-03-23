@@ -8,23 +8,68 @@
     autoText: true,
     moveChildren: true,
     isVisible: true,
+    useViewBox: true,
     s: Snap('#body'),
     svg: document.querySelector('svg'),
     xy: [0, 0],
     dxy: [0, 0],
     mousePos: [0, 0],
+    point: { x: 0, y: 0, w: 3200, h: 2400 },
+    pointZero: { x: 0, y: 0, w: 3200, h: 2400 },
+    
+    moveSpace(dx, dy) {
+        var [x, y, w, h] = this.viewBox();
+        dx *= 0.5;
+        dy *= 0.5;
+        if (this.useViewBox) {
+            this.hide();
+            this.viewBox(x - dx, y - dy, w, h);
+        }
+        else {
+            this.point.x += dx;
+            this.point.y += dy;
+            Balloons.refresh();
+        }
+    },
+    
+    zoom(value) {
+        if (this.useViewBox) {
+            this.hide();
+            var [x, y, w, h] = this.viewBox();
+            var alpha = w / h;
+            x -= value * alpha / 2;
+            y -= value / 2;
+            w += value * alpha;
+            h += value;
+            this.viewBox(x, y, w, h);
+        }
+        else {
+
+        }
+    },
 
     ScreenCTM() {
-        console.log(this.svg.getScreenCTM());
         return this.svg.getScreenCTM();
     },
 
+    getScreenCTM() {
+        return Space.svg.getScreenCTM();
+    },
+
     toInternal(x, y) {
-        return (new Point(x, y)).toInternal();
+        this.pt = Space.svg.createSVGPoint();
+        this.pt.x = x;
+        this.pt.y = y;
+        const p = this.pt.matrixTransform(this.getScreenCTM().inverse());
+        return [p.x, p.y];
     },
 
     toScreen(x, y) {
-        return (new Point(x, y)).toScreen();
+        this.pt = Space.svg.createSVGPoint();
+        this.pt.x = x;
+        this.pt.y = y;
+        const p = this.pt.matrixTransform(this.getScreenCTM());
+        return [p.x, p.y];
     },
 
     leave(event) {
@@ -74,14 +119,6 @@
         }
     },
 
-    moveSpace(dx, dy) {
-        this.hide();
-        var [x, y, w, h] = this.viewBox();
-        dx *= 0.5;
-        dy *= 0.5;
-        this.viewBox(x - dx, y - dy, w, h);
-    },
-
     moveElement(event) {
         if (event === null) return;
         if (typeof event == 'undefined') return;
@@ -90,10 +127,6 @@
         Space.mousePos = [event.clientX, event.clientY];
         var [dx, dy] = [x1 - x0, y1 - y0];
         this.xy = [x1, y1];
-
-        if (Space.handle !== null) {
-        }
-
         if (typeof Space.isTesting === 'undefined' && event.buttons !== 1) return;
         if (Space.mouseDown === false) return;
         if (Space.draggingBalloon) {
@@ -105,7 +138,6 @@
         else if (Space.draggingHandle) {
             var [x, y] = Space.handle.getXY();
             [x, y] = Space.toScreen(x + dx, y + dy);
-
             Space.handle.move(x, y);
         }
         else if (Space.draggingSpace) {
@@ -181,17 +213,6 @@
     getXY() {
         const [x, y, ,] = this.viewBox();
         return [x, y];
-    },
-
-    zoom(value) {
-        this.hide();
-        var [x, y, w, h] = this.viewBox();
-        var alpha = w / h;
-        x -= value * alpha / 2;
-        y -= value / 2;
-        w += value * alpha;
-        h += value;
-        this.viewBox(x, y, w, h);
     },
 
     hide() {

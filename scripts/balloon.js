@@ -28,7 +28,7 @@
     wh() {
         var w = this.div.attr('width'),
             h = this.div.attr('height');
-        return (new Point(w, h)).toScreen();
+        return Space.toScreen(w, h);
     }
 
     w() {
@@ -86,7 +86,6 @@
         this.freezeMovement = true;
         var [x0, y0] = [x, y];
         var [x1, y1] = this.screenXY();
-        var [x2, y2] = Space.toScreen(x0, y0);
         this.moveInternal(x, y);
         if (Space.moveChildren) {
             var balloonSet = new Set(this.childBalloons);
@@ -184,5 +183,11 @@
         var [x2, y2] = Space.toScreen(x1, y1);
         var d = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
         return d;
+    }
+
+    refresh() {
+        if (!Space.useViewBox) {
+
+        }
     }
 }
