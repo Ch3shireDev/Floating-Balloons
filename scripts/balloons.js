@@ -118,5 +118,9 @@
         this.balloonsList.forEach(function (balloon) {
             balloon.refresh();
         });
+    },
+
+    size() {
+        return this.balloonsList.length;
     }
 };

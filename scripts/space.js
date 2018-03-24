@@ -8,28 +8,23 @@
     autoText: true,
     moveChildren: true,
     isVisible: true,
-    useViewBox: false,
+    useViewBox: true,
     s: Snap('#body'),
     svg: document.querySelector('svg'),
     xy: [0, 0],
     dxy: [0, 0],
     mousePos: [0, 0],
-    point: { x: 0, y: 0, w: 3200, h: 2400 },
+    point: {
+        x: 0, y: 0, w: 3200, h: 2400, getXY() { return [this.x, this.y]; }
+    },
     pointZero: { x: 0, y: 0, w: 3200, h: 2400 },
 
     moveSpace(dx, dy) {
         var [x, y, w, h] = this.viewBox();
-        if (this.useViewBox) {
-            this.hide();
-            dx *= 0.5;
-            dy *= 0.5;
-            this.viewBox(x - dx, y - dy, w, h);
-        }
-        else {
-            this.point.x -= dx;
-            this.point.y -= dy;
-            Balloons.refresh();
-        }
+        this.hide();
+        dx *= 0.5;
+        dy *= 0.5;
+        this.viewBox(x - dx, y - dy, w, h);
     },
 
     zoom(value) {
@@ -47,28 +42,20 @@
         }
     },
 
-    ScreenCTM() {
-        return this.svg.getScreenCTM();
-    },
-
-    getScreenCTM() {
-        return Space.svg.getScreenCTM();
-    },
-
     toInternal(x, y) {
-        this.pt = Space.svg.createSVGPoint();
-        this.pt.x = x;
-        this.pt.y = y;
-        const p = this.pt.matrixTransform(this.getScreenCTM().inverse());
-        return [p.x, p.y];
+        var w = $('#body').width();
+        var h = $('#body').height();
+        var ctm = this.svg.getScreenCTM();
+        var [a, d, e, f] = [ctm.a, ctm.d, ctm.e, ctm.f];
+        return [(x - e) / a, (y - f) / d];
     },
 
     toScreen(x, y) {
-        this.pt = Space.svg.createSVGPoint();
-        this.pt.x = x;
-        this.pt.y = y;
-        const p = this.pt.matrixTransform(this.getScreenCTM());
-        return [p.x, p.y];
+        var w = $('#body').width();
+        var h = $('#body').height();
+        var ctm = this.svg.getScreenCTM();
+        var [a, d, e, f] = [ctm.a, ctm.d, ctm.e, ctm.f];
+        return [x * a + e, y * d + f];
     },
 
     leave(event) {
@@ -140,7 +127,14 @@
             Space.handle.move(x, y);
         }
         else if (Space.draggingSpace) {
-            this.moveSpace(dx, dy);
+            if (this.useViewBox) {
+                this.moveSpace(dx, dy);
+            }
+            else {
+                this.point.x += dx;
+                this.point.y += dy;
+                Balloons.refresh();
+            }
         }
     },
 
@@ -235,3 +229,4 @@
 }
 
 Space.clear();
+Space.useViewBox = false;

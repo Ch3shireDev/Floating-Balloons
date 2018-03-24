@@ -3,14 +3,23 @@
         this.W = 200;
         this.H = 200;
 
-        this.x = x - this.W / 2;
-        this.y = y - this.H / 2;
+        if (Space.useViewBox) {
+            this.x = x - this.W / 2;
+            this.y = y - this.H / 2;
+            [this.fO, this.div] = this.createBalloon(x, y);
+            this.path = this.createPath(x, y);
+        }
+        else {
+            var [x0, y0] = [Space.point.x, Space.point.y];
+            this.x = x0 + x;
+            this.y = y0 + y;
+            [this.fO, this.div] = this.createBalloon(x, y);
+            this.path = this.createPath(x, y);
+        }
 
         this.grabbed = false;
         this.freezeMovement = false;
-        [this.fO, this.div] = this.createBalloon(x, y);
         this.id = this.div.attr('id');
-        this.path = this.CreatePath(x, y);
         //remove selection
         if (window.getSelection)
             window.getSelection().removeAllRanges();
@@ -57,7 +66,7 @@
 
     drop() {
         this.grabbed = false;
-        this.path = this.CreatePath(this.x + this.W / 2, this.y + this.H / 2);
+        this.path = this.createPath(this.x + this.W / 2, this.y + this.H / 2);
     }
 
     rect() {
@@ -169,7 +178,7 @@
         return [fO, div];
     }
 
-    CreatePath(x, y) {
+    createPath(x, y) {
         var r0 = roundPathCorners(`M0 0 L ${this.W} 0 L${this.W} ${this.H} L 0 ${this.H} Z`, 20);
         var path = Space.s.path(r0)
             .transform(`translate(${x - this.W / 2 * 1.3}, ${y - this.H / 2 * 1.3}) scale(1.3)`)
@@ -192,8 +201,7 @@
         if (!Space.useViewBox) {
             var [x, y] = [this.x, this.y];
             var p = [Space.point.x, Space.point.y];
-            this.moveInternal(x - p[0], y - p[1]);
-            console.log(p);
+            this.moveInternal(x + p[0] - this.W / 2, y + p[1] - this.H / 2);
         }
     }
 }

@@ -55,7 +55,7 @@
             opacity: 0.8
         });
         this.arrow.node.setAttribute('marker-end', 'url(#arrowhead)');
-        console.log(this.arrow.node.attributes);
+        //console.log(this.arrow.node.attributes);
         //this.arrow.attr({ d: this.getPathString() });
     }
 

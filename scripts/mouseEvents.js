@@ -52,6 +52,10 @@ document.body.addEventListener('wheel',
 
 Mouse = {
     runEvent(name, x, y) {
+        if (!Space.useViewBox) {
+            [x, y] = Space.toScreen(x, y);
+            console.log(x, y);
+        }
         $('body')[0].dispatchEvent(
             new MouseEvent(name,
                 {

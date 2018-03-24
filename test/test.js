@@ -1,6 +1,6 @@
 ﻿$(document).scrollTop(0); //tests fail when scrolled down
 
-var [x0, y0] = [200, 150];
+var [x0, y0] = [300, 250];
 let expect = chai.expect;
 Space.autoText = false;
 Space.useViewBox = true;
@@ -559,6 +559,57 @@ describe('Arrow behavior',
                 ay3.should.be.above(ay1);
 
                 Space.autoText = false;
+                Space.clear();
+            });
+    });
+
+describe('Non-ViewBox movement',
+    () => {
+        it('should create balloons in clicked place',
+            () => {
+                Space.useViewBox = false;
+                Balloons.size().should.be.equal(0);
+                Mouse.doubleclick(x0, y0);
+                Balloons.size().should.be.equal(1);
+                var b = Balloons.getLast();
+                var [x2, y2] = [b.x, b.y];
+                Math.abs(x0 - x2).should.be.below(5);
+                Math.abs(y0 - y2).should.be.below(5);
+                Space.useViewBox = true;
+                Space.clear();
+            });
+
+        it('should allow to move balloon',
+            () => {
+                Space.useViewBox = false;
+                Mouse.doubleclick(x0, y0);
+                var b = Balloons.getLast();
+                b.isGrabbed().should.be.equal(false);
+                Mouse.click(x0, y0);
+                b.isGrabbed().should.be.equal(true);
+                var [x1, y1] = b.getXY();
+                Mouse.move(x0 + 100, y0 + 100);
+                var [x2, y2] = b.getXY();
+                Math.abs(x2 - x1 - 100).should.be.below(10);
+                Math.abs(y2 - y1 - 100).should.be.below(10);
+                Space.useViewBox = true;
+                Space.clear();
+            });
+
+        it('should allow to move space',
+            () => {
+                Space.useViewBox = false;
+                Mouse.doubleclick(x0, y0);
+                var b = Balloons.getLast();
+                var [x1, y1] = b.getXY();
+                Mouse.click(x0 + 100, y0 + 100);
+                b.isGrabbed().should.be.equal(false);
+                Mouse.move(x0 + 200, y0 + 200);
+                var [x2, y2] = b.getXY();
+                Math.abs(x2 - x1 - 100).should.be.below(10);
+                Math.abs(y2 - y1 - 100).should.be.below(10);
+                Space.useViewBox = true;
+                Space.clear();
             });
     });
 
