@@ -52,8 +52,6 @@
         var [, , element] = Space.getElement(e);
         var b = null;
 
-        //console.log(element);
-
         if (element.id === 'body') {
             b = this.createBalloon(x, y);
         }

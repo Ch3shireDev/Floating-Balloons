@@ -17,7 +17,9 @@
     point: {
         x: 0, y: 0, w: 3200, h: 2400, getXY() { return [this.x, this.y]; }
     },
-    pointZero: { x: 0, y: 0, w: 3200, h: 2400 },
+    pointZero: {
+        x: 0, y: 0, w: 3200, h: 2400, getXY() { return [this.x, this.y]; }
+    },
 
     moveSpace(dx, dy) {
         var [x, y, w, h] = this.viewBox();
@@ -43,19 +45,23 @@
     },
 
     toInternal(x, y) {
+        var [x0, y0] = [Space.point.x, Space.point.y];
+        var ctm = this.svg.getScreenCTM();
         var w = $('#body').width();
         var h = $('#body').height();
-        var ctm = this.svg.getScreenCTM();
         var [a, d, e, f] = [ctm.a, ctm.d, ctm.e, ctm.f];
-        return [(x - e) / a, (y - f) / d];
+        [x, y] = [(x - e) / a, (y - f) / d];
+        return [x, y];
     },
 
     toScreen(x, y) {
+        var [x0, y0] = [Space.point.x, Space.point.y];
+        var ctm = this.svg.getScreenCTM();
         var w = $('#body').width();
         var h = $('#body').height();
-        var ctm = this.svg.getScreenCTM();
         var [a, d, e, f] = [ctm.a, ctm.d, ctm.e, ctm.f];
-        return [x * a + e, y * d + f];
+        [x, y] = [x * a + e, y * d + f];
+        return [x, y];
     },
 
     leave(event) {
@@ -113,6 +119,7 @@
         Space.mousePos = [event.clientX, event.clientY];
         var [dx, dy] = [x1 - x0, y1 - y0];
         this.xy = [x1, y1];
+        console.log("x");
         if (typeof Space.isTesting === 'undefined' && event.buttons !== 1) return;
         if (Space.mouseDown === false) return;
         if (Space.draggingBalloon) {
@@ -127,12 +134,14 @@
             Space.handle.move(x, y);
         }
         else if (Space.draggingSpace) {
+            console.log("dragging");
             if (this.useViewBox) {
                 this.moveSpace(dx, dy);
             }
             else {
                 this.point.x += dx;
                 this.point.y += dy;
+                console.log(dx, dy);
                 Balloons.refresh();
             }
         }
@@ -179,20 +188,6 @@
         this.handle.showHandle();
     },
 
-    clear() {
-        this.currentElement = null;
-        this.handle = null;
-        this.draggingBalloon = false;
-        this.draggingHandle = false;
-        this.draggingSpace = false;
-        this.moveChildren = true;
-        Balloons.clear();
-        this.svg.innerHTML = '';
-        var [x, y, w, h] = [0, 0, 3200, 2400];
-        this.s.attr({ viewBox: `${x},${y},${w},${h}` });
-        this.svg.innerHTML += '<marker id="arrowhead" markerWidth="10" markerHeight="7" refX = "0" refY= "3.5" orient= "auto" ><polygon points="0 0, 10 3.5, 0 7" /></marker >';
-    },
-
     viewBox(x, y, w, h) {
         if (x === undefined) {
             var vb = this.s.attr('viewBox');
@@ -225,6 +220,22 @@
             $(tab[i]).css({ display: 'initial' });
         }
         this.isVisible = true;
+    },
+
+    clear() {
+        this.currentElement = null;
+        this.handle = null;
+        this.draggingBalloon = false;
+        this.draggingHandle = false;
+        this.draggingSpace = false;
+        this.moveChildren = true;
+        Balloons.clear();
+        this.svg.innerHTML = '';
+        var [x, y, w, h] = [0, 0, 3200, 2400];
+        this.s.attr({ viewBox: `${x},${y},${w},${h}` });
+        this.svg.innerHTML += '<marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7"/></marker>';
+        Space.point.x = 0;
+        Space.point.y = 0;
     }
 }
 

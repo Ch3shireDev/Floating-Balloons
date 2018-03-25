@@ -30,11 +30,6 @@ document.body.onkeyup = (event) => {
 };
 
 $(document).mouseout((event) => {
-    //if (event.target.id === 'body') {
-    //    if (event.relatedTarget === null) {
-    //        Space.leave(event);
-    //    }
-    //}
 });
 
 $(document).idle({
@@ -53,8 +48,9 @@ document.body.addEventListener('wheel',
 Mouse = {
     runEvent(name, x, y) {
         if (!Space.useViewBox) {
+            console.log(name, x, y);
             [x, y] = Space.toScreen(x, y);
-            console.log(x, y);
+            console.log(name, x, y);
         }
         $('body')[0].dispatchEvent(
             new MouseEvent(name,

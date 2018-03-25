@@ -6,7 +6,6 @@
         this.tailBalloon = balloon;
         balloon.childArrows.push(this);
         this.arrow = Space.s.line();
-        //this.arrow = Space.s.path(this.getPathString());
         this.updateArrow();
     }
 
@@ -55,8 +54,6 @@
             opacity: 0.8
         });
         this.arrow.node.setAttribute('marker-end', 'url(#arrowhead)');
-        //console.log(this.arrow.node.attributes);
-        //this.arrow.attr({ d: this.getPathString() });
     }
 
     moveHead(x, y) {

@@ -11,8 +11,8 @@
         }
         else {
             var [x0, y0] = [Space.point.x, Space.point.y];
-            this.x = x0 + x;
-            this.y = y0 + y;
+            this.x = -x0 + x;
+            this.y = -y0 + y;
             [this.fO, this.div] = this.createBalloon(x, y);
             this.path = this.createPath(x, y);
         }
@@ -38,13 +38,6 @@
         var w = this.div.attr('width'),
             h = this.div.attr('height');
         return Space.toScreen(w, h);
-    }
-
-    w() {
-        return this.wh()[0];
-    }
-    h() {
-        return this.wh()[1];
     }
 
     isGrabbed() {
@@ -201,6 +194,7 @@
         if (!Space.useViewBox) {
             var [x, y] = [this.x, this.y];
             var p = [Space.point.x, Space.point.y];
+
             this.moveInternal(x + p[0] - this.W / 2, y + p[1] - this.H / 2);
         }
     }
