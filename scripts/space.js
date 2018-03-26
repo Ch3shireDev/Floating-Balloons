@@ -147,13 +147,13 @@
         var [x, y, e] = this.getElement(event);
         if (this.draggingBalloon) {
             Space.dxy = [0, 0];
-            if (Space.currentElement !== null) {
-                Balloons.drop();
-                //Space.currentElement.drop();
-            }
+            Balloons.drop();
         }
         else if (this.draggingHandle) {
             Space.handle.drop(x, y, event);
+        }
+        else if (this.draggingSpace) {
+            Balloons.drop();
         }
         this.draggingBalloon = false;
         this.draggingHandle = false;

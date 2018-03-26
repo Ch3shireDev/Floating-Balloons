@@ -10,7 +10,6 @@ class Balloon {
         }
 
         [this.fO, this.div] = this.createBalloon(x, y);
-        this.path = this.createPath(x, y);
 
         this.grabbed = false;
         this.freezeMovement = false;
@@ -30,6 +29,7 @@ class Balloon {
         if (!Space.useViewBox) {
             this.move(x - this.W / 2, y - this.H / 2);
         }
+        this.path = this.createPath();
     }
 
     wh() {
@@ -57,8 +57,7 @@ class Balloon {
 
     drop() {
         this.grabbed = false
-        this.path = this.createPath(this.x + this.W / 2, this.y + this.H / 2);
-        //this.path = this.createPath(this.x, this.y);
+        this.path = this.createPath();
     }
 
     rect() {
@@ -171,15 +170,18 @@ class Balloon {
         return [fO, div];
     }
 
-    createPath(x, y) {
-        [this.pathx, this.pathy] = [x, y];
+    createPath() {
+        [this.pathx, this.pathy] = [this.x, this.y];
         var r0 = roundPathCorners(`M0 0 L ${this.W} 0 L${this.W} ${this.H} L 0 ${this.H} Z`, 20);
-        var path = Space.s.path(r0)
-            .transform(`translate(${x - this.W / 2 * 1.3}, ${y - this.H / 2 * 1.3}) scale(1.3)`)
-            .remove();
+        var path = Space.s.path(r0);
+        if (Space.useViewBox) {
+            path.transform(`translate(${this.x - this.W / 2 * 0.3}, ${this.y - this.H / 2 * 0.3}) scale(1.3)`).remove();
+        }
+        else {
+            path.transform(`translate(${Space.point.x + this.x - this.W / 2 * 0.3 - this.W / 2}, ${Space.point.y + this.y - this.H / 2 * 0.3 - this.W / 2}) scale(1.3)`).remove();
+        }
         var r = Snap.path.map(path.realPath, path.matrix);
         path = Space.s.path(r).remove();
-        console.log("create", x, y);
         return path;
     }
 
