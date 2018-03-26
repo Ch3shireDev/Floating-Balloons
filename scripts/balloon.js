@@ -194,7 +194,6 @@
         if (!Space.useViewBox) {
             var [x, y] = [this.x, this.y];
             var p = [Space.point.x, Space.point.y];
-
             this.moveInternal(x + p[0] - this.W / 2, y + p[1] - this.H / 2);
         }
     }
