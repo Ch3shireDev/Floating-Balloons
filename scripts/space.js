@@ -124,13 +124,11 @@
         if (Space.draggingBalloon) {
             if (Space.currentElement == null) return;
             var [x, y] = Space.currentElement.getXY();
-            [x, y] = Space.toScreen(x + dx, y + dy);
-            Space.currentElement.move(x, y);
+            Space.currentElement.move(x + dx, y + dy);
         }
         else if (Space.draggingHandle) {
             var [x, y] = Space.handle.getXY();
-            [x, y] = Space.toScreen(x + dx, y + dy);
-            Space.handle.move(x, y);
+            Space.handle.move(x + dx, y + dy);
         }
         else if (Space.draggingSpace) {
             if (this.useViewBox) {

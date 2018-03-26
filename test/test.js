@@ -660,6 +660,23 @@ describe('Non-ViewBox movement',
                 Space.useViewBox = true;
                 Space.clear();
             });
+
+        it('should not move path after grabbing space',
+            () => {
+                Space.useViewBox = false;
+                Space.isTesting = true;
+                Space.point.x.should.equal(0);
+                var b = Balloons.addBalloon(x0, y0);
+                Space.showHandle();
+                var [x1, y1] = [b.pathx, b.pathy];
+                b.drop();
+                Space.showHandle();
+                var [x2, y2] = [b.pathx, b.pathy];
+                Math.abs(x1 - x2).should.be.below(10);
+                Math.abs(y1 - y2).should.be.below(10);
+                Space.useViewBox = true;
+                Space.clear();
+            });
     });
 
 describe('Selecting bubbles',

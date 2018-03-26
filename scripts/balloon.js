@@ -7,16 +7,10 @@ class Balloon {
         if (Space.useViewBox) {
             this.x = x - this.W / 2;
             this.y = y - this.H / 2;
-            [this.fO, this.div] = this.createBalloon(x, y);
-            this.path = this.createPath(x, y);
         }
-        else {
-            var [x0, y0] = [Space.point.x, Space.point.y];
-            this.x = -x0 + x;
-            this.y = -y0 + y;
-            [this.fO, this.div] = this.createBalloon(x, y);
-            this.path = this.createPath(x, y);
-        }
+
+        [this.fO, this.div] = this.createBalloon(x, y);
+        this.path = this.createPath(x, y);
 
         this.grabbed = false;
         this.freezeMovement = false;
@@ -32,6 +26,9 @@ class Balloon {
         this.parentArrows = [];
         if (Space.autoText) {
             this.openContent();
+        }
+        if (!Space.useViewBox) {
+            this.move(x - this.W / 2, y - this.H / 2);
         }
     }
 
@@ -59,8 +56,9 @@ class Balloon {
     }
 
     drop() {
-        this.grabbed = false;
+        this.grabbed = false
         this.path = this.createPath(this.x + this.W / 2, this.y + this.H / 2);
+        //this.path = this.createPath(this.x, this.y);
     }
 
     rect() {
@@ -87,6 +85,7 @@ class Balloon {
     move(x, y) {
         if (this.freezeMovement) return;
         this.freezeMovement = true;
+        [x, y] = Space.toScreen(x, y);
         var [x0, y0] = [x, y];
         var [x1, y1] = this.screenXY();
         [x, y] = Space.toInternal(x, y);
@@ -173,12 +172,14 @@ class Balloon {
     }
 
     createPath(x, y) {
+        [this.pathx, this.pathy] = [x, y];
         var r0 = roundPathCorners(`M0 0 L ${this.W} 0 L${this.W} ${this.H} L 0 ${this.H} Z`, 20);
         var path = Space.s.path(r0)
             .transform(`translate(${x - this.W / 2 * 1.3}, ${y - this.H / 2 * 1.3}) scale(1.3)`)
             .remove();
         var r = Snap.path.map(path.realPath, path.matrix);
         path = Space.s.path(r).remove();
+        console.log("create", x, y);
         return path;
     }
 
