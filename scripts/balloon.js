@@ -1,4 +1,5 @@
-﻿class Balloon {
+﻿/// <reference path="mouseEvents.js" />
+class Balloon {
     constructor(x, y) {
         this.W = 200;
         this.H = 200;
@@ -89,8 +90,8 @@
         var [x0, y0] = [x, y];
         var [x1, y1] = this.screenXY();
         [x, y] = Space.toInternal(x, y);
-        this.x = x;
-        this.y = y;
+        this.x = x - Space.point.x + this.W / 2;
+        this.y = y - Space.point.y + this.H / 2;
         this.moveInternal(x, y);
         if (Space.moveChildren) {
             var balloonSet = new Set(this.childBalloons);

@@ -119,7 +119,6 @@
         Space.mousePos = [event.clientX, event.clientY];
         var [dx, dy] = [x1 - x0, y1 - y0];
         this.xy = [x1, y1];
-        console.log("x");
         if (typeof Space.isTesting === 'undefined' && event.buttons !== 1) return;
         if (Space.mouseDown === false) return;
         if (Space.draggingBalloon) {
@@ -134,14 +133,12 @@
             Space.handle.move(x, y);
         }
         else if (Space.draggingSpace) {
-            console.log("dragging");
             if (this.useViewBox) {
                 this.moveSpace(dx, dy);
             }
             else {
                 this.point.x += dx;
                 this.point.y += dy;
-                console.log(dx, dy);
                 Balloons.refresh();
             }
         }

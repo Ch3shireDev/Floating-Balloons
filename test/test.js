@@ -1,5 +1,4 @@
 ﻿$(document).scrollTop(0); //tests fail when scrolled down
-
 var [x0, y0] = [300, 250];
 let expect = chai.expect;
 Space.autoText = false;
