@@ -2,8 +2,9 @@
     constructor() {
         this.arrow = null;
         this.isDragged = false;
+        this.width = 40;
         this.parentBalloon = Balloons.getLast();
-        this.handle = Space.s.rect(0, 0, 40, 40);
+        this.handle = Space.s.rect(0, 0, this.width, this.width);
         this.handle.attr({
             class: 'balloon',
             id: 'handle',
@@ -24,8 +25,8 @@
     }
 
     setLocation(r) {
-        this.handle.attr('x', r.x - 20);
-        this.handle.attr('y', r.y - 20);
+        this.handle.attr('x', r.x - this.width / 2);
+        this.handle.attr('y', r.y - this.width / 2);
     }
 
     grab() {
@@ -34,19 +35,20 @@
             this.arrow.remove();
         if (this.parentBalloon !== null) {
             var [x, y] = this.getXY();
-            [x, y] = [x + 20, y + 20];
+            [x, y] = [x + this.width / 2, y + this.width / 2];
             this.arrow = new Arrow(this.parentBalloon, [x, y]);
+            this.parentBalloon.centerTail(this.arrow);
         }
     }
 
     move(x, y) {
         this.handle.attr('x', x);
         this.handle.attr('y', y);
-        this.arrow.moveHead(x + 20, y + 20);
+        this.arrow.moveHead(x + this.width / 2, y + this.width / 2);
     }
 
     drop(x, y, e) {
-        this.handle.attr({ visibility: 'hidden' });
+        this.handle.attr({ visibility: 'hidden' }); //must remain to create balloon
         this.arrow.hide();
         var [, , element] = Space.getElement(e);
         var b = null;
@@ -72,10 +74,39 @@
             this.parentBalloon.centerTail(this.arrow);
         }
         this.arrow.show();
+        this.handle.attr({ visibility: 'visible' });
         this.arrow = null;
         this.isDragged = false;
-        this.handle.attr({ visibility: 'visible' });
     }
+
+    //drop(x, y, e) {
+    //    this.handle.attr({ visibility: 'hidden' });
+    //    var [, , element] = Space.getElement(e);
+    //    var b = null;
+
+    //    if (element.id === 'body') {
+    //        b = this.createBalloon(x, y);
+    //    }
+    //    else if (element.class === 'balloon') {
+    //        b = Balloons.findFromElement(element);
+    //    }
+    //    else if (element.getAttribute('class') === 'inner-text') {
+    //        b = Balloons.findFromElement(element.parentElement);
+    //    }
+    //    if (b !== null && typeof b !== 'undefined') {
+    //        this.parentBalloon.childArrows.push(this.arrow);
+    //        this.parentBalloon.childBalloons.push(b);
+    //        b.parentBalloons.push(this.parentBalloon);
+    //        this.arrow.headBalloon = b;
+    //        b.parentArrows.push(this.arrow);
+    //        b.centerHead(this.arrow);
+    //    }
+    //    if (this.parentBalloon !== null) {
+    //        this.parentBalloon.centerTail(this.arrow);
+    //    }
+    //    this.arrow = null;
+    //    this.isDragged = false;
+    //}
 
     showHandle() {
         if (this.isDragged) return;

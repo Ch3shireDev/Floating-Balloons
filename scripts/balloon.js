@@ -110,7 +110,14 @@ class Balloon {
                 [x, y] = Space.toInternal(x2 - x1 + x0, y2 - y1 + y0);
                 balloon.x = x;
                 balloon.y = y;
-                balloon.moveInternal(x, y);
+                if (Space.useViewBox) {
+                    balloon.moveInternal(x, y);
+                }
+                else {
+                    balloon.x = x - Space.point.x + balloon.W / 2;
+                    balloon.y = y - Space.point.y + balloon.H / 2;
+                    balloon.moveInternal(x, y);
+                }
             });
         }
         this.freezeMovement = false;
@@ -131,15 +138,11 @@ class Balloon {
     }
 
     centerTail(arrow) {
-        var [w, h] = this.wh();
-        [w, h] = Space.toInternal(w, h);
-        arrow.moveTail(this.x + w / 2, this.y + h / 2);
+        arrow.moveTail(this.x, this.y);
     }
 
     centerHead(arrow) {
-        var [w, h] = this.wh();
-        [w, h] = Space.toInternal(w, h);
-        arrow.moveHead(this.x + w / 2, this.y + h / 2);
+        arrow.moveHead(this.x, this.y);
     }
 
     createBalloon(x, y) {

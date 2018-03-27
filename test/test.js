@@ -280,21 +280,6 @@ describe('Handle behavior',
 
 describe('Space behavior',
     () => {
-        it('should allow to grab and move around the canvas',
-            () => {
-                Space.clear();
-                Space.isTesting = true;
-                Balloons.addBalloon(x0, y0);
-                var [x1, y1, ,] = Space.viewBox();
-                Mouse.click(x0 + 200, y0 + 200);
-                Mouse.move(x0 + 300, y0 + 300);
-                Space.draggingBalloon.should.equal(false);
-                Space.draggingSpace.should.equal(true);
-                var [x2, y2, ,] = Space.viewBox();
-                x1.should.not.equal(x2);
-                y1.should.not.equal(y2);
-            });
-
         it('should allow to zoom in and out the canvas',
             () => {
                 Space.clear();
@@ -310,20 +295,6 @@ describe('Space behavior',
                 h1.should.be.above(h3);
                 //Space.clear();
             });
-
-        //it('should allow to create balloons in same cursor place after zoom',
-        //    () => {
-        //        Space.clear();
-        //        Space.zoom(10);
-        //        Mouse.doubleclick(x0, y0);
-        //        var [x1, y1] = Space.toScreen(x0, y0);
-        //        var b = Balloons.getLast();
-        //        var [x2, y2, w, h] = b.rect();
-        //        [x2, y2] = Space.toScreen(x2 + w / 2, y2 + h / 2);
-        //        x1.should.equal(x2);
-        //        y1.should.equal(y2);
-        //        Space.clear();
-        //    });
 
         it('should not modify ability to move balloons after zoom',
             () => {
@@ -672,6 +643,30 @@ describe('Non-ViewBox movement',
                 b.drop();
                 Space.showHandle();
                 var [x2, y2] = [b.pathx, b.pathy];
+                Math.abs(x1 - x2).should.be.below(10);
+                Math.abs(y1 - y2).should.be.below(10);
+                Space.useViewBox = true;
+                Space.clear();
+            });
+
+        it('should not drastically move created balloon after moving space to different place',
+            () => {
+                Space.useViewBox = false;
+                Space.isTesting = true;
+                Space.point.x.should.equal(0);
+                Space.draggingSpace.should.equal(false);
+                Mouse.click(x0, y0);
+                Space.draggingSpace.should.equal(true);
+                var dx = 25;
+                Mouse.move(x0 + dx, y0);
+                Mouse.release(x0 + dx, y0);
+                Math.abs(Space.point.x - dx).should.be.below(10);
+                var b = Balloons.addBalloon(x0, y0);
+                var [x1, y1] = b.getXY();
+                Math.abs(x1 - x0 + 100).should.be.below(10);
+                Math.abs(y1 - y0 + 100).should.be.below(10);
+                Balloons.refresh();
+                var [x2, y2] = b.getXY();
                 Math.abs(x1 - x2).should.be.below(10);
                 Math.abs(y1 - y2).should.be.below(10);
                 Space.useViewBox = true;
