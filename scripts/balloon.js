@@ -1,5 +1,4 @@
-﻿/// <reference path="mouseEvents.js" />
-class Balloon {
+﻿class Balloon {
     constructor(x, y) {
         this.W = 200;
         this.H = 200;
@@ -138,11 +137,11 @@ class Balloon {
     }
 
     centerTail(arrow) {
-        arrow.moveTail(this.x, this.y);
+        arrow.moveTail(Space.point.x + this.x, Space.point.y + this.y);
     }
 
     centerHead(arrow) {
-        arrow.moveHead(this.x, this.y);
+        arrow.moveHead(Space.point.x + this.x, Space.point.y + this.y);
     }
 
     createBalloon(x, y) {

@@ -293,7 +293,6 @@ describe('Space behavior',
                 w1.should.be.above(w3);
                 h2.should.be.above(h1);
                 h1.should.be.above(h3);
-                //Space.clear();
             });
 
         it('should not modify ability to move balloons after zoom',
