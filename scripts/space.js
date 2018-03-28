@@ -24,6 +24,13 @@
         this.w = w;
         this.h = h;
     }
+
+    getAlpha() {
+        if (this.h == 0) {
+            return 1;
+        }
+        return this.w / this.h;
+    }
 }
 
 var Space = {
@@ -71,6 +78,7 @@ var Space = {
             w += value * alpha;
             h += value;
             this.point.update(x, y, w, h);
+            Space.refresh();
         }
     },
 
@@ -167,7 +175,7 @@ var Space = {
             else {
                 this.point.x += dx;
                 this.point.y += dy;
-                Balloons.refresh();
+                Space.refresh();
             }
         }
     },
@@ -260,6 +268,10 @@ var Space = {
         var [x, y, w, h] = this.point.getRect();
         this.s.attr({ viewBox: `${x},${y},${w},${h}` });
         this.svg.innerHTML += '<marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7"/></marker>';
+    },
+
+    refresh() {
+        Balloons.refresh();
     }
 }
 

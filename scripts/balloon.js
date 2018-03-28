@@ -17,10 +17,12 @@
         this.freezeMovement = false;
         this.id = this.div.attr('id');
         //remove selection
-        if (window.getSelection)
+        if (window.getSelection) {
             window.getSelection().removeAllRanges();
-        else if (document.selection)
+        }
+        else if (document.selection) {
             document.selection.empty();
+        }
         this.childBalloons = [];
         this.parentBalloons = [];
         this.childArrows = [];
@@ -35,11 +37,15 @@
     }
 
     W() {
-        return this.W0;
+        var w = Space.point.w;
+        var w0 = (new Point()).getRect()[2];
+        return w / w0 * this.W0;
     }
 
     H() {
-        return this.H0;
+        var h = Space.point.h;
+        var h0 = (new Point()).getRect()[3];
+        return h / h0 * this.H0;
     }
 
     wh() {
@@ -178,8 +184,6 @@
         return [fO, div];
     }
 
-
-
     createPath() {
         [this.pathx, this.pathy] = [this.x, this.y];
         var r0 = roundPathCorners(`M0 0 L ${this.W()} 0 L${this.W()} ${this.H()} L 0 ${this.H()} Z`, 20);
@@ -209,6 +213,8 @@
             var [x, y] = [this.x, this.y];
             var p = [Space.point.x, Space.point.y];
             this.moveInternal(x + p[0] - this.W() / 2, y + p[1] - this.H() / 2);
+            this.div.attr('width', this.W());
+            this.div.attr('height', this.H());
         }
     }
 }
