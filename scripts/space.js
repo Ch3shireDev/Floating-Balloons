@@ -11,11 +11,14 @@
         return [this.x, this.y, this.w, this.h];
     }
 
+    getWH0() {
+        return [3200, 2400];
+    }
+
     reset() {
         this.x = 0;
         this.y = 0;
-        this.w = 3200;
-        this.h = 2400;
+        [this.w, this.h] = this.getWH0();
     }
 
     update(x, y, w, h) {
@@ -73,10 +76,10 @@ var Space = {
         else {
             var [x, y, w, h] = this.point.getRect();
             var alpha = w / h;
-            x -= value * alpha / 2;
-            y -= value / 2;
-            w += value * alpha;
-            h += value;
+            x += value * alpha / 2;
+            y += value / 2;
+            w -= value * alpha;
+            h -= value;
             this.point.update(x, y, w, h);
             Space.refresh();
         }

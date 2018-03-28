@@ -74,5 +74,15 @@ Mouse = {
 
     release(x, y) {
         this.runEvent('mouseup', x, y);
+    },
+
+    scroll(value) {
+        $('body')[0].dispatchEvent(
+            new MouseEvent(name,
+                {
+                    view: window,
+                    deltaY: 10*value
+                })
+        );
     }
 };

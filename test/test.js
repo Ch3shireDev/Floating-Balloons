@@ -673,6 +673,22 @@ describe('Non-ViewBox movement',
             });
     });
 
+describe('Non-ViewBox zooming',
+    () => {
+        it('should allow to zoom-in and out balloons',
+            () => {
+                Space.useViewBox = false;
+                var [w, h] = Space.point.getWH0();
+                var b = Balloons.addBalloon(600, 800);
+                var [x1, y1] = b.getXY();
+                alert("");
+                Mouse.scroll(100);
+                alert("");
+                Space.useViewBox = true;
+                Space.clear();
+            });
+    });
+
 describe('Selecting bubbles',
     () => {
         it('should create a selection field when clicked on empty space');

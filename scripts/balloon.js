@@ -210,9 +210,12 @@
 
     refresh() {
         if (!Space.useViewBox) {
-            var [x, y] = [this.x, this.y];
-            var p = [Space.point.x, Space.point.y];
-            this.moveInternal(x + p[0] - this.W() / 2, y + p[1] - this.H() / 2);
+            var [x, y] = [this.x - this.W() / 2, this.y - this.H() / 2];
+            var p = Space.point.getRect();
+            var [w0, h0] = Space.point.getWH0();
+            x = x / w0 * p[2] + p[0];
+            y = y / h0 * p[3] + p[1];
+            this.moveInternal(x, y);
             this.div.attr('width', this.W());
             this.div.attr('height', this.H());
         }
