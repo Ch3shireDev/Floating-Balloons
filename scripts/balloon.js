@@ -1,12 +1,15 @@
 ﻿class Balloon {
     constructor(x, y) {
-        this.W = 200;
-        this.H = 200;
+        this.W0 = 200;
+        this.H0 = 200;
 
         if (Space.useViewBox) {
-            this.x = x - this.W / 2;
-            this.y = y - this.H / 2;
+            this.x = x - this.W() / 2;
+            this.y = y - this.H() / 2;
         }
+
+        this.n = Balloons.numBalloons;
+        Balloons.numBalloons++;
 
         [this.fO, this.div] = this.createBalloon(x, y);
 
@@ -26,9 +29,17 @@
             this.openContent();
         }
         if (!Space.useViewBox) {
-            this.move(x - this.W / 2, y - this.H / 2);
+            this.move(x - this.W() / 2, y - this.H() / 2);
         }
         this.path = this.createPath();
+    }
+
+    W() {
+        return this.W0;
+    }
+
+    H() {
+        return this.H0;
     }
 
     wh() {
@@ -87,8 +98,8 @@
         var [x0, y0] = [x, y];
         var [x1, y1] = this.screenXY();
         [x, y] = Space.toInternal(x, y);
-        this.x = x - Space.point.x + this.W / 2;
-        this.y = y - Space.point.y + this.H / 2;
+        this.x = x - Space.point.x + this.W() / 2;
+        this.y = y - Space.point.y + this.H() / 2;
         this.moveInternal(x, y);
         if (Space.moveChildren) {
             var balloonSet = new Set(this.childBalloons);
@@ -113,8 +124,8 @@
                     balloon.moveInternal(x, y);
                 }
                 else {
-                    balloon.x = x - Space.point.x + balloon.W / 2;
-                    balloon.y = y - Space.point.y + balloon.H / 2;
+                    balloon.x = x - Space.point.x + balloon.W() / 2;
+                    balloon.y = y - Space.point.y + balloon.H() / 2;
                     balloon.moveInternal(x, y);
                 }
             });
@@ -149,38 +160,35 @@
         const h = 200;
         x = x - w / 2;
         y = y - h / 2;
-
         const div = Space.s.rect(x, y, w, h);
         div.attr({
-            id: `balloon${Balloons.numBalloons}`,
+            id: `balloon${this.n}`,
             class: 'balloon',
             fill: 'red',
             'opacity': 0.8
         });
-
         const fO = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
-        fO.setAttribute('id', `fo${Balloons.numBalloons}`);
+        fO.setAttribute('id', `fo${this.n}`);
         fO.setAttribute('x', x);
         fO.setAttribute('y', y);
         fO.setAttribute('width', w);
         fO.setAttribute('height', h);
         fO.innerHTML = '<div class="inner-text"></div>';
         div.after(fO);
-
-        Balloons.numBalloons++;
-
         return [fO, div];
     }
 
+
+
     createPath() {
         [this.pathx, this.pathy] = [this.x, this.y];
-        var r0 = roundPathCorners(`M0 0 L ${this.W} 0 L${this.W} ${this.H} L 0 ${this.H} Z`, 20);
+        var r0 = roundPathCorners(`M0 0 L ${this.W()} 0 L${this.W()} ${this.H()} L 0 ${this.H()} Z`, 20);
         var path = Space.s.path(r0);
         if (Space.useViewBox) {
-            path.transform(`translate(${this.x - this.W / 2 * 0.3}, ${this.y - this.H / 2 * 0.3}) scale(1.3)`).remove();
+            path.transform(`translate(${this.x - this.W() / 2 * 0.3}, ${this.y - this.H() / 2 * 0.3}) scale(1.3)`).remove();
         }
         else {
-            path.transform(`translate(${Space.point.x + this.x - this.W / 2 * 0.3 - this.W / 2}, ${Space.point.y + this.y - this.H / 2 * 0.3 - this.W / 2}) scale(1.3)`).remove();
+            path.transform(`translate(${Space.point.x + this.x - this.W() / 2 * 0.3 - this.W() / 2}, ${Space.point.y + this.y - this.H() / 2 * 0.3 - this.W() / 2}) scale(1.3)`).remove();
         }
         var r = Snap.path.map(path.realPath, path.matrix);
         path = Space.s.path(r).remove();
@@ -189,8 +197,8 @@
 
     distance(x, y) {
         var [x1, y1] = this.getXY();
-        x1 += this.W / 2;
-        y1 += this.H / 2;
+        x1 += this.W() / 2;
+        y1 += this.H() / 2;
         var [x2, y2] = Space.toScreen(x1, y1);
         var d = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
         return d;
@@ -200,7 +208,7 @@
         if (!Space.useViewBox) {
             var [x, y] = [this.x, this.y];
             var p = [Space.point.x, Space.point.y];
-            this.moveInternal(x + p[0] - this.W / 2, y + p[1] - this.H / 2);
+            this.moveInternal(x + p[0] - this.W() / 2, y + p[1] - this.H() / 2);
         }
     }
 }

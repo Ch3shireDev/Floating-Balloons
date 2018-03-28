@@ -1,4 +1,32 @@
-﻿var Space = {
+﻿class Point {
+    constructor() {
+        this.reset();
+    }
+
+    getXY() {
+        return [this.x, this.y];
+    }
+
+    getRect() {
+        return [this.x, this.y, this.w, this.h];
+    }
+
+    reset() {
+        this.x = 0;
+        this.y = 0;
+        this.w = 3200;
+        this.h = 2400;
+    }
+
+    update(x, y, w, h) {
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+    }
+}
+
+var Space = {
     currentElement: null,
     handle: null,
     mouseDown: false,
@@ -14,12 +42,7 @@
     xy: [0, 0],
     dxy: [0, 0],
     mousePos: [0, 0],
-    point: {
-        x: 0, y: 0, w: 3200, h: 2400, getXY() { return [this.x, this.y]; }
-    },
-    pointZero: {
-        x: 0, y: 0, w: 3200, h: 2400, getXY() { return [this.x, this.y]; }
-    },
+    point: new Point(),
 
     moveSpace(dx, dy) {
         var [x, y, w, h] = this.viewBox();
@@ -41,6 +64,13 @@
             this.viewBox(x, y, w, h);
         }
         else {
+            var [x, y, w, h] = this.point.getRect();
+            var alpha = w / h;
+            x -= value * alpha / 2;
+            y -= value / 2;
+            w += value * alpha;
+            h += value;
+            this.point.update(x, y, w, h);
         }
     },
 
@@ -226,11 +256,10 @@
         this.moveChildren = true;
         Balloons.clear();
         this.svg.innerHTML = '';
-        var [x, y, w, h] = [0, 0, 3200, 2400];
+        this.point.reset();
+        var [x, y, w, h] = this.point.getRect();
         this.s.attr({ viewBox: `${x},${y},${w},${h}` });
         this.svg.innerHTML += '<marker id="arrowhead" markerWidth="10" markerHeight="7" refX="0" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7"/></marker>';
-        Space.point.x = 0;
-        Space.point.y = 0;
     }
 }
 

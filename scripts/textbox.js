@@ -27,8 +27,8 @@ Balloon.prototype.openContent = function () {
         var width = w.x;
         var height = w.y;
 
-        balloon.W = width;
-        balloon.H = height;
+        balloon.W0 = width;
+        balloon.H0 = height;
 
         div.attr('width', width);
         div.attr('height', height);
