@@ -27,9 +27,6 @@
         this.parentBalloons = [];
         this.childArrows = [];
         this.parentArrows = [];
-        if (Space.autoText) {
-            this.openContent();
-        }
         if (!Space.useViewBox) {
             this.move(x - this.W() / 2, y - this.H() / 2);
         }
@@ -51,7 +48,9 @@
     wh() {
         var w = this.div.attr('width'),
             h = this.div.attr('height');
-        return Space.toScreen(w, h);
+        [w, h] = Space.toScreen(w, h);
+        var [x, y] = Space.toScreen(0, 0);
+        return [w - x, h - y];
     }
 
     isGrabbed() {
@@ -89,6 +88,13 @@
         const x = parseFloat(div.attr('x')),
             y = parseFloat(div.attr('y'));
         return [x, y];
+    }
+
+    getAttrWH() {
+        const div = this.div;
+        const w = parseFloat(div.attr('width')),
+            h = parseFloat(div.attr('height'));
+        return [w, h];
     }
 
     screenXY() {

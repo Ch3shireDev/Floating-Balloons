@@ -81,7 +81,7 @@ Mouse = {
             new MouseEvent(name,
                 {
                     view: window,
-                    deltaY: 10*value
+                    deltaY: 10 * value
                 })
         );
     }

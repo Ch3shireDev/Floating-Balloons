@@ -103,6 +103,11 @@ var Space = {
         var [a, d, e, f] = [ctm.a, ctm.d, ctm.e, ctm.f];
         [x, y] = [x * a + e, y * d + f];
         return [x, y];
+
+        //var [x, y] = [this.x - this.W() / 2, this.y - this.H() / 2];
+        //var p = Space.point.getRect();
+        //var [w0, h0] = Space.point.getWH0();
+        //x = x / w0 * p[2] + p[0];
     },
 
     leave(event) {
@@ -205,7 +210,11 @@ var Space = {
         var [x, y, element] = Space.getElement(event);
         const tag = element.tagName.toLowerCase();
         if (tag === 'svg') {
-            Balloons.addBalloon(x, y);
+            var b = Balloons.addBalloon(x, y);
+            Space.refresh();
+            if (this.autoText) {
+                b.openContent();
+            }
         }
         else {
             const b = Balloons.findFromElement(element);
