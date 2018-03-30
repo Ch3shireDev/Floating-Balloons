@@ -210,6 +210,7 @@ var Space = {
         var [x, y, element] = Space.getElement(event);
         const tag = element.tagName.toLowerCase();
         if (tag === 'svg') {
+
             var b = Balloons.addBalloon(x, y);
             Space.refresh();
             if (this.autoText) {
