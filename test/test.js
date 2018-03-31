@@ -568,12 +568,14 @@ describe('Non-ViewBox movement',
         it('should allow to move space',
             () => {
                 Space.useViewBox = false;
+                Space.isTesting = true;
                 Mouse.doubleclick(x0, y0);
                 var b = Balloons.getLast();
                 var [x1, y1] = b.getXY();
-                Mouse.click(x0 + 100, y0 + 100);
+                Mouse.click(x0 + 200, y0 + 200);
                 b.isGrabbed().should.be.equal(false);
-                Mouse.move(x0 + 200, y0 + 200);
+                Space.draggingSpace.should.be.equal(true);
+                Mouse.move(x0 + 300, y0 + 300);
                 var [x2, y2] = b.getXY();
                 Math.abs(x2 - x1 - 100).should.be.below(10);
                 Math.abs(y2 - y1 - 100).should.be.below(10);
@@ -592,7 +594,7 @@ describe('Non-ViewBox movement',
                 var dx = 25;
                 Mouse.move(x0 + dx, y0);
                 Mouse.release(x0 + dx, y0);
-                Math.abs(Space.point.x - dx).should.be.below(10);
+                Math.abs(Space.point.x + dx).should.be.below(10);
                 var b = Balloons.addBalloon(x0, y0);
                 var [x1, y1] = b.getXY();
                 Math.abs(x1 - x0 + 100).should.be.below(10);
@@ -616,7 +618,7 @@ describe('Non-ViewBox movement',
                 var dx = 25;
                 Mouse.move(x0 + dx, y0);
                 Mouse.release(x0 + dx, y0);
-                Math.abs(Space.point.x - dx).should.be.below(10);
+                Math.abs(Space.point.x + dx).should.be.below(10);
                 var b = Balloons.addBalloon(x0, y0);
                 Mouse.click(x0, y0);
                 b.isGrabbed().should.equal(true);
@@ -659,7 +661,7 @@ describe('Non-ViewBox movement',
                 var dx = 25;
                 Mouse.move(x0 + dx, y0);
                 Mouse.release(x0 + dx, y0);
-                Math.abs(Space.point.x - dx).should.be.below(10);
+                Math.abs(Space.point.x + dx).should.be.below(10);
                 var b = Balloons.addBalloon(x0, y0);
                 var [x1, y1] = b.getXY();
                 Math.abs(x1 - x0 + 100).should.be.below(10);

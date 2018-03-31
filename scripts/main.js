@@ -1,5 +1,5 @@
 ﻿var b1 = Balloons.addBalloon(500, 500);
-Space.zoom(1000);
+//Space.zoom(1000);
 //var value = 1000;
 //var [x, y, w, h] = Space.point.getRect();
 //var alpha = w / h;

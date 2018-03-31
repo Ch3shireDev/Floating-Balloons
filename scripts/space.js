@@ -76,12 +76,13 @@ var Space = {
         else {
             var [x, y, w, h] = this.point.getRect();
             var alpha = w / h;
-            x += value * alpha / 2;
-            y += value / 2;
-            w -= value * alpha;
-            h -= value;
+            x -= value * alpha / 2;
+            y -= value / 2;
+            w += value * alpha;
+            h += value;
             this.point.update(x, y, w, h);
             Space.refresh();
+            console.log(x, w);
         }
     },
 
@@ -171,7 +172,7 @@ var Space = {
             if (Space.currentElement == null) return;
             var [x, y] = Space.currentElement.getXY();
             var [w, h] = [Space.currentElement.W0, Space.currentElement.H0];
-            Space.currentElement.move(x + dx+w/2, y + dy+h/2);
+            Space.currentElement.move(x + dx + w / 2, y + dy + h / 2);
         }
         else if (Space.draggingHandle) {
             var [x, y] = Space.handle.getXY();
@@ -182,8 +183,8 @@ var Space = {
                 this.moveSpace(dx, dy);
             }
             else {
-                this.point.x += dx;
-                this.point.y += dy;
+                this.point.x -= dx;
+                this.point.y -= dy;
                 Space.refresh();
             }
         }

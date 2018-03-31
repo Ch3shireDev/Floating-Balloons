@@ -36,13 +36,13 @@
     W() {
         var w = Space.point.w;
         var w0 = (new Point()).getRect()[2];
-        return w / w0 * this.W0;
+        return w0 / w * this.W0;
     }
 
     H() {
         var h = Space.point.h;
         var h0 = (new Point()).getRect()[3];
-        return h / h0 * this.H0;
+        return h0 / h * this.H0;
     }
 
     wh() {
@@ -127,10 +127,10 @@
         var [x2, y2] = Space.toScreen(x - this.W0 / 2, y - this.H0 / 2);
         var [x0, y0] = [x2, y2];
         var [x1, y1] = this.screenXY();
-        this.x = x - Space.point.x;
-        this.y = y - Space.point.y;
+        this.x = x + Space.point.x;
+        this.y = y + Space.point.y;
         this.moveInternal(x - this.W0 / 2, y - this.H0 / 2);
-
+        console.log(this.x, this.y);
         if (Space.moveChildren) {
             var balloonSet = new Set(this.childBalloons);
             var n = 0;
@@ -223,8 +223,8 @@
             var [x, y] = [this.x - this.W() / 2, this.y - this.H() / 2];
             var p = Space.point.getRect();
             var [w0, h0] = Space.point.getWH0();
-            x = x / w0 * p[2] + p[0];
-            y = y / h0 * p[3] + p[1];
+            x = (x - p[0]) * w0 / p[2];
+            y = (y - p[1]) * h0 / p[3];
             this.moveInternal(x, y);
             this.div.attr('width', this.W());
             this.div.attr('height', this.H());
