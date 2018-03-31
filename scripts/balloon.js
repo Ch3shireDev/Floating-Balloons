@@ -4,8 +4,8 @@
         this.H0 = 200;
 
         if (Space.useViewBox) {
-            this.x = x - this.W() / 2;
-            this.y = y - this.H() / 2;
+            this.x = x - this.W0 / 2;
+            this.y = y - this.H0 / 2;
         }
 
         this.n = Balloons.numBalloons;
@@ -28,7 +28,7 @@
         this.childArrows = [];
         this.parentArrows = [];
         if (!Space.useViewBox) {
-            this.move(x - this.W() / 2, y - this.H() / 2);
+            this.move(x, y);
         }
         this.path = this.createPath();
     }
@@ -103,16 +103,34 @@
         return [x, y];
     }
 
+    moveInternal(x, y) {
+        var [x0, y0] = Space.point.getXY();
+        //x += x0;
+        //y += y0;
+        //here we should transform it to screen coords
+        this.div.attr('x', x);
+        this.div.attr('y', y);
+        this.fO.setAttribute('x', x);
+        this.fO.setAttribute('y', y);
+        var b = this;
+        this.childArrows.forEach(function (arrow) {
+            b.centerTail(arrow);
+        });
+        this.parentArrows.forEach(function (arrow) {
+            b.centerHead(arrow);
+        });
+    }
+
     move(x, y) {
         if (this.freezeMovement) return;
         this.freezeMovement = true;
-        [x, y] = Space.toScreen(x, y);
-        var [x0, y0] = [x, y];
+        var [x2, y2] = Space.toScreen(x - this.W0 / 2, y - this.H0 / 2);
+        var [x0, y0] = [x2, y2];
         var [x1, y1] = this.screenXY();
-        [x, y] = Space.toInternal(x, y);
-        this.x = x - Space.point.x + this.W() / 2;
-        this.y = y - Space.point.y + this.H() / 2;
-        this.moveInternal(x, y);
+        this.x = x - Space.point.x;
+        this.y = y - Space.point.y;
+        this.moveInternal(x - this.W0 / 2, y - this.H0 / 2);
+
         if (Space.moveChildren) {
             var balloonSet = new Set(this.childBalloons);
             var n = 0;
@@ -130,33 +148,19 @@
                 if (b.parentBalloons.includes(balloon)) return;
                 var [x2, y2] = balloon.screenXY();
                 [x, y] = Space.toInternal(x2 - x1 + x0, y2 - y1 + y0);
-                balloon.x = x;
-                balloon.y = y;
                 if (Space.useViewBox) {
+                    balloon.x = x;
+                    balloon.y = y;
                     balloon.moveInternal(x, y);
                 }
                 else {
-                    balloon.x = x - Space.point.x + balloon.W() / 2;
-                    balloon.y = y - Space.point.y + balloon.H() / 2;
+                    balloon.x = x - Space.point.x;
+                    balloon.y = y - Space.point.y;
                     balloon.moveInternal(x, y);
                 }
             });
         }
         this.freezeMovement = false;
-    }
-
-    moveInternal(x, y) {
-        this.div.attr('x', x);
-        this.div.attr('y', y);
-        this.fO.setAttribute('x', x);
-        this.fO.setAttribute('y', y);
-        var b = this;
-        this.childArrows.forEach(function (arrow) {
-            b.centerTail(arrow);
-        });
-        this.parentArrows.forEach(function (arrow) {
-            b.centerHead(arrow);
-        });
     }
 
     centerTail(arrow) {

@@ -27,6 +27,7 @@
     <Content Include="LICENSE" />
     <Content Include="scripts\handle.js" />
     <Content Include="scripts\balloon.js" />
+    <Content Include="scripts\main.js" />
     <Content Include="scripts\mouseEvents.js" />
     <Content Include="scripts\rounding.js" />
     <Content Include="README.md" />

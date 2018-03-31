@@ -695,34 +695,53 @@ describe('Non-ViewBox zooming',
                 Space.clear();
             });
 
-        it('should create new balloons in new size after zoom', () => {
+        it('should create balloons in same place after zoom', () => {
             Space.useViewBox = false;
             var b1 = Balloons.addBalloon(500, 500);
             Space.zoom(1000);
+            Space.refresh();
             var b2 = Balloons.addBalloon(500, 500);
             Space.refresh();
+
             var [x1, y1] = b1.getXY();
             var [x2, y2] = b2.getXY();
-            Math.abs(x1-x2).should.be.below(50);
-            Math.abs(y1-y2).should.be.below(50);
-            //Mouse.doubleclick(x0, y0);
-            //var b1 = Balloons.getLast();
-            ////Space.zoom(1000);
-            //var alpha = Space.point.getAlpha();
-            //Space.point.w += alpha * 100;
-            //Space.point.h += 100;
-            //var [w1, h1] = b1.getAttrWH();
-            //var [x2, y2] = [300, 400];
-            //var [x3, y3] = Space.toInternal(x2, y2);
-            //Mouse.doubleclick(x3, y3);
-            //var b2 = Balloons.getLast();
-            //var [x, y] = b2.getXY();
-            //var [w, h] = b2.getAttrWH();
-            //Math.abs(x + w / 2 - x3).should.be.below(50);
-            //Math.abs(y + h / 2 - y3).should.be.below(50);
+
+            Math.abs(x1 - x2).should.be.below(10);
+            Math.abs(y1 - y2).should.be.below(10);
+
             Space.useViewBox = true;
             Space.clear();
         });
+
+        it('should create new balloons in new size after zoom');
+        //() => {
+        //Space.useViewBox = false;
+        //var b1 = Balloons.addBalloon(500, 500);
+        //Space.zoom(1000);
+        //var b2 = Balloons.addBalloon(500, 500);
+        //Space.refresh();
+        //var [x1, y1] = b1.getXY();
+        //var [x2, y2] = b2.getXY();
+        //Math.abs(x1-x2).should.be.below(50);
+        //Math.abs(y1-y2).should.be.below(50);
+        ////Mouse.doubleclick(x0, y0);
+        ////var b1 = Balloons.getLast();
+        //////Space.zoom(1000);
+        ////var alpha = Space.point.getAlpha();
+        ////Space.point.w += alpha * 100;
+        ////Space.point.h += 100;
+        ////var [w1, h1] = b1.getAttrWH();
+        ////var [x2, y2] = [300, 400];
+        ////var [x3, y3] = Space.toInternal(x2, y2);
+        ////Mouse.doubleclick(x3, y3);
+        ////var b2 = Balloons.getLast();
+        ////var [x, y] = b2.getXY();
+        ////var [w, h] = b2.getAttrWH();
+        ////Math.abs(x + w / 2 - x3).should.be.below(50);
+        ////Math.abs(y + h / 2 - y3).should.be.below(50);
+        //Space.useViewBox = true;
+        //Space.clear();
+        //});
         it('should move arrows in place of balloons after zoom');
     });
 

@@ -170,7 +170,8 @@ var Space = {
         if (Space.draggingBalloon) {
             if (Space.currentElement == null) return;
             var [x, y] = Space.currentElement.getXY();
-            Space.currentElement.move(x + dx, y + dy);
+            var [w, h] = [Space.currentElement.W0, Space.currentElement.H0];
+            Space.currentElement.move(x + dx+w/2, y + dy+h/2);
         }
         else if (Space.draggingHandle) {
             var [x, y] = Space.handle.getXY();
@@ -210,7 +211,6 @@ var Space = {
         var [x, y, element] = Space.getElement(event);
         const tag = element.tagName.toLowerCase();
         if (tag === 'svg') {
-
             var b = Balloons.addBalloon(x, y);
             Space.refresh();
             if (this.autoText) {
