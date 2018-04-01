@@ -583,6 +583,30 @@ describe('Non-ViewBox movement',
                 Space.clear();
             });
 
+        //it('should not drastically move created balloon after moving space to different place',
+        //    () => {
+        //        Space.useViewBox = false;
+        //        Space.isTesting = true;
+        //        Space.point.x.should.equal(0);
+        //        Space.draggingSpace.should.equal(false);
+        //        Mouse.click(x0, y0);
+        //        Space.draggingSpace.should.equal(true);
+        //        var dx = 25;
+        //        Mouse.move(x0 + dx, y0);
+        //        Mouse.release(x0 + dx, y0);
+        //        Math.abs(Space.point.x + dx).should.be.below(10);
+        //        var b = Balloons.addBalloon(x0, y0);
+        //        var [x1, y1] = b.getXY();
+        //        Math.abs(x1 - x0 + 100).should.be.below(10);
+        //        Math.abs(y1 - y0 + 100).should.be.below(10);
+        //        Balloons.refresh();
+        //        var [x2, y2] = b.getXY();
+        //        Math.abs(x1 - x2).should.be.below(10);
+        //        Math.abs(y1 - y2).should.be.below(10);
+        //        Space.useViewBox = true;
+        //        Space.clear();
+        //    });
+
         it('should not drastically move created balloon after moving space to different place',
             () => {
                 Space.useViewBox = false;
@@ -650,29 +674,7 @@ describe('Non-ViewBox movement',
                 Space.clear();
             });
 
-        it('should not drastically move created balloon after moving space to different place',
-            () => {
-                Space.useViewBox = false;
-                Space.isTesting = true;
-                Space.point.x.should.equal(0);
-                Space.draggingSpace.should.equal(false);
-                Mouse.click(x0, y0);
-                Space.draggingSpace.should.equal(true);
-                var dx = 25;
-                Mouse.move(x0 + dx, y0);
-                Mouse.release(x0 + dx, y0);
-                Math.abs(Space.point.x + dx).should.be.below(10);
-                var b = Balloons.addBalloon(x0, y0);
-                var [x1, y1] = b.getXY();
-                Math.abs(x1 - x0 + 100).should.be.below(10);
-                Math.abs(y1 - y0 + 100).should.be.below(10);
-                Balloons.refresh();
-                var [x2, y2] = b.getXY();
-                Math.abs(x1 - x2).should.be.below(10);
-                Math.abs(y1 - y2).should.be.below(10);
-                Space.useViewBox = true;
-                Space.clear();
-            });
+
     });
 
 describe('Non-ViewBox zooming',

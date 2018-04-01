@@ -21,7 +21,7 @@
 
     screenXY() {
         const [x, y] = this.getXY();
-        return Space.toScreen(x, y);
+        return Space.internalToScreen(x, y);
     }
 
     setLocation(r) {
@@ -116,7 +116,7 @@
             this.parentBalloon = closestBalloon;
             this.parentBalloon.drop();
         }
-        [x, y] = Space.toInternal(x, y);
+        [x, y] = Space.screenToInternal(x, y);
         var r = Snap.closestPoint(this.parentBalloon.path, x, y);
         this.setLocation(r);
     }

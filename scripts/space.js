@@ -104,11 +104,36 @@ var Space = {
         var [a, d, e, f] = [ctm.a, ctm.d, ctm.e, ctm.f];
         [x, y] = [x * a + e, y * d + f];
         return [x, y];
+    },
 
-        //var [x, y] = [this.x - this.W() / 2, this.y - this.H() / 2];
-        //var p = Space.point.getRect();
-        //var [w0, h0] = Space.point.getWH0();
-        //x = x / w0 * p[2] + p[0];
+    screenToInternal(xs, ys) {
+        var [tx, ty] = Space.screenToDimless(xs, ys);
+        var [x1, y1, w, h] = Space.point.getRect();
+        var [xi, yi] = [tx * w + x1, ty * h + y1];
+        return [xi, yi];
+    },
+
+    internalToScreen(xi, yi) {
+        var [tx, ty] = Space.internalToDimless(xi, yi);
+        var [W, H] = Space.point.getWH0();
+        var ctm = this.svg.getScreenCTM();
+        var [w0, h0, x0, y0] = [ctm.a * W, ctm.d * H, ctm.e, ctm.f];
+        var [xs, ys] = [tx * w0 + x0, ty * h0 + y0];
+        return [xs, ys];
+    },
+
+    internalToDimless(xi, yi) {
+        var [x1, y1, w1, h1] = Space.point.getRect();
+        var [tx, ty] = [(xi - x1) / w1, (yi - y1) / h1];
+        return [tx, ty];
+    },
+
+    screenToDimless(xs, ys) {
+        var [W, H] = Space.point.getWH0();
+        var ctm = this.svg.getScreenCTM();
+        var [w0, h0, x0, y0] = [ctm.a * W, ctm.d * H, ctm.e, ctm.f];
+        var [tx, ty] = [(xs - x0) / w0, (ys - y0) / h0];
+        return [tx, ty];
     },
 
     leave(event) {
@@ -119,14 +144,14 @@ var Space = {
         var x = event.clientX,
             y = event.clientY,
             e = document.elementFromPoint(x, y);
-        [x, y] = Space.toInternal(x, y);
+        [x, y] = Space.screenToInternal(x, y);
         return [x, y, e];
     },
 
     grabElement(event) {
         Space.mouseDown = true;
         var [x, y, element] = Space.getElement(event);
-        this.xy = Space.toInternal(event.clientX, event.clientY);
+        this.xy = Space.screenToInternal(event.clientX, event.clientY);
         this.draggingBalloon = false;
         this.draggingHandle = false;
         this.draggingSpace = false;
@@ -161,7 +186,7 @@ var Space = {
     moveElement(event) {
         if (event === null) return;
         if (typeof event == 'undefined') return;
-        var [x1, y1] = Space.toInternal(event.clientX, event.clientY);
+        var [x1, y1] = Space.screenToInternal(event.clientX, event.clientY);
         var [x0, y0] = this.xy;
         Space.mousePos = [event.clientX, event.clientY];
         var [dx, dy] = [x1 - x0, y1 - y0];
