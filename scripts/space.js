@@ -248,6 +248,16 @@ var Space = {
         var [x, y, element] = Space.getElement(event);
         const tag = element.tagName.toLowerCase();
         if (tag === 'svg') {
+            if (!Space.useViewBox) {
+                var [W, H] = Space.point.getWH0();
+                var ctm = Space.svg.getScreenCTM();
+                var [w0, h0, x0, y0] = [ctm.a * W, ctm.d * H, ctm.e, ctm.f];
+                var [x1, y1, w1, h1] = Space.point.getRect();
+                x *= w1 / W;
+                y *= h1 / H;
+                x = x + Space.point.x;
+                y = y + Space.point.y;
+            }
             var b = Balloons.addBalloon(x, y);
             Space.refresh();
             if (this.autoText) {
