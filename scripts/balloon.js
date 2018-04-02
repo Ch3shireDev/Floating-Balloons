@@ -28,6 +28,14 @@
         this.childArrows = [];
         this.parentArrows = [];
         if (!Space.useViewBox) {
+            var [W, H] = Space.point.getWH0();
+            var ctm = Space.svg.getScreenCTM();
+            var [w0, h0, x0, y0] = [ctm.a * W, ctm.d * H, ctm.e, ctm.f];
+            var [x1, y1, w1, h1] = Space.point.getRect();
+            x *= w1 / W;
+            y *= h1 / H;
+            x = x + Space.point.x;
+            y = y + Space.point.y;
             this.move(x, y);
         }
         this.path = this.createPath();
@@ -124,12 +132,17 @@
         if (this.freezeMovement) return;
         this.freezeMovement = true;
         var [w, h] = [Space.point.w, Space.point.h];
-        var [x2, y2] = Space.internalToScreen(x - this.W0 / 2, y - this.H0 / 2);
+        var [x2, y2] = Space.internalToScreen(x, y);
         var [x0, y0] = [x2, y2];
         var [x1, y1] = this.screenXY();
         this.x = x;
         this.y = y;
-        this.moveInternal((x - this.W0 / 2), y - this.H0 / 2);
+        if (Space.useViewBox) {
+            this.moveInternal(x, y);
+        }
+        else {
+            this.refresh();
+        }
         if (Space.moveChildren) {
             var balloonSet = new Set(this.childBalloons);
             var n = 0;
