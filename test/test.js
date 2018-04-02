@@ -673,8 +673,6 @@ describe('Non-ViewBox movement',
                 Space.useViewBox = true;
                 Space.clear();
             });
-
-
     });
 
 describe('Non-ViewBox zooming',

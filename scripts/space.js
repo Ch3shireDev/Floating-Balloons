@@ -82,7 +82,6 @@ var Space = {
             h += value;
             this.point.update(x, y, w, h);
             Space.refresh();
-            console.log(x, w);
         }
     },
 
@@ -151,7 +150,7 @@ var Space = {
     grabElement(event) {
         Space.mouseDown = true;
         var [x, y, element] = Space.getElement(event);
-        this.xy = Space.screenToInternal(event.clientX, event.clientY);
+        this.e2 = event;
         this.draggingBalloon = false;
         this.draggingHandle = false;
         this.draggingSpace = false;
@@ -183,21 +182,33 @@ var Space = {
         }
     },
 
+    getScreenTranslation(e1, e2) {
+        return [e2.clientX - e1.clientX, e2.clientY - e1.clientY];
+    },
+
+    getInternalTranslation(e1, e2) {
+        var [dx, dy] = this.getScreenTranslation(e1, e2);
+        var [x0, y0] = Space.screenToInternal(0, 0);
+        var [x1, y1] = Space.screenToInternal(dx, dy);
+        return [x1 - x0, y1 - y0];
+    },
+
     moveElement(event) {
         if (event === null) return;
         if (typeof event == 'undefined') return;
-        var [x1, y1] = Space.screenToInternal(event.clientX, event.clientY);
-        var [x0, y0] = this.xy;
+        if (typeof this.e2 == 'undefined') this.e2 = event;
         Space.mousePos = [event.clientX, event.clientY];
-        var [dx, dy] = [x1 - x0, y1 - y0];
-        this.xy = [x1, y1];
         if (typeof Space.isTesting === 'undefined' && event.buttons !== 1) return;
+        this.e1 = this.e2;
+        this.e2 = event;
         if (Space.mouseDown === false) return;
+        var [dx, dy] = Space.getInternalTranslation(this.e1, this.e2);
         if (Space.draggingBalloon) {
             if (Space.currentElement == null) return;
-            var [x, y] = Space.currentElement.getXY();
-            var [w, h] = [Space.currentElement.W0, Space.currentElement.H0];
-            Space.currentElement.move(x + dx + w / 2, y + dy + h / 2);
+            var e = Space.currentElement;
+            var [x, y] = [e.x, e.y];
+            var [w, h] = [e.W0, e.H0];
+            e.move(x + dx, y + dy);
         }
         else if (Space.draggingHandle) {
             var [x, y] = Space.handle.getXY();
@@ -208,8 +219,8 @@ var Space = {
                 this.moveSpace(dx, dy);
             }
             else {
-                this.point.x -= dx;
-                this.point.y -= dy;
+                this.point.x -= dx / 2;
+                this.point.y -= dy / 2;
                 Space.refresh();
             }
         }

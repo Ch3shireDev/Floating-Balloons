@@ -104,6 +104,9 @@
     }
 
     moveInternal(x, y) {
+        var [tx, ty] = Space.internalToDimless(x, y);
+        var [w, h] = Space.point.getWH0();
+        [x, y] = [tx * w, ty * h];
         this.div.attr('x', x);
         this.div.attr('y', y);
         this.fO.setAttribute('x', x);
@@ -217,8 +220,9 @@
     refresh() {
         if (!Space.useViewBox) {
             var [x, y] = [this.x - this.W() / 2, this.y - this.H() / 2];
-            [x, y] = Space.internalToScreen(x, y);
-
+            var [tx, ty] = Space.internalToDimless(x, y);
+            var [w, h] = Space.point.getWH0();
+            [x, y] = [tx * w, ty * h];
             this.moveInternal(x, y);
             this.div.attr('width', this.W());
             this.div.attr('height', this.H());
