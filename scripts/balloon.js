@@ -100,14 +100,12 @@
 
     screenXY() {
         var [x, y] = this.getXY();
-        [x, y] = Space.toScreen(x, y);
+        [x, y] = Space.internalToScreen(x, y);
         return [x, y];
     }
 
     moveInternal(x, y) {
-        var [tx, ty] = Space.internalToDimless(x, y);
-        var [w, h] = Space.point.getWH0();
-        [x, y] = [tx * w, ty * h];
+        [x, y] = Space.internalToSVG(x, y);
         this.div.attr('x', x);
         this.div.attr('y', y);
         this.fO.setAttribute('x', x);

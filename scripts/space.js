@@ -85,26 +85,6 @@ var Space = {
         }
     },
 
-    toInternal(x, y) {
-        var [x0, y0] = [Space.point.x, Space.point.y];
-        var ctm = this.svg.getScreenCTM();
-        var w = $('#body').width();
-        var h = $('#body').height();
-        var [a, d, e, f] = [ctm.a, ctm.d, ctm.e, ctm.f];
-        [x, y] = [(x - e) / a, (y - f) / d];
-        return [x, y];
-    },
-
-    toScreen(x, y) {
-        var [x0, y0] = [Space.point.x, Space.point.y];
-        var ctm = this.svg.getScreenCTM();
-        var w = $('#body').width();
-        var h = $('#body').height();
-        var [a, d, e, f] = [ctm.a, ctm.d, ctm.e, ctm.f];
-        [x, y] = [x * a + e, y * d + f];
-        return [x, y];
-    },
-
     screenToInternal(xs, ys) {
         var [tx, ty] = Space.screenToDimless(xs, ys);
         var [x1, y1, w, h] = Space.point.getRect();
@@ -119,6 +99,17 @@ var Space = {
         var [w0, h0, x0, y0] = [ctm.a * W, ctm.d * H, ctm.e, ctm.f];
         var [xs, ys] = [tx * w0 + x0, ty * h0 + y0];
         return [xs, ys];
+    },
+
+    screenToSVG(xs, ys) {
+        var [x, y] = Space.screenToInternal(xs, ys);
+        return Space.internalToSVG(x, y);
+    },
+
+    internalToSVG(xi, yi) {
+        var [tx, ty] = Space.internalToDimless(xi, yi);
+        var [w, h] = Space.point.getWH0();
+        return [tx * w, ty * h];
     },
 
     internalToDimless(xi, yi) {
