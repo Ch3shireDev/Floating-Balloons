@@ -203,14 +203,19 @@ var Space = {
         this.e2 = event;
         if (Space.mouseDown === false) return;
         var [dx, dy] = Space.getInternalTranslation(this.e1, this.e2);
+        var [w0, h0] = Space.point.getWH0();
+        var [, , w, h] = Space.point.getRect();
         if (Space.draggingBalloon) {
             if (Space.currentElement == null) return;
             var e = Space.currentElement;
             var [x, y] = [e.x, e.y];
-            var [w, h] = [e.W0, e.H0];
+            dx *= w / w0;
+            dy *= h / h0;
             e.move(x + dx, y + dy);
         }
         else if (Space.draggingHandle) {
+            dx *= w / w0;
+            dy *= h / h0;
             var [x, y] = Space.handle.getXY();
             Space.handle.move(x + dx, y + dy);
         }

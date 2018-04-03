@@ -207,7 +207,12 @@
             path.transform(`translate(${this.x - this.W() / 2 * 0.3}, ${this.y - this.H() / 2 * 0.3}) scale(1.3)`).remove();
         }
         else {
-            path.transform(`translate(${Space.point.x + this.x - this.W() / 2 * 0.3 - this.W() / 2}, ${Space.point.y + this.y - this.H() / 2 * 0.3 - this.W() / 2}) scale(1.3)`).remove();
+            var [x, y] = this.getXY();
+            x -= this.W() / 2 * 0.3;
+            y -= this.H() / 2 * 0.3;
+            var s = 1.3;
+
+            path.transform(`translate(${x}, ${y}) scale(${s})`).remove();
         }
         var r = Snap.path.map(path.realPath, path.matrix);
         path = Space.s.path(r).remove();
@@ -216,8 +221,6 @@
 
     distance(x, y) {
         var [x1, y1] = this.getXY();
-        x1 += this.W() / 2;
-        y1 += this.H() / 2;
         var [x2, y2] = Space.internalToScreen(x1, y1);
         var d = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
         return d;

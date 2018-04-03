@@ -618,7 +618,7 @@ describe('Non-ViewBox movement',
                 var dx = 50;
                 Mouse.move(x0 + dx, y0);
                 Mouse.release(x0 + dx, y0);
-                Math.abs(Space.point.x+dx/2).should.be.below(20);
+                Math.abs(Space.point.x + dx / 2).should.be.below(20);
                 var b = Balloons.addBalloon(x0, y0);
                 var [x1, y1] = b.getXY();
                 //Math.abs(x1 - x0 + 100).should.be.below(dx / 2);
@@ -712,6 +712,20 @@ describe('Non-ViewBox zooming',
             Math.abs(x1 - x2).should.be.below(10);
             Math.abs(y1 - y2).should.be.below(10);
 
+            Space.useViewBox = true;
+            Space.clear();
+        });
+
+        it('should move handle properly after zooming', () => {
+            Space.useViewBox = false;
+            var b1 = Balloons.addBalloon(500, 500);
+            Space.zoom(1000);
+            Space.refresh();
+            b1.drop();
+            Mouse.move(300 - Space.point.x, 400 - Space.point.y);
+            Space.showHandle();
+            Mouse.move(600 - Space.point.x, 400 - Space.point.y);
+            Space.showHandle();
             Space.useViewBox = true;
             Space.clear();
         });
