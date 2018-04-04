@@ -46,7 +46,6 @@ var Space = {
     autoText: true,
     moveChildren: true,
     isVisible: true,
-    useViewBox: true,
     s: Snap('#body'),
     svg: document.querySelector('svg'),
     xy: [0, 0],
@@ -63,26 +62,22 @@ var Space = {
     },
 
     zoom(value) {
-        if (this.useViewBox) {
-            this.hide();
-            var [x, y, w, h] = this.viewBox();
-            var alpha = w / h;
-            x -= value * alpha / 2;
-            y -= value / 2;
-            w += value * alpha;
-            h += value;
-            this.viewBox(x, y, w, h);
-        }
-        else {
-            var [x, y, w, h] = this.point.getRect();
-            var alpha = w / h;
-            x -= value * alpha / 2;
-            y -= value / 2;
-            w += value * alpha;
-            h += value;
-            this.point.update(x, y, w, h);
-            Space.refresh();
-        }
+        this.hide();
+        var [x, y, w, h] = this.viewBox();
+        var alpha = w / h;
+        x -= value * alpha / 2;
+        y -= value / 2;
+        w += value * alpha;
+        h += value;
+        this.viewBox(x, y, w, h);
+        var [x, y, w, h] = this.point.getRect();
+        var alpha = w / h;
+        x -= value * alpha / 2;
+        y -= value / 2;
+        w += value * alpha;
+        h += value;
+        this.point.update(x, y, w, h);
+        Space.refresh();
     },
 
     screenToInternal(xs, ys) {
@@ -211,14 +206,9 @@ var Space = {
             Space.handle.move(x + dx, y + dy);
         }
         else if (Space.draggingSpace) {
-            if (this.useViewBox) {
-                this.moveSpace(dx, dy);
-            }
-            else {
-                this.point.x -= dx / 2;
-                this.point.y -= dy / 2;
-                Space.refresh();
-            }
+            this.point.x -= dx / 2;
+            this.point.y -= dy / 2;
+            Space.refresh();
         }
     },
 
@@ -244,16 +234,14 @@ var Space = {
         var [x, y, element] = Space.getElement(event);
         const tag = element.tagName.toLowerCase();
         if (tag === 'svg') {
-            if (!Space.useViewBox) {
-                var [W, H] = Space.point.getWH0();
-                var ctm = Space.svg.getScreenCTM();
-                var [w0, h0, x0, y0] = [ctm.a * W, ctm.d * H, ctm.e, ctm.f];
-                var [x1, y1, w1, h1] = Space.point.getRect();
-                x *= w1 / W;
-                y *= h1 / H;
-                x = x + Space.point.x;
-                y = y + Space.point.y;
-            }
+            var [W, H] = Space.point.getWH0();
+            var ctm = Space.svg.getScreenCTM();
+            var [w0, h0, x0, y0] = [ctm.a * W, ctm.d * H, ctm.e, ctm.f];
+            var [x1, y1, w1, h1] = Space.point.getRect();
+            x *= w1 / W;
+            y *= h1 / H;
+            x = x + Space.point.x;
+            y = y + Space.point.y;
             var b = Balloons.addBalloon(x, y);
             Space.refresh();
             if (this.autoText) {
@@ -332,4 +320,3 @@ var Space = {
 }
 
 Space.clear();
-Space.useViewBox = false;

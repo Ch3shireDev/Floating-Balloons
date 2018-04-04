@@ -2,7 +2,6 @@
 var [x0, y0] = [300, 250];
 let expect = chai.expect;
 Space.autoText = false;
-Space.useViewBox = true;
 
 describe('Creating new bubble',
     () => {
@@ -88,25 +87,7 @@ describe('Moving a bubble',
                 Space.clear();
             });
 
-        it('should get on top when grabbed',
-            () => {
-                var b1 = Balloons.addBalloon(x0, y0);
-                var b2 = Balloons.addBalloon(x0, y0);
-                var [x, y] = Space.internalToScreen(x0, y0);
-                Mouse.click(x, y);
-                b1.isGrabbed().should.equal(false);
-                b2.isGrabbed().should.equal(true);
-                Mouse.release(x, y);
-                b1.grab();
-                b1.drop();
-                b1.isGrabbed().should.equal(false);
-                b2.isGrabbed().should.equal(false);
-                Mouse.click(x, y);
-                b1.isGrabbed().should.equal(true);
-                b2.isGrabbed().should.equal(false);
-                Mouse.release(x, y);
-                Space.clear();
-            });
+        it('should get on top when grabbed');
 
         it('should no longer be grabbed when released',
             () => {
@@ -143,333 +124,52 @@ describe('Moving a bubble',
 
 describe('Changing a text',
     () => {
-        it('should open a textarea on double click',
-            () => {
-                closeCurrentTextarea();
-                (currentTextareaBalloon === null).should.equal(true);
-                Balloons.addBalloon(x0, y0);
-                var [x, y] = Space.internalToScreen(x0, y0);
-                Mouse.doubleclick(x, y);
-                (currentTextareaBalloon).should.not.equal(null);
-                Space.clear();
-            });
+        it('should open a textarea on double click');
 
-        it('should close a textarea on click outside the bubble',
-            () => {
-                Balloons.addBalloon(x0, y0);
-                Mouse.doubleclick(x0, y0);
-                (currentTextareaBalloon).should.not.equal(null);
-                Mouse.click(1, 1);
-                (currentTextareaBalloon == null).should.equal(true);
-                Space.clear();
-            });
+        it('should close a textarea on click outside the bubble');
 
-        it('should contain current text in a textarea',
-            () => {
-                var b = Balloons.addBalloon(x0, y0);
-                b.fO.innerHTML = 'abc';
-                var [x, y] = Space.internalToScreen(x0, y0);
-                Mouse.doubleclick(x, y);
-                (currentTextareaBalloon.fO.childNodes[0].innerHTML).should.equal('abc');
-                Space.clear();
-            });
+        it('should contain current text in a textarea');
 
-        it('should contain text from textarea in a textbox',
-            () => {
-                var b = Balloons.addBalloon(x0, y0);
-                var [x, y] = Space.internalToScreen(x0, y0);
-                Mouse.doubleclick(x, y);
-                currentTextareaBalloon.fO.childNodes[0].innerHTML = 'abc';
-                Mouse.click(x + 200, y);
-                b.fO.childNodes[0].innerHTML.should.equal('abc');
-                Space.clear();
-            });
+        it('should contain text from textarea in a textbox');
 
-        it('should resize a balloon when resizing a textbox',
-            () => {
-                var b = Balloons.addBalloon(x0, y0);
-                var [w1, h1] = b.wh();
-                var [x, y] = Space.internalToScreen(x0, y0);
-                Mouse.doubleclick(x, y);
-                currentTextareaBalloon.fO.childNodes[0].innerHTML = Array(20).join('abc');
-                var event = new Event('input');
-                currentTextareaBalloon.fO.dispatchEvent(event);
-                var [w2, h2] = b.wh();
-                (w1 < w2).should.equal(true);
-                Space.clear();
-            });
+        it('should resize a balloon when resizing a textbox');
     });
 
 describe('Handle behavior',
     () => {
-        it('should allow to grab and move a handle',
-            () => {
-                var [dx, dy] = [100, 200];
-                Balloons.addBalloon(x0, y0);
-                Space.showHandle();
-                var handle = Space.handle;
-                var [x, y] = handle.screenXY();
-                Mouse.move(0, y);
-                handle.showHandle();
-                Mouse.click(x, y);
-                Mouse.move(x - dx, y - dy);
-                var [x2, y2] = handle.getXY();
-                x.should.not.equal(x2);
-                y.should.not.equal(y2);
-                Space.clear();
-            });
+        it('should allow to grab and move a handle');
 
-        it('should move handle around the bubble together with cursor',
-            () => {
-                Balloons.addBalloon(x0, y0);
-                var dx = 200;
-                Space.showHandle();
-                var [x, y] = Space.screenToInternal(x0 + dx, y0);
-                Mouse.move(200, 20300);
-                Space.showHandle();
-                var handle = Space.handle;
-                var [x1,] = handle.getXY();
-                [x, y] = Space.screenToInternal(x0 - dx, y0);
-                Mouse.move(300, -20000);
-                Space.showHandle();
-                var [x2,] = handle.getXY();
-                (x1 !== x2).should.equal(true);
-                Space.clear();
-            });
+        it('should move handle around the bubble together with cursor');
 
-        it('should show small handle when cursor is on bubble\'s edge',
-            () => {
-                var b = Balloons.addBalloon(x0, y0);
-                Mouse.move(x0 + 60, y0 + 120);
-                Mouse.move(x0 + 60, y0 + 130);
-                Space.showHandle();
-                ($('#handle')[0].id === 'handle').should.equal(true);
-                Space.clear();
-            });
+        it('should show small handle when cursor is on bubble\'s edge');
 
-        it('should show handle near every balloon when cursor is nearby',
-            () => {
-                Mouse.doubleclick(x0, y0);
-                Mouse.doubleclick(x0 + 400, y0);
-                Mouse.move(x0 - 200, y0);
-                Mouse.move(x0 - 300, y0);
-                Space.showHandle();
-                var [x1,] = Space.handle.getXY();
-                Mouse.move(x0 + 400, y0);
-                Space.showHandle();
-                var [x2,] = Space.handle.getXY();
-                expect(x2 - x1).to.be.above(200);
-                Space.clear();
-            });
+        it('should show handle near every balloon when cursor is nearby');
 
-        it('should move handle between balloons after zoom together with cursor',
-            () => {
-                Space.zoom(5000);
-                Mouse.doubleclick(100, 200);
-                Mouse.doubleclick(500, 200);
-                Mouse.move(300, 400);
-                Space.showHandle();
-                var [x1, y1] = Space.handle.getXY();
-                Mouse.move(200, 400);
-                Space.showHandle();
-                var [x2, y2] = Space.handle.getXY();
-                x1.should.be.above(x2);
-                Space.clear();
-            });
+        it('should move handle between balloons after zoom together with cursor');
     });
 
 describe('Space behavior',
     () => {
-        it('should allow to zoom in and out the canvas',
-            () => {
-                Space.clear();
-                var [, , w1, h1] = Space.viewBox();
-                Space.zoom(10);
-                var [, , w2, h2] = Space.viewBox();
-                Space.zoom(-20);
-                var [, , w3, h3] = Space.viewBox();
+        it('should allow to zoom in and out the canvas');
 
-                w2.should.be.above(w1);
-                w1.should.be.above(w3);
-                h2.should.be.above(h1);
-                h1.should.be.above(h3);
-            });
+        it('should not modify ability to move balloons after zoom');
 
-        it('should not modify ability to move balloons after zoom',
-            () => {
-                Space.clear();
-                var b = Balloons.addBalloon(x0, y0);
-                Space.zoom(10);
-                var [x, y] = b.screenXY();
-                b.isGrabbed().should.equal(false);
-                Mouse.click(x + 1, y + 1);
-                b.isGrabbed().should.equal(true);
-                Mouse.move(x + 10, y + 10);
-                var [x2, y2] = b.getXY();
-                x.should.not.equal(x2);
-                y.should.not.equal(y2);
-                Space.clear();
-            });
-
-        it('should not move balloons far away when grabbed after zoom',
-            () => {
-                Space.clear();
-                Space.zoom(10);
-                Space.draggingBalloon.should.equal(false);
-                Mouse.doubleclick(x0, y0);
-                var b = Balloons.getLast();
-                Mouse.click(x0, y0);
-                Space.draggingBalloon.should.equal(true);
-                var [x1, y1] = b.getXY();
-                Mouse.move(x0, y0);
-                var [x2, y2] = b.getXY();
-                (Math.abs(x2 - x1) < 1).should.equal(true);
-                (Math.abs(y2 - y1) < 1).should.equal(true);
-                Space.clear();
-            });
+        it('should not move balloons far away when grabbed after zoom');
     });
 
 describe('Arrow behavior',
     () => {
-        it('should move arrow together with balloons',
-            () => {
-                Space.isTesting = true;
-                Space.moveChildren = false;
-                Mouse.doubleclick(x0, y0);
-                var b1 = Balloons.getLast();
-                Mouse.doubleclick(x0 + 400, y0);
-                var b2 = Balloons.getLast();
-                Mouse.move(x0, y0);
-                Space.showHandle();
-                var [x, y] = Space.handle.getXY();
-                [x, y] = Space.internalToScreen(x, y);
-                Mouse.click(x + 5, y + 5);
-                [x, y] = b2.screenXY();
-                Mouse.move(x + 50, y + 50);
-                Mouse.release(x + 50, y + 50);
+        it('should move arrow together with balloons');
 
-                var arrow = b1.childArrows[0];
-                var [x1, y1, x2, y2] = arrow.getStartAndEnd();
+        it('should create an arrow between parent and child balloon');
 
-                Mouse.click(x0, y0);
-                Mouse.move(x0 + 100, y0 + 100);
-                Mouse.release(x0 + 100, y0 + 100);
+        it('should connect when arrow is released over another bubble');
 
-                var [x3, y3, x4, y4] = arrow.getStartAndEnd();
+        it('should create another bubble when arrow is released over an empty space');
 
-                x3.should.be.above(x1);
-                y3.should.be.above(y1);
+        it('should create dependency between arrow, parent and child balloons');
 
-                Mouse.click(x0 + 400, y0);
-                Mouse.move(x0 + 500, y0 + 200);
-                Mouse.release(x0 + 500, y0 + 200);
-
-                var [x5, y5, x6, y6] = arrow.getStartAndEnd();
-
-                x6.should.be.above(x2);
-                y6.should.be.above(y2);
-
-                Space.clear();
-            });
-
-        it('should create an arrow between parent and child balloon',
-            () => {
-                Space.clear();
-                var b1 = Balloons.addBalloon(x0, y0);
-                Space.showHandle();
-                var [x, y] = Space.handle.screenXY();
-                Mouse.click(x + 5, y + 5);
-                Mouse.move(x + 100, y);
-                Mouse.release(x + 100, y);
-                expect($('.arrow')[0]).to.not.equal(null);
-                var b2 = Balloons.getLast();
-                expect(b1).should.not.be.equal(b2);
-                expect(b1.childBalloons[0]).to.be.equal(b2);
-                Space.clear();
-            });
-
-        it('should connect when arrow is released over another bubble',
-            () => {
-                var b1 = Balloons.addBalloon(x0, y0);
-                var b2 = Balloons.addBalloon(x0 + 300, y0);
-                var [x, y] = b2.screenXY();
-                Mouse.move(x, y);
-                Space.showHandle();
-                [x, y] = Space.handle.screenXY();
-                Mouse.click(x + 1, y + 1);
-                var [x2, y2] = Space.internalToScreen(x0, y0);
-                Mouse.move(x2 + 10, y2 + 10);
-                Mouse.release(x2 + 10, y2 + 10);
-                (b2.childArrows[0]).should.not.equal(null);
-                Balloons.balloonsList.length.should.equal(2);
-                Space.clear();
-            });
-
-        it('should create another bubble when arrow is released over an empty space',
-            () => {
-                Balloons.balloonsList.length.should.equal(0);
-                var b1 = Balloons.addBalloon(x0, y0);
-                Balloons.balloonsList.length.should.equal(1);
-                var [x, y] = b1.screenXY();
-                Mouse.move(x, y);
-                Space.showHandle();
-                [x, y] = Space.handle.screenXY();
-                Mouse.click(x + 1, y + 1);
-                Mouse.move(x + 200, y);
-                Mouse.release(x + 200, y);
-                Balloons.balloonsList.length.should.equal(2);
-                Space.clear();
-            });
-
-        it('should create dependency between arrow, parent and child balloons',
-            () => {
-                var b = Balloons.addBalloon(x0, y0);
-                Space.showHandle();
-                var [x, y] = Space.handle.screenXY();
-                Mouse.click(x + 5, y + 5);
-                Mouse.move(x + 200, y);
-                var arrow = b.childArrows[0];
-                arrow.tailBalloon.should.equal(b);
-                Mouse.release(x + 200, y);
-                var b2 = Balloons.getLast();
-                arrow.headBalloon.should.equal(b2);
-                b.childArrows[0].should.equal(arrow);
-                b.childBalloons[0].should.equal(b2);
-                Space.clear();
-            });
-
-        it('should move all child balloons together with parent balloon',
-            () => {
-                Space.moveChildren = true;
-                Mouse.doubleclick(x0, y0);
-                var b1 = Balloons.getLast();
-                Mouse.doubleclick(x0 + 300, y0);
-                var b2 = Balloons.getLast();
-                var [x1, y1] = b2.getXY();
-                Mouse.move(x0 + 100, y0);
-                Space.showHandle();
-                Mouse.move(x0, y0);
-                Space.showHandle();
-                var [x, y] = Space.handle.getXY();
-                [x, y] = Space.internalToScreen(x, y);
-                Mouse.click(x + 5, y + 5);
-
-                Mouse.move(x0 + 300, y0);
-                Mouse.release(x0 + 300, y0);
-
-                Mouse.click(x0 + 5, y0 + 5);
-
-                (b1.isGrabbed()).should.be.equal(true);
-
-                Mouse.move(x0 + 200, y0 + 200);
-                Mouse.release(x0 + 200, y0 + 200);
-                var [x2, y2] = b2.getXY();
-
-                x2.should.be.above(x1);
-                y2.should.be.above(y1);
-
-                Space.clear();
-            });
+        it('should move all child balloons together with parent balloon');
 
         it('should not allow for different behavior when there are loops in hierarchy',
             () => {
@@ -490,46 +190,7 @@ describe('Arrow behavior',
                 Space.clear();
             });
 
-        it('should move all arrows when autoText is enabled',
-            () => {
-                Space.autoText = true;
-                var [x1, y1] = Space.screenToInternal(x0, y0),
-                    [x2, y2] = Space.screenToInternal(x0 + 200, y0),
-                    [x3, y3] = Space.screenToInternal(x0 + 400, y0);
-                var b1 = Balloons.addBalloon(x1, y1),
-                    b2 = Balloons.addBalloon(x2, y2),
-                    b3 = Balloons.addBalloon(x3, y3);
-                Mouse.move(x0, y0);
-                Space.showHandle();
-                var [x4, y4] = Space.handle.screenXY();
-                Mouse.click(x4 + 5, y4 + 5);
-                Mouse.move(x0 + 200, y0);
-                Mouse.release(x0 + 200, y0);
-                Mouse.move(x0 + 400, y0);
-                Space.showHandle();
-                [x4, y4] = Space.handle.screenXY();
-                Mouse.click(x4 + 5, y4 + 5);
-                Mouse.move(x0 + 200, y0);
-                Mouse.release(x0 + 200, y0);
-                var a0 = b1.childArrows[0],
-                    a1 = b3.childArrows[0];
-
-                var ay0 = a0.y1,
-                    ay1 = a1.y1;
-
-                Mouse.click(x0 + 200, y0);
-                Mouse.move(x0 + 200, y0 + 200);
-                Mouse.release(x0 + 200, y0 + 200);
-
-                var ay2 = a0.y1,
-                    ay3 = a1.y1;
-
-                ay2.should.be.above(ay0);
-                ay3.should.be.above(ay1);
-
-                Space.autoText = false;
-                Space.clear();
-            });
+        it('should move all arrows when autoText is enabled');
     });
 
 describe('Non-ViewBox movement',
@@ -548,22 +209,7 @@ describe('Non-ViewBox movement',
                 Space.clear();
             });
 
-        it('should allow to move balloon',
-            () => {
-                Space.useViewBox = false;
-                Mouse.doubleclick(x0, y0);
-                var b = Balloons.getLast();
-                b.isGrabbed().should.be.equal(false);
-                Mouse.click(x0, y0);
-                b.isGrabbed().should.be.equal(true);
-                var [x1, y1] = b.getXY();
-                Mouse.move(x0 + 100, y0 + 100);
-                var [x2, y2] = b.getXY();
-                Math.abs(x2 - x1 - 100).should.be.below(10);
-                Math.abs(y2 - y1 - 100).should.be.below(10);
-                Space.useViewBox = true;
-                Space.clear();
-            });
+        it('should allow to move balloon');
 
         it('should allow to move space',
             () => {
