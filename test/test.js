@@ -7,51 +7,217 @@ describe('Creating new bubble',
     () => {
         it('should understand double click as a command to create a new bubble',
             () => {
-                Mouse.doubleclick(x0, y0);
-                (Balloons.getLast()).should.not.equal(null);
-                Space.clear();
-            });
+                function checkBalloonCreation() {
+                    Mouse.doubleclick(x0, y0);
+                    var b = Balloons.getLast();
+                    b.should.not.equal(null);
+                    var [x, y] = b.getXY();
+                    (x0 - x - b.W() / 2).should.be.below(10);
+                    (y0 - y - b.H() / 2).should.be.below(10);
+                    Space.clear();
+                }
 
-        it('should create and remove the text together with bubble',
-            () => {
-                Mouse.doubleclick(x0, y0);
-                var b = Balloons.getLast();
-                b.fO.should.not.equal(null);
-                Balloons.removeLast();
-                (b.fO == null).should.equal(true);
-                Space.clear();
-            });
-
-        it('should move the text together with bubble',
-            () => {
-                var dx = 100, dy = 0;
-
-                Mouse.doubleclick(x0, y0);
-
-                var b = Balloons.getLast();
-                var x1 = b.fO.getAttribute('x'),
-                    y1 = b.fO.getAttribute('y');
-
-                var [x3, y3, ,] = b.rect();
-
+                checkBalloonCreation();
+                Space.zoom(1000);
+                checkBalloonCreation();
                 Mouse.click(x0, y0);
-                Mouse.move(x0 + dx, y0 + dy);
+                Mouse.move(x0 + 100, y0 + 100);
+                checkBalloonCreation();
+            });
 
-                var x2 = b.fO.getAttribute('x'),
-                    y2 = b.fO.getAttribute('y');
+        it('should create and remove the text together with bubble');
 
-                var [x4, y4, ,] = b.rect();
+        it('should move the text together with bubble');
+    });
 
-                x1 = parseFloat(x1);
-                y1 = parseFloat(y1);
-                x2 = parseFloat(x2);
-                y2 = parseFloat(y2);
+describe('Movement',
+    () => {
+        it('should create balloons in clicked place',
+            () => {
+                Space.useViewBox = false;
+                Balloons.size().should.be.equal(0);
+                Mouse.doubleclick(x0, y0);
+                Balloons.size().should.be.equal(1);
+                var b = Balloons.getLast();
+                var [x2, y2] = [b.x, b.y];
+                Math.abs(x0 - x2).should.be.below(5);
+                Math.abs(y0 - y2).should.be.below(5);
+                Space.useViewBox = true;
+                Space.clear();
+            });
 
-                (x2 - x1).should.equal(x4 - x3);
-                (y2 - y1).should.equal(y4 - y3);
+        it('should allow to move balloon');
+
+        it('should allow to move space',
+            () => {
+                Space.useViewBox = false;
+                Space.isTesting = true;
+                Mouse.doubleclick(x0, y0);
+                var b = Balloons.getLast();
+                var [x1, y1] = b.getXY();
+                Mouse.click(x0 + 200, y0 + 200);
+                b.isGrabbed().should.be.equal(false);
+                Space.draggingSpace.should.be.equal(true);
+                Mouse.move(x0 + 300, y0 + 300);
+                var [x2, y2] = b.getXY();
+                Math.abs(x2 - x1 - 100).should.be.below(10);
+                Math.abs(y2 - y1 - 100).should.be.below(10);
+                Space.useViewBox = true;
+                Space.clear();
+            });
+
+        //it('should not drastically move created balloon after moving space to different place',
+        //    () => {
+        //        Space.useViewBox = false;
+        //        Space.isTesting = true;
+        //        Space.point.x.should.equal(0);
+        //        Space.draggingSpace.should.equal(false);
+        //        Mouse.click(x0, y0);
+        //        Space.draggingSpace.should.equal(true);
+        //        var dx = 25;
+        //        Mouse.move(x0 + dx, y0);
+        //        Mouse.release(x0 + dx, y0);
+        //        Math.abs(Space.point.x + dx).should.be.below(10);
+        //        var b = Balloons.addBalloon(x0, y0);
+        //        var [x1, y1] = b.getXY();
+        //        Math.abs(x1 - x0 + 100).should.be.below(10);
+        //        Math.abs(y1 - y0 + 100).should.be.below(10);
+        //        Balloons.refresh();
+        //        var [x2, y2] = b.getXY();
+        //        Math.abs(x1 - x2).should.be.below(10);
+        //        Math.abs(y1 - y2).should.be.below(10);
+        //        Space.useViewBox = true;
+        //        Space.clear();
+        //    });
+
+        it('should not drastically move created balloon after moving space to different place',
+            () => {
+                Space.useViewBox = false;
+                Space.isTesting = true;
+                Space.point.x.should.equal(0);
+                Space.draggingSpace.should.equal(false);
+                Mouse.click(x0, y0);
+                Space.draggingSpace.should.equal(true);
+                var dx = 50;
+                Mouse.move(x0 + dx, y0);
+                Mouse.release(x0 + dx, y0);
+                Math.abs(Space.point.x + dx / 2).should.be.below(20);
+                var b = Balloons.addBalloon(x0, y0);
+                var [x1, y1] = b.getXY();
+                //Math.abs(x1 - x0 + 100).should.be.below(dx / 2);
+                //Math.abs(y1 - y0 + 100).should.be.below(dx / 2);
+                Balloons.refresh();
+                var [x2, y2] = b.getXY();
+                Math.abs(x1 - x2).should.be.below(20);
+                Math.abs(y1 - y2).should.be.below(20);
+                Space.useViewBox = true;
+                Space.clear();
+            });
+
+        it('should not drastically move moved balloon after moving space',
+            () => {
+                Space.useViewBox = false;
+                Space.isTesting = true;
+                Space.point.x.should.equal(0);
+                Space.draggingSpace.should.equal(false);
+                Mouse.click(x0, y0);
+                Space.draggingSpace.should.equal(true);
+                var dx = 50;
+                Mouse.move(x0 + dx, y0);
+                Mouse.release(x0 + dx, y0);
+                Math.abs(Space.point.x + dx / 2).should.be.below(10);
+                var b = Balloons.addBalloon(x0, y0);
+                Mouse.click(x0, y0);
+                b.isGrabbed().should.equal(true);
+                Mouse.move(x0 + dx, y0 + dx);
+                Mouse.release();
+                var [x1, y1] = b.getXY();
+                Balloons.refresh();
+                var [x2, y2] = b.getXY();
+                Math.abs(x1 - x2).should.be.below(20);
+                Math.abs(y1 - y2).should.be.below(20);
+                Space.useViewBox = true;
+                Space.clear();
+            });
+
+        it('should not move path after grabbing space',
+            () => {
+                Space.useViewBox = false;
+                Space.isTesting = true;
+                Space.point.x.should.equal(0);
+                var b = Balloons.addBalloon(x0, y0);
+                Space.showHandle();
+                var [x1, y1] = [b.pathx, b.pathy];
+                b.drop();
+                Space.showHandle();
+                var [x2, y2] = [b.pathx, b.pathy];
+                Math.abs(x1 - x2).should.be.below(10);
+                Math.abs(y1 - y2).should.be.below(10);
+                Space.useViewBox = true;
                 Space.clear();
             });
     });
+
+describe('Zooming',
+    () => {
+        it('should allow to zoom-in and out balloons',
+            () => {
+                Space.useViewBox = false;
+                var [w, h] = Space.point.getWH0();
+                var b = Balloons.addBalloon(600, 800);
+                var [x1, y1] = b.getXY();
+                var [dx1, dy1] = [w / 2 - x1, h / 2 - y1];
+                var [w1, h1] = b.getAttrWH();
+                var alpha1 = w1 / h1;
+                Space.zoom(1000);
+                var [x2, y2] = b.getXY();
+                var [dx2, dy2] = [w / 2 - x2, h / 2 - y2];
+                var [w2, h2] = b.getAttrWH();
+                w2.should.be.below(w1);
+                h2.should.be.below(h1);
+                Math.abs(dy1 / dx1 - dy2 / dx2).should.be.below(0.05);
+                Space.useViewBox = true;
+                Space.clear();
+            });
+
+        it('should create balloons in same place after zoom', () => {
+            Space.useViewBox = false;
+            var b1 = Balloons.addBalloon(500, 500);
+            Space.zoom(1000);
+            Space.refresh();
+            var b2 = Balloons.addBalloon(500, 500);
+            Space.refresh();
+
+            var [x1, y1] = b1.getXY();
+            var [x2, y2] = b2.getXY();
+            console.log(x1, y1, x2, y2);
+
+            Math.abs(x1 - x2).should.be.below(10);
+            Math.abs(y1 - y2).should.be.below(10);
+
+            Space.useViewBox = true;
+            Space.clear();
+        });
+
+        it('should move handle properly after zooming', () => {
+            Space.useViewBox = false;
+            var b1 = Balloons.addBalloon(500, 500);
+            Space.zoom(1000);
+            Space.refresh();
+            b1.drop();
+            Mouse.move(300 - Space.point.x, 400 - Space.point.y);
+            Space.showHandle();
+            Mouse.move(600 - Space.point.x, 400 - Space.point.y);
+            Space.showHandle();
+            Space.useViewBox = true;
+            Space.clear();
+        });
+
+        it('should create new balloons in new size after zoom');
+
+        it('should move arrows in place of balloons after zoom');
+    });
+
 
 describe('Moving a bubble',
     () => {
@@ -191,221 +357,6 @@ describe('Arrow behavior',
             });
 
         it('should move all arrows when autoText is enabled');
-    });
-
-describe('Non-ViewBox movement',
-    () => {
-        it('should create balloons in clicked place',
-            () => {
-                Space.useViewBox = false;
-                Balloons.size().should.be.equal(0);
-                Mouse.doubleclick(x0, y0);
-                Balloons.size().should.be.equal(1);
-                var b = Balloons.getLast();
-                var [x2, y2] = [b.x, b.y];
-                Math.abs(x0 - x2).should.be.below(5);
-                Math.abs(y0 - y2).should.be.below(5);
-                Space.useViewBox = true;
-                Space.clear();
-            });
-
-        it('should allow to move balloon');
-
-        it('should allow to move space',
-            () => {
-                Space.useViewBox = false;
-                Space.isTesting = true;
-                Mouse.doubleclick(x0, y0);
-                var b = Balloons.getLast();
-                var [x1, y1] = b.getXY();
-                Mouse.click(x0 + 200, y0 + 200);
-                b.isGrabbed().should.be.equal(false);
-                Space.draggingSpace.should.be.equal(true);
-                Mouse.move(x0 + 300, y0 + 300);
-                var [x2, y2] = b.getXY();
-                Math.abs(x2 - x1 - 100).should.be.below(10);
-                Math.abs(y2 - y1 - 100).should.be.below(10);
-                Space.useViewBox = true;
-                Space.clear();
-            });
-
-        //it('should not drastically move created balloon after moving space to different place',
-        //    () => {
-        //        Space.useViewBox = false;
-        //        Space.isTesting = true;
-        //        Space.point.x.should.equal(0);
-        //        Space.draggingSpace.should.equal(false);
-        //        Mouse.click(x0, y0);
-        //        Space.draggingSpace.should.equal(true);
-        //        var dx = 25;
-        //        Mouse.move(x0 + dx, y0);
-        //        Mouse.release(x0 + dx, y0);
-        //        Math.abs(Space.point.x + dx).should.be.below(10);
-        //        var b = Balloons.addBalloon(x0, y0);
-        //        var [x1, y1] = b.getXY();
-        //        Math.abs(x1 - x0 + 100).should.be.below(10);
-        //        Math.abs(y1 - y0 + 100).should.be.below(10);
-        //        Balloons.refresh();
-        //        var [x2, y2] = b.getXY();
-        //        Math.abs(x1 - x2).should.be.below(10);
-        //        Math.abs(y1 - y2).should.be.below(10);
-        //        Space.useViewBox = true;
-        //        Space.clear();
-        //    });
-
-        it('should not drastically move created balloon after moving space to different place',
-            () => {
-                Space.useViewBox = false;
-                Space.isTesting = true;
-                Space.point.x.should.equal(0);
-                Space.draggingSpace.should.equal(false);
-                Mouse.click(x0, y0);
-                Space.draggingSpace.should.equal(true);
-                var dx = 50;
-                Mouse.move(x0 + dx, y0);
-                Mouse.release(x0 + dx, y0);
-                Math.abs(Space.point.x + dx / 2).should.be.below(20);
-                var b = Balloons.addBalloon(x0, y0);
-                var [x1, y1] = b.getXY();
-                //Math.abs(x1 - x0 + 100).should.be.below(dx / 2);
-                //Math.abs(y1 - y0 + 100).should.be.below(dx / 2);
-                Balloons.refresh();
-                var [x2, y2] = b.getXY();
-                Math.abs(x1 - x2).should.be.below(20);
-                Math.abs(y1 - y2).should.be.below(20);
-                Space.useViewBox = true;
-                Space.clear();
-            });
-
-        it('should not drastically move moved balloon after moving space',
-            () => {
-                Space.useViewBox = false;
-                Space.isTesting = true;
-                Space.point.x.should.equal(0);
-                Space.draggingSpace.should.equal(false);
-                Mouse.click(x0, y0);
-                Space.draggingSpace.should.equal(true);
-                var dx = 50;
-                Mouse.move(x0 + dx, y0);
-                Mouse.release(x0 + dx, y0);
-                Math.abs(Space.point.x + dx / 2).should.be.below(10);
-                var b = Balloons.addBalloon(x0, y0);
-                Mouse.click(x0, y0);
-                b.isGrabbed().should.equal(true);
-                Mouse.move(x0 + dx, y0 + dx);
-                Mouse.release();
-                var [x1, y1] = b.getXY();
-                Balloons.refresh();
-                var [x2, y2] = b.getXY();
-                Math.abs(x1 - x2).should.be.below(20);
-                Math.abs(y1 - y2).should.be.below(20);
-                Space.useViewBox = true;
-                Space.clear();
-            });
-
-        it('should not move path after grabbing space',
-            () => {
-                Space.useViewBox = false;
-                Space.isTesting = true;
-                Space.point.x.should.equal(0);
-                var b = Balloons.addBalloon(x0, y0);
-                Space.showHandle();
-                var [x1, y1] = [b.pathx, b.pathy];
-                b.drop();
-                Space.showHandle();
-                var [x2, y2] = [b.pathx, b.pathy];
-                Math.abs(x1 - x2).should.be.below(10);
-                Math.abs(y1 - y2).should.be.below(10);
-                Space.useViewBox = true;
-                Space.clear();
-            });
-    });
-
-describe('Non-ViewBox zooming',
-    () => {
-        it('should allow to zoom-in and out balloons',
-            () => {
-                Space.useViewBox = false;
-                var [w, h] = Space.point.getWH0();
-                var b = Balloons.addBalloon(600, 800);
-                var [x1, y1] = b.getXY();
-                var [dx1, dy1] = [w / 2 - x1, h / 2 - y1];
-                var [w1, h1] = b.getAttrWH();
-                var alpha1 = w1 / h1;
-                Space.zoom(1000);
-                var [x2, y2] = b.getXY();
-                var [dx2, dy2] = [w / 2 - x2, h / 2 - y2];
-                var [w2, h2] = b.getAttrWH();
-                w2.should.be.below(w1);
-                h2.should.be.below(h1);
-                Math.abs(dy1 / dx1 - dy2 / dx2).should.be.below(0.05);
-                Space.useViewBox = true;
-                Space.clear();
-            });
-
-        it('should create balloons in same place after zoom', () => {
-            Space.useViewBox = false;
-            var b1 = Balloons.addBalloon(500, 500);
-            Space.zoom(1000);
-            Space.refresh();
-            var b2 = Balloons.addBalloon(500, 500);
-            Space.refresh();
-
-            var [x1, y1] = b1.getXY();
-            var [x2, y2] = b2.getXY();
-            console.log(x1, y1, x2, y2);
-
-            Math.abs(x1 - x2).should.be.below(10);
-            Math.abs(y1 - y2).should.be.below(10);
-
-            Space.useViewBox = true;
-            Space.clear();
-        });
-
-        it('should move handle properly after zooming', () => {
-            Space.useViewBox = false;
-            var b1 = Balloons.addBalloon(500, 500);
-            Space.zoom(1000);
-            Space.refresh();
-            b1.drop();
-            Mouse.move(300 - Space.point.x, 400 - Space.point.y);
-            Space.showHandle();
-            Mouse.move(600 - Space.point.x, 400 - Space.point.y);
-            Space.showHandle();
-            Space.useViewBox = true;
-            Space.clear();
-        });
-
-        it('should create new balloons in new size after zoom');
-        //() => {
-        //Space.useViewBox = false;
-        //var b1 = Balloons.addBalloon(500, 500);
-        //Space.zoom(1000);
-        //var b2 = Balloons.addBalloon(500, 500);
-        //Space.refresh();
-        //var [x1, y1] = b1.getXY();
-        //var [x2, y2] = b2.getXY();
-        //Math.abs(x1-x2).should.be.below(50);
-        //Math.abs(y1-y2).should.be.below(50);
-        ////Mouse.doubleclick(x0, y0);
-        ////var b1 = Balloons.getLast();
-        //////Space.zoom(1000);
-        ////var alpha = Space.point.getAlpha();
-        ////Space.point.w += alpha * 100;
-        ////Space.point.h += 100;
-        ////var [w1, h1] = b1.getAttrWH();
-        ////var [x2, y2] = [300, 400];
-        ////var [x3, y3] = Space.screenToInternal(x2, y2);
-        ////Mouse.doubleclick(x3, y3);
-        ////var b2 = Balloons.getLast();
-        ////var [x, y] = b2.getXY();
-        ////var [w, h] = b2.getAttrWH();
-        ////Math.abs(x + w / 2 - x3).should.be.below(50);
-        ////Math.abs(y + h / 2 - y3).should.be.below(50);
-        //Space.useViewBox = true;
-        //Space.clear();
-        //});
-        it('should move arrows in place of balloons after zoom');
     });
 
 describe('Selecting bubbles',
