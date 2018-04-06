@@ -274,6 +274,25 @@ describe('Balloon behavior',
         it('should move arrows in place of balloons after zoom');
     });
 
+describe('Arrow behavior',
+    () => {
+        it('should create an arrow between parent and child balloon');
+
+        it('should connect when arrow is released over another bubble');
+
+        it('should move arrow together with balloons');
+
+        it('should create another bubble when arrow is released over an empty space');
+
+        it('should create dependency between arrow, parent and child balloons');
+
+        it('should move all child balloons together with parent balloon');
+
+        it('should not allow for different behavior when there are loops in hierarchy');
+
+        it('should move all arrows when autoText is enabled');
+    });
+
 describe('Changing a text',
     () => {
         it('should open a textarea on double click');
@@ -309,41 +328,6 @@ describe('Space behavior',
         it('should not move balloons far away when grabbed after zoom');
     });
 
-describe('Arrow behavior',
-    () => {
-        it('should move arrow together with balloons');
-
-        it('should create an arrow between parent and child balloon');
-
-        it('should connect when arrow is released over another bubble');
-
-        it('should create another bubble when arrow is released over an empty space');
-
-        it('should create dependency between arrow, parent and child balloons');
-
-        it('should move all child balloons together with parent balloon');
-
-        it('should not allow for different behavior when there are loops in hierarchy',
-            () => {
-                var b1 = Balloons.addBalloon(x0, y0),
-                    b2 = Balloons.addBalloon(x0 + 300, y0);
-                b1.childBalloons.push(b2);
-                b1.move(x0, y0);
-                var [x1, y1] = b2.getXY();
-                b1.move(x0 + 50, y0 + 50);
-                var [x2, y2] = b2.getXY();
-                b1.move(x0, y0);
-                b1.childBalloons.push(b2);
-                var [x3, y3] = b2.getXY();
-                b1.move(x0 + 50, y0 + 50);
-                var [x4, y4] = b2.getXY();
-                Math.abs((x2 - x1) - (x4 - x3)).should.be.below(1);
-                Math.abs((y2 - y1) - (y4 - y3)).should.be.below(1);
-                Space.clear();
-            });
-
-        it('should move all arrows when autoText is enabled');
-    });
 
 describe('Selecting bubbles',
     () => {

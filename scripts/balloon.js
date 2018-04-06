@@ -147,11 +147,11 @@
     }
 
     centerTail(arrow) {
-        arrow.moveTail(Space.point.x + this.x, Space.point.y + this.y);
+        arrow.moveTail(this.x, this.y);
     }
 
     centerHead(arrow) {
-        arrow.moveHead(Space.point.x + this.x, Space.point.y + this.y);
+        arrow.moveHead(this.x, this.y);
     }
 
     createBalloon(x, y) {
