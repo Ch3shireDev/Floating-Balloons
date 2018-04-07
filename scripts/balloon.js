@@ -1,6 +1,5 @@
 ﻿class Balloon {
     constructor(x, y) {
-        console.log(x, y);
         this.W0 = 200;
         this.H0 = 200;
         this.n = Balloons.numBalloons;
@@ -97,7 +96,7 @@
     }
 
     moveInternal(x, y, dx, dy) {
-        [x, y] = Space.internalToSVG(x, y);
+        [x, y] = Space.internalToSVG(x-this.W()/2, y-this.H()/2);
         this.div.attr('x', x);
         this.div.attr('y', y);
         this.fO.setAttribute('x', x);
@@ -120,7 +119,7 @@
         var [x1, y1] = this.screenXY();
         this.x = x;
         this.y = y;
-        this.moveInternal(this.x - this.W() / 2, this.y - this.H() / 2, dx, dy);
+        this.moveInternal(this.x, this.y, dx, dy);
         if (Space.moveChildren) {
             var balloonSet = new Set(this.childBalloons);
             var n = 0;
@@ -136,11 +135,8 @@
             balloonSet.forEach(function (balloon) {
                 if (balloon === b) return;
                 if (b.parentBalloons.includes(balloon)) return;
-                var [x2, y2] = balloon.screenXY();
-                [x, y] = Space.screenToInternal(x2 - x1 + x0, y2 - y1 + y0);
-                balloon.x = x;
-                balloon.y = y;
-                balloon.moveInternal(x, y);
+                var [x, y] = [balloon.x, balloon.y];
+                balloon.moveInternal(x, y, dx, dy);
             });
         }
         this.freezeMovement = false;
@@ -200,8 +196,7 @@
     }
 
     refresh() {
-        var [x, y] = [this.x - this.W() / 2, this.y - this.H() / 2];
-        this.moveInternal(x, y);
+        this.moveInternal(this.x, this.y);
         this.div.attr('width', this.W());
         this.div.attr('height', this.H());
     }

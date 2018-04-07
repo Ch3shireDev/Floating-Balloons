@@ -45,8 +45,6 @@
         var [x1, y1, x2, y2] = this.getStartAndEnd();
         [x1, y1] = Space.internalToSVG(x1, y1);
         [x2, y2] = Space.internalToSVG(x2, y2);
-        [x1, y1] = Space.internalToSVG(x1, y1);
-        [x2, y2] = Space.internalToSVG(x2, y2);
         this.arrow.attr({
             x1: x1,
             y1: y1,
