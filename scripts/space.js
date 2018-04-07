@@ -136,6 +136,7 @@ var Space = {
     grabElement(event) {
         Space.mouseDown = true;
         var [x, y, element] = Space.getElement(event);
+        this.e0 = event;
         this.e2 = event;
         this.draggingBalloon = false;
         this.draggingHandle = false;
@@ -151,6 +152,8 @@ var Space = {
 
             if (element.id === 'body') {
                 Space.draggingSpace = true;
+                this.x0 = Space.point.x;
+                this.y0 = Space.point.y;
             }
 
             if (element.id === 'handle') {
@@ -173,9 +176,10 @@ var Space = {
     },
 
     getInternalTranslation(e1, e2) {
-        var [dx, dy] = this.getScreenTranslation(e1, e2);
-        var [x0, y0] = Space.screenToInternal(0, 0);
-        var [x1, y1] = Space.screenToInternal(dx, dy);
+        var [x0, y0] = Space.screenToInternal(e1.clientX, e1.clientY);
+        var [x1, y1] = Space.screenToInternal(e2.clientX, e2.clientY);
+        var [w0, h0] = Space.point.getWH0();
+        var [, , w, h] = Space.point.getRect();
         return [x1 - x0, y1 - y0];
     },
 
@@ -191,23 +195,22 @@ var Space = {
         var [dx, dy] = Space.getInternalTranslation(this.e1, this.e2);
         var [w0, h0] = Space.point.getWH0();
         var [, , w, h] = Space.point.getRect();
+        //dx *= w / w0;
+        //dy *= h / h0;
         if (Space.draggingBalloon) {
             if (Space.currentElement == null) return;
             var e = Space.currentElement;
             var [x, y] = [e.x, e.y];
-            dx *= w / w0;
-            dy *= h / h0;
-            e.move(x + dx, y + dy, dx, dy);
+            e.move(x + dx, y + dy);
         }
         else if (Space.draggingHandle) {
-            dx *= w / w0;
-            dy *= h / h0;
             var [x, y] = Space.handle.getXY();
             Space.handle.move(x + dx, y + dy);
         }
         else if (Space.draggingSpace) {
-            this.point.x -= dx / 2;
-            this.point.y -= dy / 2;
+            [dx, dy] = Space.getInternalTranslation(this.e0, this.e2);
+            this.point.x = this.x0 - dx;
+            this.point.y = this.y0 - dy;
             Space.refresh();
         }
     },
@@ -238,10 +241,6 @@ var Space = {
             var ctm = Space.svg.getScreenCTM();
             var [w0, h0, x0, y0] = [ctm.a * W, ctm.d * H, ctm.e, ctm.f];
             var [x1, y1, w1, h1] = Space.point.getRect();
-            x *= w1 / W;
-            y *= h1 / H;
-            x = x + Space.point.x;
-            y = y + Space.point.y;
             var b = Balloons.addBalloon(x, y);
             Space.refresh();
             if (this.autoText) {

@@ -22,7 +22,7 @@
         this.parentBalloons = [];
         this.childArrows = [];
         this.parentArrows = [];
-        this.move(x, y, 0, 0);
+        this.move(x, y);
         this.path = this.createPath();
     }
 
@@ -96,7 +96,7 @@
         return [x, y];
     }
 
-    moveInternal(x, y, dx, dy) {
+    moveInternal(x, y) {
         [x, y] = Space.internalToSVG(x, y);
         this.div.attr('x', x);
         this.div.attr('y', y);
@@ -111,7 +111,7 @@
         });
     }
 
-    move(x, y, dx, dy) {
+    move(x, y) {
         if (this.freezeMovement) return;
         this.freezeMovement = true;
         var [w, h] = [Space.point.w, Space.point.h];
@@ -140,7 +140,7 @@
                 [x, y] = Space.screenToInternal(x2 - x1 + x0, y2 - y1 + y0);
                 balloon.x = x;
                 balloon.y = y;
-                balloon.moveInternal(x, y, dx, dy);
+                balloon.moveInternal(x, y);
             });
         }
         this.freezeMovement = false;
@@ -201,9 +201,6 @@
 
     refresh() {
         var [x, y] = [this.x - this.W() / 2, this.y - this.H() / 2];
-        var [tx, ty] = Space.internalToDimless(x, y);
-        var [w, h] = Space.point.getWH0();
-        [x, y] = [tx * w, ty * h];
         this.moveInternal(x, y);
         this.div.attr('width', this.W());
         this.div.attr('height', this.H());
