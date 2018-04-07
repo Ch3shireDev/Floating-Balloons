@@ -22,7 +22,7 @@
         this.parentBalloons = [];
         this.childArrows = [];
         this.parentArrows = [];
-        this.move(x, y);
+        this.move(x, y, 0, 0);
         this.path = this.createPath();
     }
 
@@ -96,7 +96,7 @@
         return [x, y];
     }
 
-    moveInternal(x, y) {
+    moveInternal(x, y, dx, dy) {
         [x, y] = Space.internalToSVG(x, y);
         this.div.attr('x', x);
         this.div.attr('y', y);
@@ -111,7 +111,7 @@
         });
     }
 
-    move(x, y) {
+    move(x, y, dx, dy) {
         if (this.freezeMovement) return;
         this.freezeMovement = true;
         var [w, h] = [Space.point.w, Space.point.h];
@@ -140,7 +140,7 @@
                 [x, y] = Space.screenToInternal(x2 - x1 + x0, y2 - y1 + y0);
                 balloon.x = x;
                 balloon.y = y;
-                balloon.moveInternal(x, y);
+                balloon.moveInternal(x, y, dx, dy);
             });
         }
         this.freezeMovement = false;

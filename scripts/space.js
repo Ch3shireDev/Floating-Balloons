@@ -197,7 +197,7 @@ var Space = {
             var [x, y] = [e.x, e.y];
             dx *= w / w0;
             dy *= h / h0;
-            e.move(x + dx, y + dy);
+            e.move(x + dx, y + dy, dx, dy);
         }
         else if (Space.draggingHandle) {
             dx *= w / w0;
