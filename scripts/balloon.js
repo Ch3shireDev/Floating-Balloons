@@ -96,7 +96,7 @@
         return [x, y];
     }
 
-    moveInternal(x, y) {
+    moveInternal(x, y, dx, dy) {
         [x, y] = Space.internalToSVG(x, y);
         this.div.attr('x', x);
         this.div.attr('y', y);
@@ -111,7 +111,7 @@
         });
     }
 
-    move(x, y) {
+    move(x, y, dx, dy) {
         if (this.freezeMovement) return;
         this.freezeMovement = true;
         var [w, h] = [Space.point.w, Space.point.h];
@@ -120,7 +120,7 @@
         var [x1, y1] = this.screenXY();
         this.x = x;
         this.y = y;
-        this.refresh();
+        this.moveInternal(this.x - this.W() / 2, this.y - this.H() / 2, dx, dy);
         if (Space.moveChildren) {
             var balloonSet = new Set(this.childBalloons);
             var n = 0;

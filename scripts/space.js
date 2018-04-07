@@ -195,13 +195,11 @@ var Space = {
         var [dx, dy] = Space.getInternalTranslation(this.e1, this.e2);
         var [w0, h0] = Space.point.getWH0();
         var [, , w, h] = Space.point.getRect();
-        //dx *= w / w0;
-        //dy *= h / h0;
         if (Space.draggingBalloon) {
             if (Space.currentElement == null) return;
             var e = Space.currentElement;
             var [x, y] = [e.x, e.y];
-            e.move(x + dx, y + dy);
+            e.move(x + dx, y + dy, dx, dy);
         }
         else if (Space.draggingHandle) {
             var [x, y] = Space.handle.getXY();

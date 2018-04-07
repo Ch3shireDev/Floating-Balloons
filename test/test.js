@@ -38,9 +38,8 @@ describe('Balloon behavior',
                     Space.draggingSpace.should.be.equal(true);
                     Mouse.move(x0 + 400, y0 + 400);
                     var [x2, y2] = b.getXY();
-                    console.log("delta:",x1, x2);
-                    Math.abs(x2 - x1 - b.W() / 2).should.be.below(5);
-                    Math.abs(y2 - y1 - b.H() / 2).should.be.below(5);
+                    Math.abs(x2 - x1 - b.W() / 2).should.be.below(10);
+                    Math.abs(y2 - y1 - b.H() / 2).should.be.below(10);
                     Mouse.release(x0, y0);
                     Space.clear();
                 }
@@ -54,17 +53,19 @@ describe('Balloon behavior',
                 function checkCreation() {
                     var dx = 80;
                     Space.isTesting = true;
-                    Space.point.x.should.equal(0);
                     Space.draggingSpace.should.equal(false);
                     Mouse.click(x0, y0);
                     Space.draggingSpace.should.equal(true);
                     Mouse.move(x0 + dx, y0 + dx);
                     Mouse.release(x0 + dx, y0 + dx);
+                    
                     var b = Balloons.addBalloon(x0, y0);
                     var [x1, y1] = b.getXY();
                     [x1, y1] = [x1 + b.W() / 2, y1 + b.H() / 2];
+                    
                     Math.abs(x1 - x0 - dx).should.be.below(10);
                     Math.abs(y1 - y0 - dx).should.be.below(10);
+
                     Balloons.refresh();
                     var [x2, y2] = b.getXY();
                     [x2, y2] = [x2 + b.W() / 2, y2 + b.H() / 2];
@@ -75,12 +76,33 @@ describe('Balloon behavior',
 
                 Space.clear();
                 checkCreation();
-                //Space.zoom(1000);
-                //checkCreation();
+                Space.zoom(1000);
+                var dx = 80;
+                Space.isTesting = true;
+                Space.draggingSpace.should.equal(false);
+                Mouse.click(x0, y0);
+                Space.draggingSpace.should.equal(true);
+                Mouse.move(x0 + dx, y0 + dx);
+                Mouse.release(x0 + dx, y0 + dx);
+
+                var b = Balloons.addBalloon(x0, y0);
+                var [x1, y1] = b.getXY();
+                [x1, y1] = [x1 + b.W() / 2, y1 + b.H() / 2];
+
+                Math.abs(x1 - x0 -460).should.be.below(10);
+                Math.abs(y1 - y0 -357).should.be.below(10);
+
+                Balloons.refresh();
+                var [x2, y2] = b.getXY();
+                [x2, y2] = [x2 + b.W() / 2, y2 + b.H() / 2];
+                Math.abs(x1 - x2).should.be.below(20);
+                Math.abs(y1 - y2).should.be.below(20);
+                Space.clear();
             });
 
         it('should not drastically move moved balloon after moving space',
             () => {
+                Space.clear();
                 Space.isTesting = true;
                 Space.point.x.should.equal(0);
                 Space.draggingSpace.should.equal(false);
