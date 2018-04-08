@@ -313,6 +313,10 @@ var Space = {
 
     refresh() {
         Balloons.refresh();
+        if (Space.handle === null) return;
+        if (Space.handle.parentBalloon === null) return;
+        var b = Space.handle.parentBalloon;
+        b.drop();
     }
 }
 
