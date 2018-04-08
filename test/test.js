@@ -86,6 +86,23 @@ describe('Handle behavior',
                 Space.clear();
             });
 
+        it('should switch a handle from one balloon to another on mouse movement',
+            () => {
+                Mouse.doubleclick(x0, y0);
+                var b1 = Balloons.getLast();
+                Mouse.doubleclick(x0 + 1000, y0);
+                var b2 = Balloons.getLast();
+                var c = (b1.x + b2.x - b1.W() / 2 - b2.W() / 2) / 2;
+                Mouse.move(c - 50, y0);
+                Space.showHandle();
+                var x1 = Space.handle.getXY()[0];
+                Mouse.move(c + 50, y0);
+                Space.showHandle();
+                var x2 = Space.handle.getXY()[0];
+                (x2 - x1).should.be.above(500);
+                Space.clear();
+            });
+
         //it('should allow to grab and move a handle');
 
         //it('should move handle around the bubble together with cursor');
