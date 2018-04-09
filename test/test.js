@@ -103,6 +103,32 @@ describe('Handle behavior',
                 Space.clear();
             });
 
+        it('should switch a handle from one balloon to another on mouse movement after space translation',
+            () => {
+                Mouse.doubleclick(200, 300, true);
+                var b1 = Balloons.getLast();
+                Mouse.doubleclick(600, 300, true);
+                var b2 = Balloons.getLast();
+                var c = 300;
+                Mouse.move(300, y0, true);
+                Space.showHandle();
+                var x1 = Space.handle.getXY()[0];
+                Mouse.move(400, y0, true);
+                Space.showHandle();
+                var x2 = Space.handle.getXY()[0];
+                (x2 - x1).should.be.above(300);
+                Space.point.x += 500;
+                Space.refresh();
+                Mouse.move(200, y0, true);
+                Space.showHandle();
+                var x1 = Space.handle.getXY()[0];
+                Mouse.move(900, y0, true);
+                Space.showHandle();
+                var x2 = Space.handle.getXY()[0];
+                (x2 - x1).should.be.above(300);
+                Space.clear();
+            });
+
         //it('should allow to grab and move a handle');
 
         //it('should move handle around the bubble together with cursor');
@@ -118,6 +144,7 @@ describe('Balloon behavior',
     () => {
         it('should understand double click as a command to create a new bubble',
             () => {
+                Space.clear();
                 function checkBalloonCreation() {
                     Mouse.doubleclick(x0, y0);
                     var b = Balloons.getLast();

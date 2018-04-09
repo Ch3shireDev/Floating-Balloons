@@ -46,8 +46,10 @@ document.body.addEventListener('wheel',
     });
 
 Mouse = {
-    runEvent(name, x, y) {
-        [x, y] = Space.internalToScreen(x, y);
+    runEvent(name, x, y, screen = false) {
+        if (!screen) {
+            [x, y] = Space.internalToScreen(x, y);
+        }
         $('body')[0].dispatchEvent(
             new MouseEvent(name,
                 {
@@ -58,20 +60,20 @@ Mouse = {
         );
     },
 
-    doubleclick(x, y) {
-        this.runEvent('dblclick', x, y);
+    doubleclick(x, y, screen = false) {
+        this.runEvent('dblclick', x, y, screen);
     },
 
-    click(x, y) {
-        this.runEvent('mousedown', x, y);
+    click(x, y, screen = false) {
+        this.runEvent('mousedown', x, y, screen);
     },
 
-    move(x, y) {
-        this.runEvent('mousemove', x, y);
+    move(x, y, screen = false) {
+        this.runEvent('mousemove', x, y, screen);
     },
 
-    release(x, y) {
-        this.runEvent('mouseup', x, y);
+    release(x, y, screen = false) {
+        this.runEvent('mouseup', x, y, screen);
     },
 
     scroll(value) {
