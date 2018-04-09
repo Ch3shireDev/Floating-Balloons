@@ -92,7 +92,7 @@ describe('Handle behavior',
                 var b1 = Balloons.getLast();
                 Mouse.doubleclick(x0 + 1000, y0);
                 var b2 = Balloons.getLast();
-                var c = (b1.x + b2.x - b1.W() / 2 - b2.W() / 2) / 2;
+                var c = (b1.x + b2.x) / 2;
                 Mouse.move(c - 50, y0);
                 Space.showHandle();
                 var x1 = Space.handle.getXY()[0];
@@ -122,7 +122,25 @@ describe('Handle behavior',
                 Mouse.move(200, y0, true);
                 Space.showHandle();
                 var x1 = Space.handle.getXY()[0];
-                Mouse.move(900, y0, true);
+                Mouse.move(300, y0, true);
+                Space.showHandle();
+                var x2 = Space.handle.getXY()[0];
+                (x2 - x1).should.be.above(300);
+                Space.clear();
+            });
+
+        it('should switch a handle from one balloon to another on mouse movement after zoom',
+            () => {
+                Space.zoom(1000);
+                Mouse.doubleclick(200, 300, true);
+                var b1 = Balloons.getLast();
+                Mouse.doubleclick(600, 300, true);
+                var b2 = Balloons.getLast();
+                var c = 300;
+                Mouse.move(300, y0, true);
+                Space.showHandle();
+                var x1 = Space.handle.getXY()[0];
+                Mouse.move(500, y0, true);
                 Space.showHandle();
                 var x2 = Space.handle.getXY()[0];
                 (x2 - x1).should.be.above(300);

@@ -185,8 +185,10 @@
 
     distance(x, y) {
         var [x1, y1] = this.getXY();
-        var [x2, y2] = Space.internalToScreen(x1, y1);
-        var d = Math.sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2));
+        var [w, h] = this.getAttrWH();
+        [x1, y1] = [x1 + w / 2, y1 + h / 2];
+        //var [x2, y2] = Space.internalToScreen(x1, y1);
+        var d = Math.sqrt((x - x1) * (x - x1) + (y - y1) * (y - y1));
         return d;
     }
 
