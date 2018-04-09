@@ -36,6 +36,7 @@
         if (this.parentBalloon !== null) {
             var [x, y] = this.getXY();
             [x, y] = [x + this.width / 2, y + this.width / 2];
+            [x, y] = Space.svgToInternal(x, y);
             this.arrow = new Arrow(this.parentBalloon, [x, y]);
             this.parentBalloon.centerTail(this.arrow);
         }

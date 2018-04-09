@@ -191,10 +191,7 @@ describe('Arrow behavior',
             x += 15;
             y += 15;
             var [w, h] = Space.point.getWH0();
-            x /= w;
-            y /= h;
-            x = Space.point.w * x + Space.point.x;
-            y = Space.point.h * y + Space.point.y;
+            [x, y] = Space.svgToInternal(x, y);
             Mouse.click(x, y);
             Space.draggingHandle.should.equal(true);
             x += 500;
@@ -218,6 +215,41 @@ describe('Arrow behavior',
                 Space.point.x -= 500;
                 Space.refresh();
                 checkArrow();
+            });
+
+        it('should not create an arrow in large distance from handle',
+            () => {
+                Space.refresh();
+                Space.isTesting = true;
+                Mouse.doubleclick(x0, y0);
+                Mouse.move(x0, y0);
+                Space.showHandle();
+                var [x, y] = Space.handle.getXY();
+                [x, y] = Space.svgToInternal(x, y);
+                Mouse.click(x + 5, y + 5);
+                Space.draggingHandle.should.be.equal(true);
+                var [x1, y1] = Space.handle.arrow.getHeadXY();
+                Math.abs(x1 - x).should.be.below(50);
+                Math.abs(y1 - y).should.be.below(50);
+                Space.clear();
+            });
+
+        it('should not create an arrow in large distance after space translation',
+            () => {
+                Space.point.x -= 500;
+                Space.refresh();
+                Space.isTesting = true;
+                Mouse.doubleclick(x0, y0);
+                Mouse.move(x0, y0);
+                Space.showHandle();
+                var [x, y] = Space.handle.getXY();
+                [x, y] = Space.svgToInternal(x, y);
+                Mouse.click(x + 5, y + 5);
+                Space.draggingHandle.should.be.equal(true);
+                var [x1, y1] = Space.handle.arrow.getHeadXY();
+                Math.abs(x1 - x).should.be.below(50);
+                Math.abs(y1 - y).should.be.below(50);
+                Space.clear();
             });
 
         it('should create an arrow between parent and child balloon');

@@ -68,6 +68,14 @@
         this.updateArrow();
     }
 
+    getHeadXY() {
+        return [this.x1, this.y1];
+    }
+
+    getTailXY() {
+        return [this.x0, this.y0];
+    }
+
     positionToParent() {
         if (this.tailBalloon === null) return;
         this.tailBalloon.centerTail(this);
