@@ -121,6 +121,19 @@ var Space = {
         return [tx, ty];
     },
 
+    svgToInternal(x, y) {
+        var [x0, y0, w, h] = Space.point.getRect();
+        var [w0, h0] = Space.point.getWH0();
+        [x, y] = [x / w0, y / h0];
+        x = x * w + x0;
+        y = y * h + y0;
+        return [x, y];
+    },
+
+    svgToScreen(x, y) {
+        //return [x, y];
+    },
+
     leave(event) {
         Space.mouseDown = false;
     },

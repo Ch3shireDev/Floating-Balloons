@@ -109,20 +109,23 @@ describe('Handle behavior',
                 var b1 = Balloons.getLast();
                 Mouse.doubleclick(600, 300, true);
                 var b2 = Balloons.getLast();
-                var c = 300;
-                Mouse.move(300, y0, true);
+                var c = 400;
+                var d = 50;
+                Mouse.move(c - d, y0, true);
                 Space.showHandle();
                 var x1 = Space.handle.getXY()[0];
-                Mouse.move(400, y0, true);
+                Mouse.move(c + d, y0, true);
                 Space.showHandle();
                 var x2 = Space.handle.getXY()[0];
                 (x2 - x1).should.be.above(300);
                 Space.point.x += 500;
                 Space.refresh();
-                Mouse.move(200, y0, true);
+                c = 300;
+                d = 40;
+                Mouse.move(c - d, y0, true);
                 Space.showHandle();
                 var x1 = Space.handle.getXY()[0];
-                Mouse.move(300, y0, true);
+                Mouse.move(c + d, y0, true);
                 Space.showHandle();
                 var x2 = Space.handle.getXY()[0];
                 (x2 - x1).should.be.above(300);
@@ -147,7 +150,26 @@ describe('Handle behavior',
                 Space.clear();
             });
 
-        //it('should allow to grab and move a handle');
+        it('should allow to grab and move a handle',
+            () => {
+                Space.isTesting = true;
+                Mouse.doubleclick(x0, y0);
+                Mouse.move(x, y);
+                Space.showHandle();
+                var [x, y] = Space.handle.getXY();
+                Mouse.click(x + 5, y + 5);
+                Space.draggingHandle.should.equal(true);
+                Mouse.move(x + 100, y + 100, true);
+                var a = Space.handle.arrow;
+                var [x1, y1] = [a.x1, a.y1];
+                [x1, y1] = Space.internalToSVG(x1, y1);
+                (x + 100 - x1).should.be.below(10);
+                (y + 100 - y1).should.be.below(10);
+                var [x2, y2] = Space.handle.getXY();
+                (x + 100 - x2).should.be.below(10);
+                (y + 100 - y2).should.be.below(10);
+                Space.clear();
+            });
 
         //it('should move handle around the bubble together with cursor');
 
@@ -156,6 +178,63 @@ describe('Handle behavior',
         //it('should show handle near every balloon when cursor is nearby');
 
         //it('should move handle between balloons after zoom together with cursor');
+    });
+
+describe('Arrow behavior',
+    () => {
+        function checkArrow() {
+            Space.isTesting = true;
+            Mouse.doubleclick(x0, y0);
+            Mouse.move(x0, y0);
+            Space.showHandle();
+            var [x, y] = Space.handle.getXY();
+            x += 15;
+            y += 15;
+            var [w, h] = Space.point.getWH0();
+            x /= w;
+            y /= h;
+            x = Space.point.w * x + Space.point.x;
+            y = Space.point.h * y + Space.point.y;
+            Mouse.click(x, y);
+            Space.draggingHandle.should.equal(true);
+            x += 500;
+            y += 500;
+            Mouse.move(x, y);
+            var a = Space.handle.arrow;
+            var [x1, y1] = [a.x1, a.y1];
+            console.log(x, y, x1, y1);
+            Math.abs(x - x1).should.be.below(10);
+            Math.abs(y - y1).should.be.below(10);
+            Space.clear();
+        }
+
+        it('should make arrow in place of moved handle',
+            () => {
+                checkArrow();
+            });
+
+        it('should make arrow in place of moved handle after space translation',
+            () => {
+                Space.point.x -= 500;
+                Space.refresh();
+                checkArrow();
+            });
+
+        it('should create an arrow between parent and child balloon');
+
+        it('should connect when arrow is released over another bubble');
+
+        it('should move arrow together with balloons');
+
+        it('should create another bubble when arrow is released over an empty space');
+
+        it('should create dependency between arrow, parent and child balloons');
+
+        it('should move all child balloons together with parent balloon');
+
+        it('should not allow for different behavior when there are loops in hierarchy');
+
+        it('should move all arrows when autoText is enabled');
     });
 
 describe('Balloon behavior',
@@ -398,7 +477,7 @@ describe('Balloon behavior',
 
         it('should not make a big step when grabbed not in center',
             () => {
-                while (Balloons.balloonsList.length > 0) Balloons.removeLast();
+                Space.clear();
                 var b1 = Balloons.addBalloon(x0, y0);
                 var x1 = b1.div.attr('x');
                 Mouse.click(x0, y0);
@@ -445,25 +524,6 @@ describe('Balloon behavior',
         it('should create new balloons in new size after zoom');
 
         it('should move arrows in place of balloons after zoom');
-    });
-
-describe('Arrow behavior',
-    () => {
-        it('should create an arrow between parent and child balloon');
-
-        it('should connect when arrow is released over another bubble');
-
-        it('should move arrow together with balloons');
-
-        it('should create another bubble when arrow is released over an empty space');
-
-        it('should create dependency between arrow, parent and child balloons');
-
-        it('should move all child balloons together with parent balloon');
-
-        it('should not allow for different behavior when there are loops in hierarchy');
-
-        it('should move all arrows when autoText is enabled');
     });
 
 describe('Changing a text',

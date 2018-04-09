@@ -44,6 +44,7 @@
     move(x, y) {
         this.handle.attr('x', x);
         this.handle.attr('y', y);
+        [x, y] = Space.svgToInternal(x, y);
         this.arrow.moveHead(x + this.width / 2, y + this.width / 2);
     }
 
@@ -78,35 +79,6 @@
         this.arrow = null;
         this.isDragged = false;
     }
-
-    //drop(x, y, e) {
-    //    this.handle.attr({ visibility: 'hidden' });
-    //    var [, , element] = Space.getElement(e);
-    //    var b = null;
-
-    //    if (element.id === 'body') {
-    //        b = this.createBalloon(x, y);
-    //    }
-    //    else if (element.class === 'balloon') {
-    //        b = Balloons.findFromElement(element);
-    //    }
-    //    else if (element.getAttribute('class') === 'inner-text') {
-    //        b = Balloons.findFromElement(element.parentElement);
-    //    }
-    //    if (b !== null && typeof b !== 'undefined') {
-    //        this.parentBalloon.childArrows.push(this.arrow);
-    //        this.parentBalloon.childBalloons.push(b);
-    //        b.parentBalloons.push(this.parentBalloon);
-    //        this.arrow.headBalloon = b;
-    //        b.parentArrows.push(this.arrow);
-    //        b.centerHead(this.arrow);
-    //    }
-    //    if (this.parentBalloon !== null) {
-    //        this.parentBalloon.centerTail(this.arrow);
-    //    }
-    //    this.arrow = null;
-    //    this.isDragged = false;
-    //}
 
     showHandle() {
         if (this.isDragged) return;
