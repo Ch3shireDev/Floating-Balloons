@@ -171,6 +171,73 @@ describe('Handle behavior',
                 Space.clear();
             });
 
+        it('should make a grabbed handle follow mouse',
+            () => {
+                Space.isTesting = true;
+                Mouse.doubleclick(x0, y0);
+                Space.showHandle();
+                var h = Space.handle;
+                var [x, y] = h.getXY();
+                [x, y] = Space.svgToInternal(x, y);
+                var dx = 10;
+                Mouse.click(x + dx, y + dx);
+                Space.draggingHandle.should.be.equal(true);
+                var [xm, ym] = [x + 500, y + 500];
+                Mouse.move(xm, ym);
+                [x, y] = h.getXY();
+                [x, y] = Space.svgToInternal(x, y);
+                [x, y] = [x + dx, y + dx];
+                Math.abs(xm - x).should.be.below(20);
+                Math.abs(ym - y).should.be.below(20);
+                Space.clear();
+            });
+
+        it('should make a grabbed handle follow mouse after space translation',
+            () => {
+                Space.isTesting = true;
+                Mouse.click(x0, y0);
+                Mouse.move(x0 + 500, y0);
+                Mouse.release(x0, y0);
+                Mouse.doubleclick(x0, y0);
+                Space.showHandle();
+                var h = Space.handle;
+                var [x, y] = h.getXY();
+                [x, y] = Space.svgToInternal(x, y);
+                var dx = 10;
+                Mouse.click(x + dx, y + dx);
+                Space.draggingHandle.should.be.equal(true);
+                var [xm, ym] = [x + 500, y + 500];
+                Mouse.move(xm, ym);
+                [x, y] = h.getXY();
+                [x, y] = Space.svgToInternal(x, y);
+                [x, y] = [x + dx, y + dx];
+                Math.abs(xm - x).should.be.below(20);
+                Math.abs(ym - y).should.be.below(20);
+                Space.clear();
+            });
+
+        it('should make a grabbed handle follow mouse after zoom',
+            () => {
+                Space.isTesting = true;
+                Space.zoom(150);
+                Mouse.doubleclick(x0, y0);
+                Space.showHandle();
+                var h = Space.handle;
+                var [x, y] = h.getXY();
+                [x, y] = Space.svgToInternal(x, y);
+                var dx = 10;
+                Mouse.click(x + dx, y + dx);
+                Space.draggingHandle.should.be.equal(true);
+                var [xm, ym] = [x + 500, y + 500];
+                Mouse.move(xm, ym);
+                [x, y] = h.getXY();
+                [x, y] = Space.svgToInternal(x, y);
+                [x, y] = [x + dx, y + dx];
+                Math.abs(xm - x).should.be.below(20);
+                Math.abs(ym - y).should.be.below(20);
+                Space.clear();
+            });
+
         //it('should move handle around the bubble together with cursor');
 
         //it('should show small handle when cursor is on bubble\'s edge');
@@ -207,6 +274,7 @@ describe('Arrow behavior',
 
         it('should make arrow in place of moved handle',
             () => {
+                Space.clear();
                 checkArrow();
             });
 

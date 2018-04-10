@@ -43,10 +43,11 @@
     }
 
     move(x, y) {
+        //[x, y] = Space.svgToInternal(x, y);
+        this.arrow.moveHead(x + this.width / 2, y + this.width / 2);
+        [x, y] = Space.internalToSVG(x, y);
         this.handle.attr('x', x);
         this.handle.attr('y', y);
-        [x, y] = Space.svgToInternal(x, y);
-        this.arrow.moveHead(x + this.width / 2, y + this.width / 2);
     }
 
     drop(x, y, e) {

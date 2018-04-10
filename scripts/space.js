@@ -217,6 +217,7 @@ var Space = {
         }
         else if (Space.draggingHandle) {
             var [x, y] = Space.handle.getXY();
+            [x, y] = Space.svgToInternal(x, y);
             Space.handle.move(x + dx, y + dy);
         }
         else if (Space.draggingSpace) {
