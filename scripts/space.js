@@ -308,6 +308,7 @@ var Space = {
     },
 
     clear() {
+        currentTextareaBalloon = null;
         this.currentElement = null;
         this.handle = null;
         this.draggingBalloon = false;

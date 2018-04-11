@@ -3,6 +3,63 @@ var [x0, y0] = [300, 250];
 let expect = chai.expect;
 Space.autoText = false;
 
+describe('Changing a text',
+    () => {
+        it('should open a textarea on double click',
+            () => {
+                Balloons.addBalloon(x0, y0);
+                (currentTextareaBalloon === null).should.be.equal(true);
+                var b = Balloons.getLast();
+                Mouse.doubleclick(x0, y0);
+                (currentTextareaBalloon === null).should.not.be.equal(true);
+                Space.clear();
+            });
+
+        it('should close a textarea on click outside the bubble',
+            () => {
+                Balloons.addBalloon(x0, y0);
+                (currentTextareaBalloon === null).should.be.equal(true);
+                var b = Balloons.getLast();
+                Mouse.doubleclick(x0, y0);
+                (currentTextareaBalloon === null).should.not.be.equal(true);
+                Mouse.click(x0 + 300, y0 + 300);
+                (currentTextareaBalloon === null).should.be.equal(true);
+                Space.clear();
+            });
+
+        it('should contain current text in a textarea',
+            () => {
+                Balloons.addBalloon(x0, y0);
+                Mouse.doubleclick(x0, y0);
+                var b = Balloons.getLast();
+                $('#tarea').text('abc');
+                Mouse.click(x0 + 300, y0 + 300);
+                ($($('.inner-text')[0]).text()).should.be.equal('abc');
+                Space.clear();
+            });
+
+        it('should contain text from textarea in a textbox',
+            () => {
+                Balloons.addBalloon(x0, y0);
+                ($($('.inner-text')[0]).text('abc'));
+                Mouse.doubleclick(x0, y0);
+                ($('#tarea').text()).should.be.equal('abc');
+                Space.clear();
+            });
+
+        it('should resize a balloon when resizing a textbox',
+            () => {
+                Balloons.addBalloon(x0, y0);
+                var b = Balloons.getLast();
+                var [w0, h0] = b.getAttrWH();
+                $('#tarea').text('abc');
+                b.onInput(b);
+                var [w1, h1] = b.getAttrWH();
+                w1.should.be.above(w0);
+                Space.clear();
+            });
+    });
+
 describe('Handle behavior',
     () => {
         function handlePos(x, y) {
@@ -225,10 +282,10 @@ describe('Handle behavior',
                 var h = Space.handle;
                 var [x, y] = h.getXY();
                 [x, y] = Space.svgToInternal(x, y);
-                var dx = 10;
+                var dx = 15;
                 Mouse.click(x + dx, y + dx);
                 Space.draggingHandle.should.be.equal(true);
-                var [xm, ym] = [x + 500, y + 500];
+                var [xm, ym] = [x + 300, y + 300];
                 Mouse.move(xm, ym);
                 [x, y] = h.getXY();
                 [x, y] = Space.svgToInternal(x, y);
@@ -624,19 +681,6 @@ describe('Balloon behavior',
         it('should create new balloons in new size after zoom');
 
         it('should move arrows in place of balloons after zoom');
-    });
-
-describe('Changing a text',
-    () => {
-        it('should open a textarea on double click');
-
-        it('should close a textarea on click outside the bubble');
-
-        it('should contain current text in a textarea');
-
-        it('should contain text from textarea in a textbox');
-
-        it('should resize a balloon when resizing a textbox');
     });
 
 describe('Space behavior',

@@ -20,22 +20,21 @@ Balloon.prototype.openContent = function () {
     text.focus();
     text.select();
 
-    var balloon = this;
-
-    fO.oninput = function () {
+    Balloon.prototype.onInput = function (balloon) {
         var w = getTextLength(text);
         var width = w.x;
         var height = w.y;
-
         balloon.W0 = width;
         balloon.H0 = height;
-
-        div.attr('width', width);
-        div.attr('height', height);
-        fO.setAttribute('width', width);
-        fO.setAttribute('height', height);
+        balloon.div.attr('width', width);
+        balloon.div.attr('height', height);
+        balloon.fO.setAttribute('width', width);
+        balloon.fO.setAttribute('height', height);
         balloon.drop();
     }
+
+    var b = this;
+    fO.oninput = () => { Balloon.prototype.onInput(b); };
 }
 
 function getTextLength(text) {
