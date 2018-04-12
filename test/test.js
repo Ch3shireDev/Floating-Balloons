@@ -58,6 +58,25 @@ describe('Changing a text',
                 w1.should.be.above(w0);
                 Space.clear();
             });
+
+        it('should not move a balloon after adding a text',
+            () => {
+                Space.isTesting = true;
+                Balloons.addBalloon(x0, y0);
+                var b = Balloons.getLast();
+                Mouse.doubleclick(x0, y0);
+                $('#tarea').text('abcabcabcabc');
+                b.onInput(b);
+                Mouse.click(x0, y0 + 300);
+                (currentTextareaBalloon === null).should.be.equal(true);
+                var [x1, y1] = b.getXY();
+                Mouse.click(x0, y0);
+                b.isGrabbed().should.be.equal(true);
+                Mouse.move(x0, y0);
+                var [x2, y2] = b.getXY();
+                Math.abs(x2 - x1).should.be.below(5);
+                Math.abs(y2 - y1).should.be.below(5);
+            });
     });
 
 describe('Handle behavior',
@@ -70,6 +89,7 @@ describe('Handle behavior',
 
         it('should show handle near the balloon',
             () => {
+                Space.clear();
                 var b = Balloons.addBalloon(x0, y0);
                 var [x, y] = [b.x, b.y];
                 var [x1, y1] = handlePos(x - 100, y);
