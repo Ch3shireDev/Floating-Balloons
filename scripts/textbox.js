@@ -21,6 +21,7 @@ Balloon.prototype.openContent = function () {
     text.select();
 
     Balloon.prototype.onInput = function (balloon) {
+        var w1 = balloon.W();
         var w = getTextLength(text);
         var width = w.x;
         var height = w.y;
@@ -30,6 +31,7 @@ Balloon.prototype.openContent = function () {
         balloon.div.attr('height', height);
         balloon.fO.setAttribute('width', width);
         balloon.fO.setAttribute('height', height);
+        balloon.moveInternal(balloon.x, balloon.y);
         balloon.drop();
     }
 
@@ -38,9 +40,15 @@ Balloon.prototype.openContent = function () {
 }
 
 function getTextLength(text) {
+    var str = $('#tarea').html();
+    str = str.replace(/<br>$/, '');
+    str = str.replace(/\n$/, '');
+    str = str.replace(/<br>/g, '\n');
+    console.log(str);
     var x = text[0].textContent;
+    var y = 100 + 100 * str.split('\n').length;;
     var n = 50 * x.length + 200;
-    return { x: n, y: 200 };
+    return { x: n, y: y };
 }
 
 var currentTextareaBalloon = null;
