@@ -16,36 +16,20 @@ Balloon.prototype.openContent = function () {
     selection.removeAllRanges();
     selection.addRange(range);
 
-    var text = $('#tarea');
-    text.focus();
-    text.select();
-
-    Balloon.prototype.onInput = function (balloon) {
-        var w1 = balloon.W();
-        var w = getTextLength(text);
-        var width = w.x;
-        var height = w.y;
-        balloon.W0 = width;
-        balloon.H0 = height;
-        balloon.div.attr('width', width);
-        balloon.div.attr('height', height);
-        balloon.fO.setAttribute('width', width);
-        balloon.fO.setAttribute('height', height);
-        balloon.moveInternal(balloon.x, balloon.y);
-        balloon.drop();
-    }
-
     var b = this;
     fO.oninput = () => { Balloon.prototype.onInput(b); };
 }
 
-function getTextLength(text) {
-    var str = $('#tarea').html();
+function getTextLength() {
+    var text = $('#tarea');
+    text.focus();
+    text.select();
+    var str = text.text();
     str = str.replace(/<br>$/, '');
     str = str.replace(/\n$/, '');
     str = str.replace(/<br>/g, '\n');
     console.log(str);
-    var x = text[0].textContent;
+    var x = text.text;
     var y = 100 + 100 * str.split('\n').length;;
     var n = 50 * x.length + 200;
     return { x: n, y: y };

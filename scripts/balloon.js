@@ -197,4 +197,19 @@
         this.div.attr('width', this.W());
         this.div.attr('height', this.H());
     }
+
+    onInput() {
+        var w1 = this.W();
+        var w = getTextLength();
+        var width = w.x;
+        var height = w.y;
+        this.W0 = width;
+        this.H0 = height;
+        this.div.attr('width', width);
+        this.div.attr('height', height);
+        this.fO.setAttribute('width', width);
+        this.fO.setAttribute('height', height);
+        this.moveInternal(this.x, this.y);
+        this.drop();
+    }
 }

@@ -66,7 +66,7 @@ describe('Changing a text',
                 var b = Balloons.getLast();
                 Mouse.doubleclick(x0, y0);
                 $('#tarea').text('abcabcabcabc');
-                b.onInput(b);
+                b.onInput();
                 Mouse.click(x0, y0 + 300);
                 (currentTextareaBalloon === null).should.be.equal(true);
                 var [x1, y1] = b.getXY();
@@ -76,6 +76,20 @@ describe('Changing a text',
                 var [x2, y2] = b.getXY();
                 Math.abs(x2 - x1).should.be.below(5);
                 Math.abs(y2 - y1).should.be.below(5);
+            });
+
+        it('should not affect width of balloon on multiline text',
+            () => {
+                Balloons.addBalloon(x0, y0);
+                Mouse.doubleclick(x0, y0);
+                var b = Balloons.getLast();
+                $('#tarea').text('abc');
+                b.onInput();
+                var w = b.W();
+                //$('#tarea').text('abc\nabc');
+                //b.onInput();
+                //alert("");
+                Space.clear();
             });
     });
 
