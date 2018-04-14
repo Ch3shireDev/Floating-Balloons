@@ -163,7 +163,7 @@ var Space = {
             Space.mouseDown = false;
         }
         else {
-            closeCurrentTextarea();
+            Space.closeCurrentTextarea();
 
             if (element.id === 'body') {
                 Space.draggingSpace = true;
@@ -330,6 +330,13 @@ var Space = {
         if (Space.handle.parentBalloon === null) return;
         var b = Space.handle.parentBalloon;
         b.drop();
+    },
+
+    closeCurrentTextarea() {
+        var b = Space.currentTextareaBalloon;
+        if (b === null) return;
+        b.closeContent();
+        Space.currentTextareaBalloon = null;
     }
 }
 

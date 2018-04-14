@@ -32,18 +32,18 @@ describe('Changing a text',
                 Balloons.addBalloon(x0, y0);
                 Mouse.doubleclick(x0, y0);
                 var b = Balloons.getLast();
-                $('#tarea').text('abc');
+                $('#tarea').text('abc\nabc');
                 Mouse.click(x0 + 300, y0 + 300);
-                ($($('.inner-text')[0]).text()).should.be.equal('abc');
+                ($($('.inner-text')[0]).text()).should.be.equal('abc\nabc');
                 Space.clear();
             });
 
         it('should contain text from textarea in a textbox',
             () => {
                 Balloons.addBalloon(x0, y0);
-                ($($('.inner-text')[0]).text('abc'));
+                ($($('.inner-text')[0]).text('abc\nabc'));
                 Mouse.doubleclick(x0, y0);
-                ($('#tarea').text()).should.be.equal('abc');
+                ($('#tarea').text()).should.be.equal('abc\nabc');
                 Space.clear();
             });
 
@@ -84,10 +84,10 @@ describe('Changing a text',
                 Balloons.addBalloon(x0, y0);
                 Mouse.doubleclick(x0, y0);
                 var b = Balloons.getLast();
-                $('#tarea').text('abc');
+                $('#tarea').html('abc');
                 b.onInput();
                 var w1 = b.W();
-                $('#tarea').text('abc\nabc');
+                $('#tarea').html('abc\nabc');
                 b.onInput();
                 var w2 = b.W();
                 w1.should.be.equal(w2);
@@ -99,13 +99,47 @@ describe('Changing a text',
                 Balloons.addBalloon(x0, y0);
                 Mouse.doubleclick(x0, y0);
                 var b = Balloons.getLast();
-                $('#tarea').text('abc');
+                $('#tarea').html('abc');
                 b.onInput();
                 var h1 = b.H();
-                $('#tarea').text('abc\nabc');
+                $('#tarea').html('abc<br>abc');
                 b.onInput();
                 var h2 = b.H();
                 h2.should.be.above(h1);
+                Space.clear();
+            });
+
+        it('should not remove text formatting after opening textarea',
+            () => {
+                Balloons.addBalloon(x0, y0);
+                var b = Balloons.getLast();
+                Mouse.doubleclick(x0, y0);
+                var str = 'abc<br>abc';
+                $('#tarea').html(str);
+                b.onInput();
+                Space.closeCurrentTextarea();
+                var str2 = '' + $($('.inner-text')[0]).html();
+                str2.should.be.equal(str);
+                Mouse.doubleclick(x0, y0);
+                var str3 = '' + $('#tarea').html();
+                str3.should.be.equal(str);
+                Space.clear();
+            });
+
+        it('should resize balloon proportionally to length of text',
+            () => {
+                Balloons.addBalloon(x0, y0);
+                var b = Balloons.getLast();
+                var w0 = b.W();
+                Mouse.doubleclick(x0, y0);
+                $('#tarea').html('abcabc');
+                b.onInput();
+                var w1 = b.W();
+                w1.should.be.above(w0);
+                $('#tarea').html('abcabcabcabc');
+                b.onInput();
+                var w2 = b.W();
+                w2.should.be.above(w1);
                 Space.clear();
             });
     });

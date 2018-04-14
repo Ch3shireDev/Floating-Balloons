@@ -25,6 +25,29 @@
         this.path = this.createPath();
     }
 
+    createBalloon(x, y) {
+        const w = 200;
+        const h = 200;
+        x = x - w / 2;
+        y = y - h / 2;
+        const div = Space.s.rect(x, y, w, h);
+        div.attr({
+            id: `balloon${this.n}`,
+            class: 'balloon',
+            fill: 'red',
+            'opacity': 0.8
+        });
+        const fO = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
+        fO.setAttribute('id', `fo${this.n}`);
+        fO.setAttribute('x', x);
+        fO.setAttribute('y', y);
+        fO.setAttribute('width', w);
+        fO.setAttribute('height', h);
+        fO.innerHTML = `<div class="inner-text" id="balloon-div-${this.n}"></div>`;
+        div.after(fO);
+        return [fO, div];
+    }
+
     W() {
         var w = Space.point.w;
         var w0 = (new Point()).getRect()[2];
@@ -145,29 +168,6 @@
         arrow.moveHead(this.x, this.y);
     }
 
-    createBalloon(x, y) {
-        const w = 200;
-        const h = 200;
-        x = x - w / 2;
-        y = y - h / 2;
-        const div = Space.s.rect(x, y, w, h);
-        div.attr({
-            id: `balloon${this.n}`,
-            class: 'balloon',
-            fill: 'red',
-            'opacity': 0.8
-        });
-        const fO = document.createElementNS('http://www.w3.org/2000/svg', 'foreignObject');
-        fO.setAttribute('id', `fo${this.n}`);
-        fO.setAttribute('x', x);
-        fO.setAttribute('y', y);
-        fO.setAttribute('width', w);
-        fO.setAttribute('height', h);
-        fO.innerHTML = '<div class="inner-text"></div>';
-        div.after(fO);
-        return [fO, div];
-    }
-
     createPath() {
         [this.pathx, this.pathy] = [this.x, this.y];
         var r0 = roundPathCorners(`M0 0 L ${this.W()} 0 L${this.W()} ${this.H()} L 0 ${this.H()} Z`, 20);
@@ -200,7 +200,7 @@
 
     onInput() {
         var w1 = this.W();
-        var w = getTextLength();
+        var w = this.getTextLength();
         var width = w.x;
         var height = w.y;
         this.W0 = width;
@@ -214,12 +214,10 @@
     }
 
     openContent() {
-        closeCurrentTextarea();
+        Space.closeCurrentTextarea();
         var fO = this.fO;
         var div = this.div;
-
-        var s = this.fO.textContent;
-
+        var s = '' + $(`#balloon-div-${this.n}`).html();
         fO.innerHTML = `<div id="tarea" contentEditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">${s}</div>`;
         Space.currentTextareaBalloon = this;
 
@@ -233,31 +231,27 @@
 
         fO.oninput = () => { this.onInput(); };
     }
-}
 
-function getTextLength() {
-    var text = $('#tarea');
-    text.focus();
-    text.select();
-    var str = '' + text.html();
-    console.log(str);
-    str = str.replace(/<br>$/, '');
-    str = str.replace(/\n$/, '');
-    str = str.replace(/<br>/g, '\n');
-    console.log(str);
-    var x = 50 * text.text.length + 200;
-    var y = 100 + 100 * str.split('\n').length;
-    console.log(`height: ${y}`);
-    return { x: x, y: y };
-}
-
-function closeCurrentTextarea() {
-    if (Space.currentTextareaBalloon === null) return;
-    Space.currentTextareaBalloon.drop();
-    if (Space.currentTextareaBalloon.fO != null) {
+    closeContent() {
+        this.drop();
+        if (this.fO === null) return;
         var s = $('#tarea')[0].innerHTML;
-        Space.currentTextareaBalloon.fO.innerHTML = `<div class="inner-text">${s}</div>`;
-        Space.currentTextareaBalloon = null;
+        this.fO.innerHTML = `<div class="inner-text" id="balloon-div-${this.n}">${s}</div>`;
     }
-    Space.currentTextareaBalloon = null;
+
+    getTextLength() {
+        var text = $('#tarea');
+        text.focus();
+        text.select();
+        var str = '' + text.html();
+        str = str.replace(/<br>$/, '');
+        str = str.replace(/\n$/, '');
+        str = str.replace(/<br>/g, '\n');
+        var tab = str.split('\n');
+        var n = 0;
+        n = tab[0].length;
+        var x = 50 * n + 200;
+        var y = 100 + 100 * tab.length;
+        return { x: x, y: y };
+    }
 }
