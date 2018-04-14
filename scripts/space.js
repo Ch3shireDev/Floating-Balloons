@@ -46,6 +46,7 @@ var Space = {
     autoText: true,
     moveChildren: true,
     isVisible: true,
+    currentTextareaBalloon: null,
     s: Snap('#body'),
     svg: document.querySelector('svg'),
     xy: [0, 0],
@@ -308,7 +309,7 @@ var Space = {
     },
 
     clear() {
-        currentTextareaBalloon = null;
+        Space.currentTextareaBalloon = null;
         this.currentElement = null;
         this.handle = null;
         this.draggingBalloon = false;

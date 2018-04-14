@@ -8,22 +8,22 @@ describe('Changing a text',
         it('should open a textarea on double click',
             () => {
                 Balloons.addBalloon(x0, y0);
-                (currentTextareaBalloon === null).should.be.equal(true);
+                (Space.currentTextareaBalloon === null).should.be.equal(true);
                 var b = Balloons.getLast();
                 Mouse.doubleclick(x0, y0);
-                (currentTextareaBalloon === null).should.not.be.equal(true);
+                (Space.currentTextareaBalloon === null).should.not.be.equal(true);
                 Space.clear();
             });
 
         it('should close a textarea on click outside the bubble',
             () => {
                 Balloons.addBalloon(x0, y0);
-                (currentTextareaBalloon === null).should.be.equal(true);
+                (Space.currentTextareaBalloon === null).should.be.equal(true);
                 var b = Balloons.getLast();
                 Mouse.doubleclick(x0, y0);
-                (currentTextareaBalloon === null).should.not.be.equal(true);
+                (Space.currentTextareaBalloon === null).should.not.be.equal(true);
                 Mouse.click(x0 + 300, y0 + 300);
-                (currentTextareaBalloon === null).should.be.equal(true);
+                (Space.currentTextareaBalloon === null).should.be.equal(true);
                 Space.clear();
             });
 
@@ -68,7 +68,7 @@ describe('Changing a text',
                 $('#tarea').text('abcabcabcabc');
                 b.onInput();
                 Mouse.click(x0, y0 + 300);
-                (currentTextareaBalloon === null).should.be.equal(true);
+                (Space.currentTextareaBalloon === null).should.be.equal(true);
                 var [x1, y1] = b.getXY();
                 Mouse.click(x0, y0);
                 b.isGrabbed().should.be.equal(true);
@@ -76,6 +76,7 @@ describe('Changing a text',
                 var [x2, y2] = b.getXY();
                 Math.abs(x2 - x1).should.be.below(5);
                 Math.abs(y2 - y1).should.be.below(5);
+                Space.clear();
             });
 
         it('should not affect width of balloon on multiline text',
@@ -85,10 +86,26 @@ describe('Changing a text',
                 var b = Balloons.getLast();
                 $('#tarea').text('abc');
                 b.onInput();
-                var w = b.W();
-                //$('#tarea').text('abc\nabc');
-                //b.onInput();
-                //alert("");
+                var w1 = b.W();
+                $('#tarea').text('abc\nabc');
+                b.onInput();
+                var w2 = b.W();
+                w1.should.be.equal(w2);
+                Space.clear();
+            });
+
+        it('should make multiline text balloon bigger height',
+            () => {
+                Balloons.addBalloon(x0, y0);
+                Mouse.doubleclick(x0, y0);
+                var b = Balloons.getLast();
+                $('#tarea').text('abc');
+                b.onInput();
+                var h1 = b.H();
+                $('#tarea').text('abc\nabc');
+                b.onInput();
+                var h2 = b.H();
+                h2.should.be.above(h1);
                 Space.clear();
             });
     });

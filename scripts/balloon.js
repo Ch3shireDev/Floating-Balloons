@@ -212,4 +212,52 @@
         this.moveInternal(this.x, this.y);
         this.drop();
     }
+
+    openContent() {
+        closeCurrentTextarea();
+        var fO = this.fO;
+        var div = this.div;
+
+        var s = this.fO.textContent;
+
+        fO.innerHTML = `<div id="tarea" contentEditable="true" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">${s}</div>`;
+        Space.currentTextareaBalloon = this;
+
+        //this small code moves cursor to end
+        var range = document.createRange();
+        range.selectNodeContents(fO.childNodes[0]);
+        range.collapse(false);
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+
+        fO.oninput = () => { this.onInput(); };
+    }
+}
+
+function getTextLength() {
+    var text = $('#tarea');
+    text.focus();
+    text.select();
+    var str = '' + text.html();
+    console.log(str);
+    str = str.replace(/<br>$/, '');
+    str = str.replace(/\n$/, '');
+    str = str.replace(/<br>/g, '\n');
+    console.log(str);
+    var x = 50 * text.text.length + 200;
+    var y = 100 + 100 * str.split('\n').length;
+    console.log(`height: ${y}`);
+    return { x: x, y: y };
+}
+
+function closeCurrentTextarea() {
+    if (Space.currentTextareaBalloon === null) return;
+    Space.currentTextareaBalloon.drop();
+    if (Space.currentTextareaBalloon.fO != null) {
+        var s = $('#tarea')[0].innerHTML;
+        Space.currentTextareaBalloon.fO.innerHTML = `<div class="inner-text">${s}</div>`;
+        Space.currentTextareaBalloon = null;
+    }
+    Space.currentTextareaBalloon = null;
 }

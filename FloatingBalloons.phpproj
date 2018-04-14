@@ -35,7 +35,6 @@
     <Content Include="style.css" />
     <Content Include="test\index.html" />
     <Content Include="test\test.js" />
-    <Content Include="scripts\textbox.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="example\" />
