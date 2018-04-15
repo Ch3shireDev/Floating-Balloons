@@ -67,7 +67,7 @@ describe('Changing a text',
                 Mouse.doubleclick(x0, y0);
                 $('#tarea').text('abcabcabcabc');
                 b.onInput();
-                Mouse.click(x0, y0 + 300);
+                Mouse.click(x0, y0 + 500);
                 (Space.currentTextareaBalloon === null).should.be.equal(true);
                 var [x1, y1] = b.getXY();
                 Mouse.click(x0, y0);
@@ -102,7 +102,7 @@ describe('Changing a text',
                 $('#tarea').html('abc');
                 b.onInput();
                 var h1 = b.H();
-                $('#tarea').html('abc<br>abc');
+                $('#tarea').html('abc<br>abc<br>abc<br>abc<br>abc<br>abc<br>abc<br>abc');
                 b.onInput();
                 var h2 = b.H();
                 h2.should.be.above(h1);
@@ -140,6 +140,22 @@ describe('Changing a text',
                 b.onInput();
                 var w2 = b.W();
                 w2.should.be.above(w1);
+                Space.clear();
+            });
+
+        it('should not drastically resize balloon on zoom',
+            () => {
+                Space.zoom(500);
+                Balloons.addBalloon(x0, y0);
+                var b = Balloons.getLast();
+                Mouse.doubleclick(x0, y0);
+                $('#tarea').html('abcabcabcabc');
+                b.onInput();
+                var [w1, h1] = b.wh();
+                b.refresh();
+                var [w2, h2] = b.wh();
+                Math.abs(w1 - w2).should.be.below(1);
+                Math.abs(h1 - h2).should.be.below(1);
                 Space.clear();
             });
     });

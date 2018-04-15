@@ -187,7 +187,6 @@
         var [x1, y1] = this.getXY();
         var [w, h] = this.getAttrWH();
         [x1, y1] = [x1 + w / 2, y1 + h / 2];
-        //var [x2, y2] = Space.internalToScreen(x1, y1);
         var d = Math.sqrt((x - x1) * (x - x1) + (y - y1) * (y - y1));
         return d;
     }
@@ -205,10 +204,10 @@
         var height = w.y;
         this.W0 = width;
         this.H0 = height;
-        this.div.attr('width', width);
-        this.div.attr('height', height);
-        this.fO.setAttribute('width', width);
-        this.fO.setAttribute('height', height);
+        this.div.attr('width', this.W());
+        this.div.attr('height', this.H());
+        this.fO.setAttribute('width', this.W());
+        this.fO.setAttribute('height', this.H());
         this.moveInternal(this.x, this.y);
         this.drop();
     }
@@ -252,6 +251,10 @@
         n = tab[0].length;
         var x = 50 * n + 200;
         var y = 100 + 100 * tab.length;
+
+        if (x > y) y = x;
+        else x = y;
+
         return { x: x, y: y };
     }
 }
