@@ -28,7 +28,17 @@
     <script src="scripts/rounding.js"></script>
     <script src="scripts/textbox.js"></script>
     <div id="mocha"></div>
-    <script>mocha.setup('bdd')</script>
+    <script>
+        mocha.setup('bdd');
+        $(document).scrollTop(0); //tests fail when scrolled down
+        var [x0, y0] = [300, 250];
+        let expect = chai.expect;
+        Space.autoText = false;
+    </script>
+    <script src="test/arrow_b.js"></script>
+    <script src="test/text_b.js"></script>
+    <script src="test/handle_b.js"></script>
+    <script src="test/balloon_b.js"></script>
     <script src="test/test.js"></script>
 </body>
 </html>
