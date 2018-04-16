@@ -158,6 +158,25 @@ describe('Changing a text',
                 Math.abs(h1 - h2).should.be.below(1);
                 Space.clear();
             });
+
+        it('should preserve right proportions of textbox and balloon after zooming out',
+            () => {
+                Balloons.addBalloon(x0, y0);
+                var b = Balloons.getLast();
+                Mouse.doubleclick(x0, y0);
+                $('#tarea').html('abcabcabcabc');
+                b.onInput();
+                Mouse.click(x0 + 500, y0);
+                Space.zoom(500);
+                var [x1, y1] = [b.fO.getAttribute('width'), b.fO.getAttribute('height')];
+                Mouse.doubleclick(x0, y0);
+                b.onInput();
+                Mouse.click(x0 + 500, y0);
+                var [x2, y2] = [b.fO.getAttribute('width'), b.fO.getAttribute('height')];
+                x1.should.be.equal(x2);
+                y1.should.be.equal(y2);
+                Space.clear();
+            });
     });
 
 describe('Handle behavior',

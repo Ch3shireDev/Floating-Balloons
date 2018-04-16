@@ -195,6 +195,8 @@
         this.moveInternal(this.x, this.y);
         this.div.attr('width', this.W());
         this.div.attr('height', this.H());
+        this.fO.setAttribute('width', this.W());
+        this.fO.setAttribute('height', this.H());
     }
 
     onInput() {
