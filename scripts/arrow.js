@@ -30,8 +30,13 @@
             var y = function (t) { return y0 + (y1 - y0) * t; }
 
             var L = 150;
-            var [t0, t1] = [L / d, 1 - (L + 70) / d];
-            [x0, y0, x1, y1] = [x(t0), y(t0), x(t1), y(t1)];
+            
+            var [w, h] = this.tailBalloon.internalWH();
+            [w, h] = [w / 2 * 1.5, h / 2 * 1.5];
+
+            var [t0, t1] = [w / d, 1 - (L + 70) / d];
+            var [t2, t3] = [h / d, 1 - (L + 70) / d];
+            [x0, y0, x1, y1] = [x(t0), y(t2), x(t1), y(t3)];
         }
         return [x0, y0, x1, y1];
     }

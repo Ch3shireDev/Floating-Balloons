@@ -60,9 +60,12 @@
         return h0 / h * this.H0;
     }
 
+    internalWH() {
+        return [this.div.attr('width'), this.div.attr('height')];
+    }
+
     wh() {
-        var w = this.div.attr('width'),
-            h = this.div.attr('height');
+        var [w, h] = this.internalWH();
         [w, h] = Space.internalToScreen(w, h);
         var [x, y] = Space.internalToScreen(0, 0);
         return [w - x, h - y];

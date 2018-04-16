@@ -1,5 +1,33 @@
 ﻿describe('Arrow behavior',
     () => {
+        function getId(x, y) {
+            [x, y] = Space.internalToScreen(x, y);
+            return document.elementFromPoint(x, y).id;
+        }
+
+        it('should start an arrow outside the balloon',
+            () => {
+                Space.isTesting = true;
+                Space.zoom(500);
+                var b = Balloons.addBalloon(x0, y0);
+                Mouse.doubleclick(x0, y0);
+                $('#tarea').html('abcabcabcabc');
+                b.onInput();
+                Mouse.move(x0 + 500, y0);
+                Space.showHandle();
+                var h = Space.handle;
+                var [x, y] = h.getXY();
+                console.log(x, y);
+                [x, y] = Space.svgToInternal(x, y);
+                Mouse.click(x+10, y+10);
+                Space.draggingHandle.should.be.equal(true);
+                x += 1000;
+                Mouse.move(x, y);
+                var [x1, y1, x2, y2] = h.arrow.getStartAndEnd();
+                (getId(x1, y1)).should.be.equal('body');
+                Space.clear();
+            });
+
         function checkArrow() {
             Space.isTesting = true;
             Mouse.doubleclick(x0, y0);
