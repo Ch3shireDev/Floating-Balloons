@@ -29,13 +29,19 @@
             var x = function (t) { return x0 + (x1 - x0) * t; }
             var y = function (t) { return y0 + (y1 - y0) * t; }
 
-            var L = 150;
-            
-            var [w, h] = this.tailBalloon.internalWH();
-            [w, h] = [w / 2 * 1.5, h / 2 * 1.5];
+            var [w1, h1] = [220, 220];
+            if (this.tailBalloon !== null) {
+                [w1, h1] = this.tailBalloon.internalWH();
+                [w1, h1] = [w1 / 2 * 1.5, h1 / 2 * 1.5];
+            }
+            var [w2, h2] = [220, 220];
+            if (this.headBalloon !== null) {
+                [w2, h2] = this.headBalloon.internalWH();
+                [w2, h2] = [w2 / 2 * 1.5, h2 / 2 * 1.5];
+            }
 
-            var [t0, t1] = [w / d, 1 - (L + 70) / d];
-            var [t2, t3] = [h / d, 1 - (L + 70) / d];
+            var [t0, t1] = [w1 / d, 1 - (w2+70) / d];
+            var [t2, t3] = [h1 / d, 1 - (h2+70) / d];
             [x0, y0, x1, y1] = [x(t0), y(t2), x(t1), y(t3)];
         }
         return [x0, y0, x1, y1];
