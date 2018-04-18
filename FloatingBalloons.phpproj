@@ -37,6 +37,7 @@
     <Content Include="test\balloon_b.js" />
     <Content Include="test\handle_b.js" />
     <Content Include="test\index.html" />
+    <Content Include="test\saveload_b.js" />
     <Content Include="test\test.js" />
     <Content Include="test\text_b.js" />
   </ItemGroup>

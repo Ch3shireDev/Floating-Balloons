@@ -1,4 +1,4 @@
-﻿describe('Changing a text',
+﻿describe('Text behavior',
     () => {
         it('should open a textarea on double click',
             () => {
