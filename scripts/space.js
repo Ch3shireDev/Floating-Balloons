@@ -337,6 +337,14 @@ var Space = {
         if (b === null) return;
         b.closeContent();
         Space.currentTextareaBalloon = null;
+    },
+
+    serialize() {
+
+    },
+
+    deserialize() {
+
     }
 }
 

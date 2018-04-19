@@ -122,5 +122,22 @@
 
     size() {
         return this.balloonsList.length;
+    },
+
+    serialize() {
+        var array = [];
+        this.balloonsList.forEach((b) => {
+            array.push([b.x, b.y]);
+        });
+        var s = JSON.stringify(array);
+        return s;
+    },
+
+    deserialize(s) {
+        var array = JSON.parse(s);
+        array.forEach((b) => {
+            var [x, y] = b;
+            this.addBalloon(x, y);
+        });
     }
 };
