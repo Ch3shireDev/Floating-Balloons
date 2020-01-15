@@ -2,7 +2,7 @@
   "name": "myproject",
   "version": "1.0.0",
   "devDependencies": {
-    "angular": "^1.6.9",
+    "angular": "^1.7.9",
     "chai": "^4.1.2",
     "jquery.idle": "^1.2.6",
     "should": "^13.2.1"
